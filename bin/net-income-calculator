@@ -1,0 +1,138 @@
+#!/usr/bin/env node
+
+/**
+ * Net Income Calculator CLI
+ *
+ * Command-line interface for calculating net income with multi-country
+ * tax residency support. Currently implements Portuguese residency rules.
+ *
+ * NEW: Requires directory with Income.csv + reference data files
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { calculateNetIncome } = require('../lib/index');
+const { loadReferenceData, validateIncomeDataCompleteness, parseCSV: loadCSV } = require('../lib/loader');
+
+function loadDataFromCSVFile(csvPath) {
+  if (!fs.existsSync(csvPath)) {
+    throw new Error(`Missing CSV: ${csvPath}`);
+  }
+  
+  const content = fs.readFileSync(csvPath, 'utf8');
+  return loadCSV(content);
+}
+
+function objectArrayToCSV(data) {
+  if (!Array.isArray(data) || data.length === 0) return "";
+  const headers = Object.keys(data[0]);
+  const csvContent = [headers.join(",")];
+  data.forEach(row => {
+    csvContent.push(headers.map(h => {
+      const val = row[h];
+      if (typeof val === 'number') return val.toFixed(2);
+      return val || '';
+    }).join(","));
+  });
+  return csvContent.join("\n");
+}
+
+function slugify(text) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, '');
+}
+
+function main() {
+  const args = process.argv.slice(2);
+
+  if (args.length !== 1) {
+    console.error('Usage: net-income-calculator <data-directory>');
+    console.error('');
+    console.error('The directory must contain country-specific reference data:');
+    console.error('  - XX_MonthlyIncome.csv (your income records)');
+    console.error('  - XX_MonthlyPersonalDeductions.csv (your monthly deductions)');
+    console.error('  - SimulationParameters.csv (static simulation parameters)');
+    console.error('  - Country-specific tax reference files (XX_TaxBrackets.csv, etc.)');
+    console.error('');
+    console.error('Examples:');
+    console.error('  net-income-calculator ./data/portugal');
+    console.error('  net-income-calculator ./my-portugal-data');
+    console.error('');
+    console.error('Reference data templates:');
+    console.error('  - Portugal: ./data/portugal/');
+    console.error('');
+    console.error('To customize: cp -r data/portugal my-data && edit PT_MonthlyIncome.csv');
+    process.exit(1);
+  }
+
+  const dataDir = args[0];
+  const resolvedDir = path.isAbsolute(dataDir) ? dataDir : path.resolve(process.cwd(), dataDir);
+
+  if (!fs.existsSync(resolvedDir)) {
+    console.error(`Error: Directory not found: ${dataDir}`);
+    process.exit(1);
+  }
+
+  if (!fs.statSync(resolvedDir).isDirectory()) {
+    console.error(`Error: ${dataDir} is not a directory`);
+    process.exit(1);
+  }
+
+  try {
+    console.log(`Loading reference data from ${dataDir}...`);
+    const referenceData = loadReferenceData(resolvedDir);
+    console.log('Reference data loaded successfully.');
+
+    const countryCode = referenceData.countryCode;
+    const incomeFilename = `${countryCode}_MonthlyIncome.csv`;
+    const incomePath = path.join(resolvedDir, incomeFilename);
+    
+    if (!fs.existsSync(incomePath)) {
+      console.error(`Error: Missing ${incomeFilename} in ${dataDir}`);
+      console.error(`${incomeFilename} must contain your income records.`);
+      process.exit(1);
+    }
+
+    console.log(`Loading income data from ${incomeFilename}...`);
+    const incomeRecords = loadDataFromCSVFile(incomePath);
+
+    if (incomeRecords.length === 0) {
+      console.error(`No income records found in ${incomeFilename}`);
+      process.exit(1);
+    }
+
+    console.log(`Found ${incomeRecords.length} income records.`);
+    
+    console.log('Validating data completeness...');
+    validateIncomeDataCompleteness(incomeRecords, referenceData);
+    console.log('Data validation passed.');
+
+    console.log('Running calculation...');
+    const results = calculateNetIncome(incomeRecords, referenceData);
+
+    console.log('Writing results...');
+
+    const monthlyPath = path.join(resolvedDir, 'MonthlyResults.csv');
+    fs.writeFileSync(monthlyPath, objectArrayToCSV(results.monthly));
+    console.log(`Written: ${monthlyPath}`);
+
+    const annualPath = path.join(resolvedDir, 'AnnualSummary.csv');
+    fs.writeFileSync(annualPath, objectArrayToCSV(results.annual));
+    console.log(`Written: ${annualPath}`);
+
+    const byTypePath = path.join(resolvedDir, 'AnnualByType.csv');
+    fs.writeFileSync(byTypePath, objectArrayToCSV(results.byType));
+    console.log(`Written: ${byTypePath}`);
+
+    console.log('Success! All output files written.');
+  } catch (error) {
+    console.error('Error:', error.message);
+    if (error.stack && process.env.DEBUG) {
+      console.error(error.stack);
+    }
+    process.exit(1);
+  }
+}
+
+if (require.main === module) {
+  main();
+}

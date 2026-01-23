@@ -1,0 +1,30 @@
+{
+  "name": "net-income-calculator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-country net income calculator for Portugal, UK, Germany and more",
+  "main": "lib/index.js",
+  "bin": {
+    "net-income-calculator": "bin/net-income-calculator"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "link": "npm link"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "keywords": [
+    "net-income",
+    "tax",
+    "salary",
+    "portugal",
+    "uk",
+    "germany",
+    "calculator"
+  ],
+  "author": "",
+  "license": "ISC"
+}
