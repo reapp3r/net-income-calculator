@@ -19,7 +19,7 @@ const SAMPLE_MONTHLY_PERSONAL_DEDUCTIONS = `Year,Month,Health,Education,Housing,
 
 describe('CLI Integration', () => {
   const testDataDir = path.join(__dirname, 'test-data-cli');
-  const refDataDir = path.join(__dirname, '../data/portugal');
+  const refDataDir = path.join(__dirname, '../data/references/portugal');
   
   const monthlyPath = path.join(testDataDir, 'MonthlyResults.csv');
   const annualPath = path.join(testDataDir, 'AnnualSummary.csv');

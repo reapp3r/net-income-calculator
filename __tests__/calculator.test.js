@@ -59,10 +59,19 @@ describe('Calculator Core', () => {
 
   test('handles dividend aggregation', () => {
     const incomeRecords = [
-      { Year: '2025', Month: '1', GrossIncome: '10000', IncomeType: 'dividend', SourceCountry: 'PT', DividendAggregation: 'true' }
+      { Year: '2025', Month: '1', GrossIncome: '10000', IncomeType: 'dividend', SourceCountry: 'PT', DividendAggregation: 'true', NHRStatusAcquiredDate: '' }
     ];
 
-    const results = calculateNetIncome(incomeRecords, referenceData);
+    // Create a copy of reference data without NHR simulation parameters for this test
+    const referenceDataNoNHR = {
+      ...referenceData,
+      simulationParameters: {
+        NHRStatusAcquiredDate: null,
+        DividendAggregation: true
+      }
+    };
+
+    const results = calculateNetIncome(incomeRecords, referenceDataNoNHR);
 
     expect(results.monthly[0].TaxType).toBe('AGGREGATED_50');
   });

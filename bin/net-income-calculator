@@ -25,7 +25,14 @@ function loadDataFromCSVFile(csvPath) {
 
 function objectArrayToCSV(data) {
   if (!Array.isArray(data) || data.length === 0) return "";
-  const headers = Object.keys(data[0]);
+  
+  // Collect all possible headers from all rows
+  const allHeaders = new Set();
+  data.forEach(row => {
+    Object.keys(row).forEach(key => allHeaders.add(key));
+  });
+  
+  const headers = Array.from(allHeaders);
   const csvContent = [headers.join(",")];
   data.forEach(row => {
     csvContent.push(headers.map(h => {
