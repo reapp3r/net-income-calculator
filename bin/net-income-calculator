@@ -12,7 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { calculateNetIncome } = require('../lib/index');
-const { loadReferenceData, validateIncomeDataCompleteness, parseCSV: loadCSV } = require('../lib/loader');
+const { loadData, parseCSV: loadCSV } = require('../lib/loader');
 
 function loadDataFromCSVFile(csvPath) {
   if (!fs.existsSync(csvPath)) {
@@ -67,7 +67,7 @@ function main() {
     console.error('Reference data templates:');
     console.error('  - Portugal: ./data/portugal/');
     console.error('');
-    console.error('To customize: cp -r data/portugal my-data && edit PT_MonthlyIncome.csv');
+    console.error('To customize: cp -r data/portugal my-data && edit MonthlyIncome.csv');
     process.exit(1);
   }
 
@@ -85,50 +85,42 @@ function main() {
   }
 
   try {
-    console.log(`Loading reference data from ${dataDir}...`);
-    const referenceData = loadReferenceData(resolvedDir);
-    console.log('Reference data loaded successfully.');
+    console.log(`Loading data from ${dataDir}...`);
+    const data = loadData(resolvedDir);
+    console.log('Data loaded successfully.');
 
-    const countryCode = referenceData.countryCode;
-    const incomeFilename = `${countryCode}_MonthlyIncome.csv`;
-    const incomePath = path.join(resolvedDir, incomeFilename);
-    
-    if (!fs.existsSync(incomePath)) {
-      console.error(`Error: Missing ${incomeFilename} in ${dataDir}`);
-      console.error(`${incomeFilename} must contain your income records.`);
+    if (!data.incomeRecords || data.incomeRecords.length === 0) {
+      console.error(`No income records found in ${dataDir}`);
+      console.error('Income.csv must contain your income records.');
       process.exit(1);
     }
 
-    console.log(`Loading income data from ${incomeFilename}...`);
-    const incomeRecords = loadDataFromCSVFile(incomePath);
-
-    if (incomeRecords.length === 0) {
-      console.error(`No income records found in ${incomeFilename}`);
-      process.exit(1);
-    }
-
-    console.log(`Found ${incomeRecords.length} income records.`);
-    
-    console.log('Validating data completeness...');
-    validateIncomeDataCompleteness(incomeRecords, referenceData);
-    console.log('Data validation passed.');
+    console.log(`Found ${data.incomeRecords.length} income records.`);
 
     console.log('Running calculation...');
-    const results = calculateNetIncome(incomeRecords, referenceData);
+    const results = calculateNetIncome(data);
 
     console.log('Writing results...');
+    console.log('Results summary:', {
+      monthly: results.monthly?.length || 0,
+      annual: results.annual?.length || 0,
+      annualByType: results.annualByType?.length || 0
+    });
 
     const monthlyPath = path.join(resolvedDir, 'MonthlyResults.csv');
-    fs.writeFileSync(monthlyPath, objectArrayToCSV(results.monthly));
-    console.log(`Written: ${monthlyPath}`);
+    const monthlyCSV = objectArrayToCSV(results.monthly);
+    fs.writeFileSync(monthlyPath, monthlyCSV);
+    console.log(`Written: ${monthlyPath} (${monthlyCSV.length} chars)`);
 
     const annualPath = path.join(resolvedDir, 'AnnualSummary.csv');
-    fs.writeFileSync(annualPath, objectArrayToCSV(results.annual));
-    console.log(`Written: ${annualPath}`);
+    const annualCSV = objectArrayToCSV(results.annual);
+    fs.writeFileSync(annualPath, annualCSV);
+    console.log(`Written: ${annualPath} (${annualCSV.length} chars)`);
 
     const byTypePath = path.join(resolvedDir, 'AnnualByType.csv');
-    fs.writeFileSync(byTypePath, objectArrayToCSV(results.byType));
-    console.log(`Written: ${byTypePath}`);
+    const byTypeCSV = objectArrayToCSV(results.annualByType);
+    fs.writeFileSync(byTypePath, byTypeCSV);
+    console.log(`Written: ${byTypePath} (${byTypeCSV.length} chars)`);
 
     console.log('Success! All output files written.');
   } catch (error) {
