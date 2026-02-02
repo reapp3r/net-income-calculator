@@ -1,0 +1,3 @@
+Year,Country,AccommodationType,AvailableFrom,AvailableTo,IsPermanentHome
+2025,PT,Owned,2025-01-01,2025-12-31,true
+2025,GB,Rented,2025-07-01,2025-12-31,true

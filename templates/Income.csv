@@ -1,0 +1,12 @@
+Year,Month,Day,Amount,IncomeType,Currency,Employer,Description
+2025,1,15,3000.00,employment,EUR,Company A,Monthly salary
+2025,2,15,2000.00,freelance,EUR,Client B,Consulting project
+2025,3,10,1500.00,employment,EUR,Company A,Bonus
+2025,4,20,1800.00,freelance,EUR,Client C,Web development
+2025,5,10,2500.00,employment,EUR,Company A,Monthly salary
+2025,6,15,800.00,employment,EUR,Company B,Part-time work
+2025,7,20,2200.00,freelance,EUR,Client D,Mobile app project
+2025,8,10,500.00,dividend,EUR,Stock XYZ,Quarterly dividend
+2025,9,10,1200.00,dividend,EUR,Stock ABC,Annual dividend
+2025,10,15,1900.00,dividend,EUR,Stock XYZ,Q3 special dividend
+2025,11,15,2100.00,employment,EUR,Company A,Year-end bonus
