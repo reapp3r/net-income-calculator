@@ -280,19 +280,18 @@ ResidencyTest183Days,true,Apply 183-day physical presence test
 ResidencyDayCountingMethod,overnight,Method: overnight | partial_day | calendar_day
 ResidencyPermanentHomeTest,true,Apply permanent home availability test
 ResidencyMinDaysForPermanentHome,1,Minimum days present to qualify with permanent home
+
 # Special Tax Regimes
-NHRStatusAcquiredDate,2020-01-15,Date NHR acquired (YYYY-MM-DD) or empty
+NHRStatusAcquiredDate,2020-01-15,Date NHR acquired (YYYY-MM-DD) or empty if N/A
 NHRDuration,10,NHR regime duration in years
+
 # Dividend Rules
 DividendAggregationEligible,true,Allow 50% aggregation for PT/EU/EEA
 DividendFlatRate,0.28,Flat rate option for dividends
+
 # Freelance Rules
 FreelanceServicesCoefficient,0.70,Services coefficient for taxable income
 FreelanceGoodsCoefficient,0.20,Goods coefficient for taxable income
-# Fiscal Year
-FiscalYearType,calendar,Type: calendar | custom
-FiscalYearStartMonth,1,Start month (1-12)
-FiscalYearStartDay,1,Start day (1-31)
 ```
 
 **Format Rules**:
@@ -310,15 +309,20 @@ FiscalYearStartDay,1,Start day (1-31)
 ### UK-Specific (beyond common parameters):
 - Statutory Residence Test (SRT) configuration
 - SRT thresholds and tie requirements
-- Custom fiscal year
 
 ### Germany-Specific (if needed):
 - Dwelling test configuration
 - Habitual abode parameters
 
+### Fixed Country Properties (not configurable):
+- **Fiscal year**: Intrinsic to each country's tax system, cannot be changed
+  - Portugal: Calendar year (January 1 - December 31)
+  - UK: Tax year (April 6 - April 5)
+  - Germany: Calendar year (January 1 - December 31)
+  - These are hardcoded in each country's residency implementation
+
 **Common Parameters** (all countries):
 - Residency test configuration
-- Fiscal year settings
 - Currency codes
 - Exchange rate fallbacks
 

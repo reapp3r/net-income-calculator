@@ -5,8 +5,8 @@ ResidencyDayCountingMethod,overnight,Method: overnight | partial_day | calendar_
 ResidencyPermanentHomeTest,true,Apply permanent home availability test
 ResidencyMinDaysForPermanentHome,1,Minimum days present to qualify with permanent home
 
-# Special Tax Regimes - NHR
-NHRStatusAcquiredDate,2020-01-15,Date NHR acquired (YYYY-MM-DD) or empty if N/A
+# Special Tax Regimes
+NHRStatusAcquiredDate,2023-11-21,Date NHR acquired (YYYY-MM-DD) or empty if N/A
 NHRDuration,10,NHR regime duration in years
 
 # Dividend Rules
@@ -16,3 +16,14 @@ DividendFlatRate,0.28,Flat rate option for dividends
 # Freelance Rules
 FreelanceServicesCoefficient,0.70,Services coefficient for taxable income
 FreelanceGoodsCoefficient,0.20,Goods coefficient for taxable income
+
+# Statutory Residence Test (SRT)
+ResidencyTestSRT,true,Apply UK Statutory Residence Test
+SRT_AutoOverseasDaysThreshold,16,Automatic overseas if <16 days in UK
+SRT_AutoUKDaysThreshold,183,Automatic UK if >=183 days in UK
+SRT_TiesRequired,true,Apply sufficient ties test
+SRT_FamilyTieRequired,true,Count family tie
+SRT_AccommodationTieRequired,true,Count accommodation tie
+SRT_WorkTieRequired,true,Count work tie (>40 days)
+SRT_90DayTieRequired,true,Count 90-day tie
+SRT_CountryTieRequired,true,Count country tie

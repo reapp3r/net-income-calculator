@@ -6,7 +6,7 @@ ResidencyPermanentHomeTest,true,Apply permanent home availability test
 ResidencyMinDaysForPermanentHome,1,Minimum days present to qualify with permanent home
 
 # Special Tax Regimes - NHR
-NHRStatusAcquiredDate,2020-01-15,Date NHR acquired (YYYY-MM-DD) or empty if N/A
+NHRStatusAcquiredDate,2023-11-21,Date NHR acquired (YYYY-MM-DD) or empty if N/A
 NHRDuration,10,NHR regime duration in years
 
 # Dividend Rules
