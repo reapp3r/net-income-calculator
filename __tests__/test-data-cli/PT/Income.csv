@@ -1,0 +1,5 @@
+Year,Month,GrossIncome,IncomeType,SourceCountry,ResidencyCountry
+2025,1,5000,employment,PT,PT
+2025,1,2000,freelance,UK,PT
+2025,2,5000,employment,PT,PT
+2025,3,10000,dividend,PT,PT

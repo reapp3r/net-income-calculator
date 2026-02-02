@@ -1,9 +1,9 @@
 const path = require('path');
-const { loadReferenceData } = require('../../lib/loader');
+const { loadData } = require('../../lib/loader');
 
 function getTestReferenceData() {
-  const dataDir = path.join(__dirname, '../../data/references/portugal');
-  return loadReferenceData(dataDir);
+  const dataDir = path.join(__dirname, '../../data/PT');
+  return loadData(dataDir);
 }
 
 module.exports = {

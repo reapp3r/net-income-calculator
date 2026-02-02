@@ -19,7 +19,7 @@ const SAMPLE_MONTHLY_PERSONAL_DEDUCTIONS = `Year,Month,Health,Education,Housing,
 
 describe('CLI Integration', () => {
   const testDataDir = path.join(__dirname, 'test-data-cli');
-  const refDataDir = path.join(__dirname, '../data/references/portugal');
+  const refDataDir = path.join(__dirname, '../data/PT');
   
   const monthlyPath = path.join(testDataDir, 'MonthlyResults.csv');
   const annualPath = path.join(testDataDir, 'AnnualSummary.csv');
@@ -30,27 +30,34 @@ describe('CLI Integration', () => {
       fs.mkdirSync(testDataDir, { recursive: true });
     }
 
-    fs.copyFileSync(path.join(refDataDir, 'PT_TaxBrackets.csv'), path.join(testDataDir, 'PT_TaxBrackets.csv'));
-    fs.copyFileSync(path.join(refDataDir, 'PT_SocialSecurity.csv'), path.join(testDataDir, 'PT_SocialSecurity.csv'));
-    fs.copyFileSync(path.join(refDataDir, 'PT_SolidarityTax.csv'), path.join(testDataDir, 'PT_SolidarityTax.csv'));
-    fs.copyFileSync(path.join(refDataDir, 'PT_Deductions.csv'), path.join(testDataDir, 'PT_Deductions.csv'));
-    fs.copyFileSync(path.join(refDataDir, 'PT_SpecialRegimes.csv'), path.join(testDataDir, 'PT_SpecialRegimes.csv'));
-    fs.copyFileSync(path.join(refDataDir, 'PT_ForeignTaxCredit.csv'), path.join(testDataDir, 'PT_ForeignTaxCredit.csv'));
+    // Create PT subdirectory for legacy structure
+    const ptDir = path.join(testDataDir, 'PT');
+    if (!fs.existsSync(ptDir)) {
+      fs.mkdirSync(ptDir, { recursive: true });
+    }
+
+    fs.copyFileSync(path.join(refDataDir, 'TaxBrackets.csv'), path.join(ptDir, 'TaxBrackets.csv'));
+    fs.copyFileSync(path.join(refDataDir, 'SocialSecurity.csv'), path.join(ptDir, 'SocialSecurity.csv'));
+    fs.copyFileSync(path.join(refDataDir, 'SolidarityTax.csv'), path.join(ptDir, 'SolidarityTax.csv'));
+    fs.copyFileSync(path.join(refDataDir, 'Deductions.csv'), path.join(ptDir, 'Deductions.csv'));
+    fs.copyFileSync(path.join(refDataDir, 'SpecialRegimes.csv'), path.join(ptDir, 'SpecialRegimes.csv'));
+    fs.copyFileSync(path.join(refDataDir, 'ForeignTaxCredit.csv'), path.join(ptDir, 'ForeignTaxCredit.csv'));
     
-    fs.writeFileSync(path.join(testDataDir, 'PT_MonthlyIncome.csv'), SAMPLE_INCOME_CSV);
-    fs.writeFileSync(path.join(testDataDir, 'SimulationParameters.csv'), SAMPLE_SIMULATION_PARAMS);
-    fs.writeFileSync(path.join(testDataDir, 'PT_MonthlyPersonalDeductions.csv'), SAMPLE_MONTHLY_PERSONAL_DEDUCTIONS);
+    // Create income file in PT subdirectory
+    fs.writeFileSync(path.join(ptDir, 'Income.csv'), SAMPLE_INCOME_CSV);
+    fs.writeFileSync(path.join(ptDir, 'SimulationParameters.csv'), SAMPLE_SIMULATION_PARAMS);
+    fs.writeFileSync(path.join(ptDir, 'MonthlyPersonalDeductions.csv'), SAMPLE_MONTHLY_PERSONAL_DEDUCTIONS);
     
     [monthlyPath, annualPath, byTypePath].forEach(p => {
       if (fs.existsSync(p)) fs.unlinkSync(p);
     });
   });
 
-  afterAll(() => {
-    if (fs.existsSync(testDataDir)) {
-      fs.rmSync(testDataDir, { recursive: true, force: true });
-    }
-  });
+  // afterAll(() => {
+  //   if (fs.existsSync(testDataDir)) {
+  //     fs.rmSync(testDataDir, { recursive: true, force: true });
+  //   }
+  // });
 
   test('CLI processes directory with all required files', () => {
     execSync(`node bin/net-income-calculator "${testDataDir}"`, { stdio: 'pipe' });
