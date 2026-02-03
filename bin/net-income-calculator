@@ -83,15 +83,9 @@ function main() {
     console.error('  - Portugal: ./data/PT/');
     console.error('');
     console.error('Strict Rules:');
-    console.error(
-      '  - Income.csv must be located inside a country folder (PT/, GB/, etc.)'
-    );
-    console.error(
-      '  - Files must not have prefixes (use TaxBrackets.csv, not PT_TaxBrackets.csv)'
-    );
-    console.error(
-      '  - Country folders must use ISO 3166-1 alpha-2 codes (PT, GB, DE, etc.)'
-    );
+    console.error('  - Income.csv must be located inside a country folder (PT/, GB/, etc.)');
+    console.error('  - Files must not have prefixes (use TaxBrackets.csv, not PT_TaxBrackets.csv)');
+    console.error('  - Country folders must use ISO 3166-1 alpha-2 codes (PT, GB, DE, etc.)');
     process.exit(1);
   }
 
