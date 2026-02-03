@@ -1,0 +1,5 @@
+Year,Month,GrossIncome,IncomeType,SourceCountry,ResidencyCountry,year,month,day,amount,currency,incomeType,taxType,taxableIncome,taxAmount,socialSecurity,solidarityTax,isExempt,netIncome,SpecialRegimeStatus,expenseShortfall
+2025.00,1.00,5000.00,employment,PT,PT,2025.00,1.00,15.00,5000.00,EUR,employment,PROGRESSIVE,0.00,0.00,550.00,0.00,,4450.00,Standard,
+2025.00,1.00,2000.00,freelance,UK,PT,2025.00,1.00,15.00,2000.00,EUR,freelance,GOODS_20,NaN,0.00,299.60,0.00,,1700.40,Standard,0.00
+2025.00,2.00,5000.00,employment,PT,PT,2025.00,2.00,15.00,5000.00,EUR,employment,PROGRESSIVE,0.00,0.00,550.00,0.00,,4450.00,Standard,
+2025.00,3.00,10000.00,dividend,PT,PT,2025.00,3.00,15.00,10000.00,EUR,dividend,DIVIDEND_28,10000.00,2800.00,0.00,0.00,,7200.00,Standard,

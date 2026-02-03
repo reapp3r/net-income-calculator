@@ -83,7 +83,7 @@ describe('CLI Integration', () => {
 
     const monthlyContent = fs.readFileSync(monthlyPath, 'utf8');
     expect(monthlyContent).toContain('Year');
-    expect(monthlyContent).toContain('NetIncome');
+    expect(monthlyContent).toContain('netIncome');
 
     const annualContent = fs.readFileSync(annualPath, 'utf8');
     expect(annualContent).toContain('Year');

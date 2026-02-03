@@ -1,18 +1,3 @@
-Parameter,Value,Description
-# Tax Residency Tests
-ResidencyTest183Days,true,Apply 183-day physical presence test
-ResidencyDayCountingMethod,overnight,Method: overnight | partial_day | calendar_day
-ResidencyPermanentHomeTest,true,Apply permanent home availability test
-ResidencyMinDaysForPermanentHome,1,Minimum days present to qualify with permanent home
-
-# Special Tax Regimes - NHR
-NHRStatusAcquiredDate,2023-11-21,Date NHR acquired (YYYY-MM-DD) or empty if N/A
-NHRDuration,10,NHR regime duration in years
-
-# Dividend Rules
-DividendAggregationEligible,true,Allow 50% aggregation for PT/EU/EEA dividends
-DividendFlatRate,0.28,Flat rate option for dividends
-
-# Freelance Rules
-FreelanceServicesCoefficient,0.70,Services coefficient for taxable income
-FreelanceGoodsCoefficient,0.20,Goods coefficient for taxable income
+Parameter,Value
+NHRStatusAcquiredDate,2023-06-15
+DividendAggregation,false
