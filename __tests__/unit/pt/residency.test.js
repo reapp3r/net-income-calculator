@@ -3,9 +3,6 @@
  * Target: lib/residency/pt/residency.js
  */
 
-const PortugalResidency = require('../../../lib/residency/pt/residency');
-const { TaxResidency } = require('../../../lib/residency/base');
-
 // Mock dependencies
 jest.mock('../../../lib/residency/base');
 jest.mock('../../../lib/residency/pt/progressive');

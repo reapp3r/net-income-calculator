@@ -1,5 +1,4 @@
 const { calculateNetIncome } = require('../lib/calculator');
-const { PortugalResidency } = require('../lib/residency');
 const { getTestReferenceData } = require('./helpers/testData');
 
 const referenceData = getTestReferenceData();
@@ -232,8 +231,6 @@ describe('Progressive Tax Calculation', () => {
 
 describe('Social Security Calculation', () => {
   const { calculateSocialSecurity } = require('../lib/residency/pt');
-  const IAS_2025 = 509.26;
-  const FREELANCE_SS_CAP_ANNUAL = 12 * IAS_2025 * 12;
 
   test('calculates employment social security', () => {
     const ss = calculateSocialSecurity(
