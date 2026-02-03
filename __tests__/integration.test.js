@@ -19,7 +19,7 @@ const SAMPLE_MONTHLY_PERSONAL_DEDUCTIONS = `Year,Month,Health,Education,Housing,
 
 describe('CLI Integration', () => {
   const testDataDir = path.join(__dirname, 'test-data-cli');
-  const refDataDir = path.join(__dirname, '../data/PT');
+  const ptDir = path.join(testDataDir, 'PT');
 
   const monthlyPath = path.join(testDataDir, 'MonthlyResults.csv');
   const annualPath = path.join(testDataDir, 'AnnualSummary.csv');
@@ -30,37 +30,10 @@ describe('CLI Integration', () => {
       fs.mkdirSync(testDataDir, { recursive: true });
     }
 
-    // Create PT subdirectory
-    const ptDir = path.join(testDataDir, 'PT');
+    // Create PT subdirectory if it doesn't exist
     if (!fs.existsSync(ptDir)) {
       fs.mkdirSync(ptDir, { recursive: true });
     }
-
-    // Copy tax reference files to PT subdirectory
-    fs.copyFileSync(
-      path.join(refDataDir, 'TaxBrackets.csv'),
-      path.join(ptDir, 'TaxBrackets.csv')
-    );
-    fs.copyFileSync(
-      path.join(refDataDir, 'SocialSecurity.csv'),
-      path.join(ptDir, 'SocialSecurity.csv')
-    );
-    fs.copyFileSync(
-      path.join(refDataDir, 'SolidarityTax.csv'),
-      path.join(ptDir, 'SolidarityTax.csv')
-    );
-    fs.copyFileSync(
-      path.join(refDataDir, 'Deductions.csv'),
-      path.join(ptDir, 'Deductions.csv')
-    );
-    fs.copyFileSync(
-      path.join(refDataDir, 'SpecialRegimes.csv'),
-      path.join(ptDir, 'SpecialRegimes.csv')
-    );
-    fs.copyFileSync(
-      path.join(refDataDir, 'ForeignTaxCredit.csv'),
-      path.join(ptDir, 'ForeignTaxCredit.csv')
-    );
 
     // Create income and simulation files in PT subdirectory
     fs.writeFileSync(path.join(ptDir, 'Income.csv'), SAMPLE_INCOME_CSV);
