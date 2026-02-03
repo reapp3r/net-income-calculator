@@ -160,6 +160,9 @@ describe('PortugalResidency', () => {
     });
 
     it('should calculate standard freelance tax (services)', () => {
+      // Mock getFreelanceTaxableBase to return 7000 (70% of 10000)
+      getFreelanceTaxableBase.mockReturnValue(7000);
+
       const result = residency.calculateFreelanceTax(
         10000,
         { active: false },
@@ -174,7 +177,8 @@ describe('PortugalResidency', () => {
       expect(calculateProgressiveTax).toHaveBeenCalled();
 
       expect(result.taxType).toBe('SERVICES_70');
-      expect(result.taxableIncome).toBe(7000); // from mock
+      // taxableIncome = taxableBase + expenseShortfall = 7000 + 1500 = 8500
+      expect(result.taxableIncome).toBe(8500);
       expect(result.expenseShortfall).toBe(1500); // 15% of 10000
     });
 
@@ -219,7 +223,7 @@ describe('PortugalResidency', () => {
       const result = residency.calculateDividendTax(10000, { active: false }, 'US', false, 2025);
 
       expect(result.taxType).toBe('DIVIDEND_28');
-      expect(result.taxAmount).toBe(2800);
+      expect(result.taxAmount).toBeCloseTo(2800, 10);
     });
 
     it('should calculate NHR exemption', () => {
@@ -350,9 +354,10 @@ describe('PortugalResidency', () => {
 
       const result = residency.getAnnualAdditionalTaxes(records, { active: false }, 2025);
 
-      // 3 calculations * 50 = 150
-      expect(result.SolidarityTax).toBe(150);
-      expect(result.amount).toBe(150);
+      // Only employment and freelance calculate solidarity tax (50 * 2 = 100)
+      // Dividends don't calculate solidarity tax
+      expect(result.SolidarityTax).toBe(100);
+      expect(result.amount).toBe(100);
     });
 
     it('getAnnualAdditionalTaxes should return zero if no tax', () => {

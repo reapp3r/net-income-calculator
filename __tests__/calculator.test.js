@@ -1,7 +1,10 @@
 const { calculateNetIncome } = require('../lib/calculator');
 const { getTestReferenceData } = require('./helpers/testData');
 
-const referenceData = getTestReferenceData();
+const testReferenceData = getTestReferenceData();
+// The calculator expects referenceData to have country codes as keys (e.g., { PT: {...} })
+// not the mixed structure with backward compatibility properties
+const referenceData = testReferenceData.referenceData;
 
 const REQUIRED_EXPENSE_RATIO_SERVICES = 0.15;
 const FREELANCE_COEFFICIENT_SERVICES = 0.7;
@@ -34,7 +37,9 @@ describe('Calculator Core', () => {
   });
 
   test('throws error with empty income records', () => {
-    expect(() => calculateNetIncome([])).toThrow('incomeRecords must be a non-empty array');
+    expect(() => calculateNetIncome({ incomeRecords: [] })).toThrow(
+      'incomeRecords must be a non-empty array'
+    );
   });
 
   test('calculates net income for Portuguese employment', () => {
@@ -48,7 +53,7 @@ describe('Calculator Core', () => {
       },
     ];
 
-    const results = calculateNetIncome(incomeRecords, referenceData);
+    const results = calculateNetIncome({ incomeRecords, referenceData });
 
     expect(results).toBeDefined();
     expect(results.monthly).toHaveLength(1);
@@ -69,7 +74,7 @@ describe('Calculator Core', () => {
       },
     ];
 
-    const results = calculateNetIncome(incomeRecords, referenceData);
+    const results = calculateNetIncome({ incomeRecords, referenceData });
 
     expect(results.monthly[0].SpecialRegimeStatus).toBe('active');
   });
@@ -96,7 +101,7 @@ describe('Calculator Core', () => {
       },
     };
 
-    const results = calculateNetIncome(incomeRecords, referenceDataNoNHR);
+    const results = calculateNetIncome({ incomeRecords, referenceData: referenceDataNoNHR });
 
     expect(results.monthly[0].TaxType).toBe('AGGREGATED_50');
   });
@@ -126,7 +131,7 @@ describe('Calculator Core', () => {
       },
     ];
 
-    const results = calculateNetIncome(incomeRecords, referenceData);
+    const results = calculateNetIncome({ incomeRecords, referenceData });
 
     expect(results.monthly).toHaveLength(3);
   });
@@ -149,7 +154,7 @@ describe('Calculator Core', () => {
       },
     ];
 
-    const results = calculateNetIncome(incomeRecords, referenceData);
+    const results = calculateNetIncome({ incomeRecords, referenceData });
 
     expect(results.annual).toHaveLength(1);
     expect(results.annual[0].GrossIncome).toBe('10000.00');

@@ -2,7 +2,7 @@ const path = require('path');
 const { loadData } = require('../../lib/loader');
 
 function getTestReferenceData() {
-  const dataDir = path.join(__dirname, '../../data/PT');
+  const dataDir = path.join(__dirname, '../test-data-cli/PT');
   const data = loadData(dataDir);
 
   // Return just the reference data portion (without incomeRecords)
