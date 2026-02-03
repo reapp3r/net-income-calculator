@@ -66,3 +66,4 @@ out/
 
 # Git
 .git
+__tests__/test-data-cli/*.csv
