@@ -3,6 +3,7 @@
 ## Directory Structure
 
 This is the required and only supported data structure:
+
 ```
 data/
 ├── ExchangeRates.csv        # Monthly currency rates (global)
@@ -55,7 +56,7 @@ data/
 - **UTF-8 encoding** for CSV files
 - **Header row** required with exact column names
 - **No empty rows** except for specific file structure reasons
-<<<<<<< HEAD
+  <<<<<<< HEAD
 
 ## Scenarios
 
@@ -86,6 +87,5 @@ data/
 - Person spends significant time in both Portugal and UK
 - Location.csv shows time in both countries
 - OECD tie-breaker applied to determine single residency
-- May require manual override in TaxResidency.csv
-=======
->>>>>>> origin/main
+- # May require manual override in TaxResidency.csv
+  > > > > > > > origin/main
