@@ -1,7 +1,4 @@
 Year,SourceCountry,WithholdingRateEmployment,WithholdingRateFreelance,WithholdingRateDividend
-2025,UK,0.20,0,0.10
-2025,DE,0.25,0,0.26375
-2025,PT,0,0,0
-2026,UK,0.20,0,0.10
-2026,DE,0.25,0,0.26375
-2026,PT,0,0,0
+2025,PT,0,0.25,0.25
+2025,GB,0.45,0,0.10
+2025,DE,0.45,0,0.25
