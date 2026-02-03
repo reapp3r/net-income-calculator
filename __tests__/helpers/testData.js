@@ -7,5 +7,5 @@ function getTestReferenceData() {
 }
 
 module.exports = {
-  getTestReferenceData
+  getTestReferenceData,
 };

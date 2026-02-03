@@ -1,27 +1,31 @@
 const { calculateNetIncome } = require('../lib/calculator');
-const { PortugalResidency } = require('../lib/residency');
 const { getTestReferenceData } = require('./helpers/testData');
 
 const referenceData = getTestReferenceData();
 
 const REQUIRED_EXPENSE_RATIO_SERVICES = 0.15;
-const FREELANCE_COEFFICIENT_SERVICES = 0.70;
-const FREELANCE_COEFFICIENT_GOODS = 0.20;
+const FREELANCE_COEFFICIENT_SERVICES = 0.7;
+const FREELANCE_COEFFICIENT_GOODS = 0.2;
 
 function calculateFreelanceTaxableBase(grossIncome, freelanceType, expenses = 0) {
-  const coefficient = freelanceType === 'goods' ? FREELANCE_COEFFICIENT_GOODS : FREELANCE_COEFFICIENT_SERVICES;
+  const coefficient =
+    freelanceType === 'goods' ? FREELANCE_COEFFICIENT_GOODS : FREELANCE_COEFFICIENT_SERVICES;
   let taxableBase = grossIncome * coefficient;
 
   if (freelanceType === 'services') {
     const requiredExpenses = grossIncome * REQUIRED_EXPENSE_RATIO_SERVICES;
     if (expenses < requiredExpenses) {
       const shortfall = requiredExpenses - expenses;
-      taxableBase = (grossIncome * coefficient) + shortfall;
+      taxableBase = grossIncome * coefficient + shortfall;
       return { taxableBase, expenseShortfall: shortfall, requiredExpenses };
     }
   }
 
-  return { taxableBase, expenseShortfall: 0, requiredExpenses: grossIncome * REQUIRED_EXPENSE_RATIO_SERVICES };
+  return {
+    taxableBase,
+    expenseShortfall: 0,
+    requiredExpenses: grossIncome * REQUIRED_EXPENSE_RATIO_SERVICES,
+  };
 }
 
 describe('Calculator Core', () => {
@@ -35,7 +39,13 @@ describe('Calculator Core', () => {
 
   test('calculates net income for Portuguese employment', () => {
     const incomeRecords = [
-      { Year: '2025', Month: '1', GrossIncome: '5000', IncomeType: 'employment', SourceCountry: 'PT' }
+      {
+        Year: '2025',
+        Month: '1',
+        GrossIncome: '5000',
+        IncomeType: 'employment',
+        SourceCountry: 'PT',
+      },
     ];
 
     const results = calculateNetIncome(incomeRecords, referenceData);
@@ -49,7 +59,14 @@ describe('Calculator Core', () => {
 
   test('handles NHR status', () => {
     const incomeRecords = [
-      { Year: '2025', Month: '1', GrossIncome: '5000', IncomeType: 'employment', SourceCountry: 'PT', NHRStatusAcquiredDate: '2023-06-15' }
+      {
+        Year: '2025',
+        Month: '1',
+        GrossIncome: '5000',
+        IncomeType: 'employment',
+        SourceCountry: 'PT',
+        NHRStatusAcquiredDate: '2023-06-15',
+      },
     ];
 
     const results = calculateNetIncome(incomeRecords, referenceData);
@@ -59,7 +76,15 @@ describe('Calculator Core', () => {
 
   test('handles dividend aggregation', () => {
     const incomeRecords = [
-      { Year: '2025', Month: '1', GrossIncome: '10000', IncomeType: 'dividend', SourceCountry: 'PT', DividendAggregation: 'true', NHRStatusAcquiredDate: '' }
+      {
+        Year: '2025',
+        Month: '1',
+        GrossIncome: '10000',
+        IncomeType: 'dividend',
+        SourceCountry: 'PT',
+        DividendAggregation: 'true',
+        NHRStatusAcquiredDate: '',
+      },
     ];
 
     // Create a copy of reference data without NHR simulation parameters for this test
@@ -67,8 +92,8 @@ describe('Calculator Core', () => {
       ...referenceData,
       simulationParameters: {
         NHRStatusAcquiredDate: null,
-        DividendAggregation: true
-      }
+        DividendAggregation: true,
+      },
     };
 
     const results = calculateNetIncome(incomeRecords, referenceDataNoNHR);
@@ -78,9 +103,27 @@ describe('Calculator Core', () => {
 
   test('handles multiple income records', () => {
     const incomeRecords = [
-      { Year: '2025', Month: '1', GrossIncome: '3000', IncomeType: 'employment', SourceCountry: 'PT' },
-      { Year: '2025', Month: '1', GrossIncome: '2000', IncomeType: 'freelance', SourceCountry: 'UK' },
-      { Year: '2025', Month: '1', GrossIncome: '1000', IncomeType: 'dividend', SourceCountry: 'PT' }
+      {
+        Year: '2025',
+        Month: '1',
+        GrossIncome: '3000',
+        IncomeType: 'employment',
+        SourceCountry: 'PT',
+      },
+      {
+        Year: '2025',
+        Month: '1',
+        GrossIncome: '2000',
+        IncomeType: 'freelance',
+        SourceCountry: 'UK',
+      },
+      {
+        Year: '2025',
+        Month: '1',
+        GrossIncome: '1000',
+        IncomeType: 'dividend',
+        SourceCountry: 'PT',
+      },
     ];
 
     const results = calculateNetIncome(incomeRecords, referenceData);
@@ -90,8 +133,20 @@ describe('Calculator Core', () => {
 
   test('generates annual summary', () => {
     const incomeRecords = [
-      { Year: '2025', Month: '1', GrossIncome: '5000', IncomeType: 'employment', SourceCountry: 'PT' },
-      { Year: '2025', Month: '2', GrossIncome: '5000', IncomeType: 'employment', SourceCountry: 'PT' }
+      {
+        Year: '2025',
+        Month: '1',
+        GrossIncome: '5000',
+        IncomeType: 'employment',
+        SourceCountry: 'PT',
+      },
+      {
+        Year: '2025',
+        Month: '2',
+        GrossIncome: '5000',
+        IncomeType: 'employment',
+        SourceCountry: 'PT',
+      },
     ];
 
     const results = calculateNetIncome(incomeRecords, referenceData);
@@ -105,18 +160,11 @@ describe('Progressive Tax Calculation', () => {
   const { calculateProgressiveTax } = require('../lib/residency/pt');
 
   test.skip('calculates tax in single bracket', () => {
-    const brackets = [
-      { min: 0, max: 10000, rate: 0.10 }
-    ];
     const tax = calculateProgressiveTax(5000, 2025, referenceData.taxBrackets);
     expect(tax).toBe(500);
   });
 
   test.skip('calculates tax across multiple brackets', () => {
-    const brackets = [
-      { min: 0, max: 10000, rate: 0.10 },
-      { min: 10000, max: 20000, rate: 0.20 }
-    ];
     const tax = calculateProgressiveTax(15000, 2025, referenceData.taxBrackets);
     expect(tax).toBe(2000); // 10000 * 0.10 + 5000 * 0.20
   });
@@ -127,18 +175,11 @@ describe('Progressive Tax Calculation', () => {
   });
 
   test.skip('handles infinite top bracket', () => {
-    const brackets = [
-      { min: 0, max: 10000, rate: 0.10 },
-      { min: 10000, max: null, rate: 0.30 }
-    ];
     const tax = calculateProgressiveTax(25000, 2025, referenceData.taxBrackets);
     expect(tax).toBe(5500); // 10000 * 0.10 + 15000 * 0.30
   });
 
   test('handles zero income', () => {
-    const brackets = [
-      { min: 0, max: 10000, rate: 0.10 }
-    ];
     const tax = calculateProgressiveTax(0, 2025, referenceData.taxBrackets);
     expect(tax).toBe(0);
   });
@@ -146,28 +187,50 @@ describe('Progressive Tax Calculation', () => {
 
 describe('Social Security Calculation', () => {
   const { calculateSocialSecurity } = require('../lib/residency/pt');
-  const IAS_2025 = 509.26;
-  const FREELANCE_SS_CAP_ANNUAL = 12 * IAS_2025 * 12;
 
   test('calculates employment social security', () => {
-    const ss = calculateSocialSecurity(50000, 'employment', 'services', 2025, referenceData.socialSecurity);
+    const ss = calculateSocialSecurity(
+      50000,
+      'employment',
+      'services',
+      2025,
+      referenceData.socialSecurity
+    );
     expect(ss).toBe(5500); // 11% of 50000
   });
 
   test('employment has no cap', () => {
-    const ss = calculateSocialSecurity(100000, 'employment', 'services', 2025, referenceData.socialSecurity);
+    const ss = calculateSocialSecurity(
+      100000,
+      'employment',
+      'services',
+      2025,
+      referenceData.socialSecurity
+    );
     expect(ss).toBe(11000); // 11% of 100000
   });
 
   test('calculates freelance social security', () => {
-    const ss = calculateSocialSecurity(50000, 'freelance', 'services', 2025, referenceData.socialSecurity);
+    const ss = calculateSocialSecurity(
+      50000,
+      'freelance',
+      'services',
+      2025,
+      referenceData.socialSecurity
+    );
     // 70% of 50000 = 35000 taxable base
     // 21.4% of 35000 = 7490
     expect(ss).toBeCloseTo(7490, 0);
   });
 
   test('freelance social security capped', () => {
-    const ss = calculateSocialSecurity(400000, 'freelance', 'services', 2025, referenceData.socialSecurity);
+    const ss = calculateSocialSecurity(
+      400000,
+      'freelance',
+      'services',
+      2025,
+      referenceData.socialSecurity
+    );
     // 70% of 400000 = 280000 taxable base
     // 21.4% of 280000 = 59920
     // Cap is 73333.44, so 59920 is used
@@ -175,7 +238,13 @@ describe('Social Security Calculation', () => {
   });
 
   test('dividend has no social security', () => {
-    const ss = calculateSocialSecurity(50000, 'dividend', 'services', 2025, referenceData.socialSecurity);
+    const ss = calculateSocialSecurity(
+      50000,
+      'dividend',
+      'services',
+      2025,
+      referenceData.socialSecurity
+    );
     expect(ss).toBe(0);
   });
 });
@@ -290,13 +359,27 @@ describe('Freelance Tax', () => {
   });
 
   test('NHR exempt for foreign freelance', () => {
-    const result = residency.calculateFreelanceTax(10000, { active: true }, false, 'services', 0, 2025);
+    const result = residency.calculateFreelanceTax(
+      10000,
+      { active: true },
+      false,
+      'services',
+      0,
+      2025
+    );
     expect(result.taxType).toBe('NHR_EXEMPT');
     expect(result.taxAmount).toBe(0);
   });
 
   test('expenses reduce taxable base', () => {
-    const result = residency.calculateFreelanceTax(10000, { active: false }, true, 'services', 2000, 2025);
+    const result = residency.calculateFreelanceTax(
+      10000,
+      { active: false },
+      true,
+      'services',
+      2000,
+      2025
+    );
     expect(result.taxableIncome).toBe(5000); // 7000 - 2000 (no shortfall with 2000 expenses)
     expect(result.expenseShortfall).toBe(0);
   });

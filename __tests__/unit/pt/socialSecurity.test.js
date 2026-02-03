@@ -1,40 +1,43 @@
-
-const { calculateSocialSecurity, getFreelanceTaxableBase, getSSDataForYear } = require('../../../lib/residency/pt/socialSecurity');
+const {
+  calculateSocialSecurity,
+  getFreelanceTaxableBase,
+  getSSDataForYear,
+} = require('../../../lib/residency/pt/socialSecurity');
 
 const MOCK_SS_DATA = [
-  { 
-    Year: 2025, 
-    IncomeType: 'employment', 
-    Rate: 0.11, 
-    CoefficientServices: null, 
-    CoefficientGoods: null, 
-    Cap: null
+  {
+    Year: 2025,
+    IncomeType: 'employment',
+    Rate: 0.11,
+    CoefficientServices: null,
+    CoefficientGoods: null,
+    Cap: null,
   },
-  { 
-    Year: 2025, 
-    IncomeType: 'freelance', 
-    Rate: 0.214, 
-    CoefficientServices: 0.70, 
-    CoefficientGoods: 0.20, 
-    Cap: 73333.44  // 12 * 12 * 509.26
+  {
+    Year: 2025,
+    IncomeType: 'freelance',
+    Rate: 0.214,
+    CoefficientServices: 0.7,
+    CoefficientGoods: 0.2,
+    Cap: 73333.44, // 12 * 12 * 509.26
   },
-  { 
-    Year: 2025, 
-    IncomeType: 'dividend', 
-    Rate: 0, 
-    CoefficientServices: null, 
-    CoefficientGoods: null, 
-    Cap: null 
+  {
+    Year: 2025,
+    IncomeType: 'dividend',
+    Rate: 0,
+    CoefficientServices: null,
+    CoefficientGoods: null,
+    Cap: null,
   },
   // 2026 data with updated cap (12 * 12 * 537.13 = 77,344.56)
   {
     Year: 2026,
     IncomeType: 'freelance',
     Rate: 0.214,
-    CoefficientServices: 0.70,
-    CoefficientGoods: 0.20, 
-    Cap: 77344.56
-  }
+    CoefficientServices: 0.7,
+    CoefficientGoods: 0.2,
+    Cap: 77344.56,
+  },
 ];
 
 describe('Portugal - Social Security Calculation', () => {
@@ -51,7 +54,7 @@ describe('Portugal - Social Security Calculation', () => {
     test('should return correct row for freelance', () => {
       const ssData = getSSDataForYear(2025, MOCK_SS_DATA, 'freelance');
       expect(ssData.IncomeType).toBe('freelance');
-      expect(ssData.CoefficientServices).toBe(0.70);
+      expect(ssData.CoefficientServices).toBe(0.7);
     });
   });
 
@@ -67,8 +70,9 @@ describe('Portugal - Social Security Calculation', () => {
     });
 
     test('throws error for invalid year', () => {
-      expect(() => getFreelanceTaxableBase(10000, 'services', 2099, MOCK_SS_DATA))
-        .toThrow('No social security data found for year 2099');
+      expect(() => getFreelanceTaxableBase(10000, 'services', 2099, MOCK_SS_DATA)).toThrow(
+        'No social security data found for year 2099'
+      );
     });
   });
 
@@ -96,7 +100,7 @@ describe('Portugal - Social Security Calculation', () => {
     test('handles fractional amounts', () => {
       const ss = calculateSocialSecurity(1234.56, 'employment', 'services', 2025, MOCK_SS_DATA);
       // 1234.56 * 0.11 = 135.8016
-      expect(ss).toBeCloseTo(135.80, 2);
+      expect(ss).toBeCloseTo(135.8, 2);
     });
   });
 
@@ -104,7 +108,7 @@ describe('Portugal - Social Security Calculation', () => {
     test('21.4% of 70% for small income (10,000)', () => {
       const ss = calculateSocialSecurity(10000, 'freelance', 'services', 2025, MOCK_SS_DATA);
       // 10000 * 0.70 * 0.214 = 1498
-      expect(ss).toBeCloseTo(1498, 0); 
+      expect(ss).toBeCloseTo(1498, 0);
     });
 
     test('21.4% of 70% for medium income (50,000)', () => {
@@ -156,18 +160,21 @@ describe('Portugal - Social Security Calculation', () => {
   describe('Error handling', () => {
     test('throws error for invalid income type', () => {
       // Assuming we validate income type against data presence
-      expect(() => calculateSocialSecurity(10000, 'invalid', 'services', 2025, MOCK_SS_DATA))
-        .toThrow(); // Expect some error
+      expect(() =>
+        calculateSocialSecurity(10000, 'invalid', 'services', 2025, MOCK_SS_DATA)
+      ).toThrow(); // Expect some error
     });
 
     test('throws error for invalid year', () => {
-      expect(() => calculateSocialSecurity(10000, 'employment', 'services', 2099, MOCK_SS_DATA))
-        .toThrow('No social security data found for year 2099');
+      expect(() =>
+        calculateSocialSecurity(10000, 'employment', 'services', 2099, MOCK_SS_DATA)
+      ).toThrow('No social security data found for year 2099');
     });
 
     test('throws error for missing social security data', () => {
-      expect(() => calculateSocialSecurity(10000, 'employment', 'services', 2025, null))
-        .toThrow('No social security data found for year 2025'); // getTemporalMatch might return null if data is null? No, throws.
+      expect(() => calculateSocialSecurity(10000, 'employment', 'services', 2025, null)).toThrow(
+        'No social security data found for year 2025'
+      ); // getTemporalMatch might return null if data is null? No, throws.
     });
   });
 });

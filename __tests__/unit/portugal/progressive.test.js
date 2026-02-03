@@ -1,4 +1,7 @@
-const { calculateProgressiveTax, getTaxBrackets } = require('../../../lib/residency/pt/progressive');
+const {
+  calculateProgressiveTax,
+  getTaxBrackets,
+} = require('../../../lib/residency/pt/progressive');
 
 // Mock data (inline, not from files)
 const MOCK_TAX_BRACKETS_2025 = [
@@ -6,14 +9,14 @@ const MOCK_TAX_BRACKETS_2025 = [
   { Year: 2025, BracketMin: 7488, BracketMax: 11284, Rate: 0.145 },
   { Year: 2025, BracketMin: 11284, BracketMax: 15668, Rate: 0.165 },
   { Year: 2025, BracketMin: 15668, BracketMax: 20668, Rate: 0.175 },
-  { Year: 2025, BracketMin: 20668, BracketMax: 26356, Rate: 0.20 },
+  { Year: 2025, BracketMin: 20668, BracketMax: 26356, Rate: 0.2 },
   { Year: 2025, BracketMin: 26356, BracketMax: 38632, Rate: 0.225 },
   { Year: 2025, BracketMin: 38632, BracketMax: 49712, Rate: 0.27 },
   { Year: 2025, BracketMin: 49712, BracketMax: 79706, Rate: 0.32 },
   { Year: 2025, BracketMin: 79706, BracketMax: 134292, Rate: 0.37 },
   { Year: 2025, BracketMin: 134292, BracketMax: 187204, Rate: 0.41 },
   { Year: 2025, BracketMin: 187204, BracketMax: 246113, Rate: 0.43 },
-  { Year: 2025, BracketMin: 246113, BracketMax: null, Rate: 0.45 }
+  { Year: 2025, BracketMin: 246113, BracketMax: null, Rate: 0.45 },
 ];
 
 describe('Portugal - Progressive Tax Calculation', () => {
@@ -27,8 +30,8 @@ describe('Portugal - Progressive Tax Calculation', () => {
 
     test('sorts brackets by min value', () => {
       const unsorted = [
-        { Year: 2025, BracketMin: 10000, BracketMax: 20000, Rate: 0.20 },
-        { Year: 2025, BracketMin: 0, BracketMax: 10000, Rate: 0.10 }
+        { Year: 2025, BracketMin: 10000, BracketMax: 20000, Rate: 0.2 },
+        { Year: 2025, BracketMin: 0, BracketMax: 10000, Rate: 0.1 },
       ];
       const brackets = getTaxBrackets(2025, unsorted);
       expect(brackets[0].min).toBe(0);
@@ -36,18 +39,19 @@ describe('Portugal - Progressive Tax Calculation', () => {
     });
 
     test('throws error for invalid year', () => {
-      expect(() => getTaxBrackets('invalid', MOCK_TAX_BRACKETS_2025))
-        .toThrow('Invalid year parameter');
+      expect(() => getTaxBrackets('invalid', MOCK_TAX_BRACKETS_2025)).toThrow(
+        'Invalid year parameter'
+      );
     });
 
     test('throws error if taxBracketsData is not an array', () => {
-      expect(() => getTaxBrackets(2025, null))
-        .toThrow('taxBracketsData must be an array');
+      expect(() => getTaxBrackets(2025, null)).toThrow('taxBracketsData must be an array');
     });
 
     test('throws error if no brackets found for year', () => {
-      expect(() => getTaxBrackets(2099, MOCK_TAX_BRACKETS_2025))
-        .toThrow('No tax brackets found for year 2099');
+      expect(() => getTaxBrackets(2099, MOCK_TAX_BRACKETS_2025)).toThrow(
+        'No tax brackets found for year 2099'
+      );
     });
   });
 
@@ -161,7 +165,7 @@ describe('Portugal - Progressive Tax Calculation', () => {
     describe('Invalid bracket data handling', () => {
       test('ignores brackets with invalid range (min >= max)', () => {
         const invalidRangeData = [
-            { Year: 2025, BracketMin: 2000, BracketMax: 1000, Rate: 0.2 } // min > max
+          { Year: 2025, BracketMin: 2000, BracketMax: 1000, Rate: 0.2 }, // min > max
         ];
         // Income 500. Bracket size -1000. Taxable min(500, -1000) = -1000.
         // if (-1000 > 0) false.
