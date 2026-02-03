@@ -157,13 +157,14 @@ describe('PortugalResidency', () => {
 
     it('should calculate standard freelance tax (services)', () => {
       const result = residency.calculateFreelanceTax(10000, { active: false }, true, 'services', 0, 2025);
-      
+
       expect(getFreelanceTaxableBase).toHaveBeenCalled();
       expect(calculateSocialSecurity).toHaveBeenCalled();
       expect(calculateProgressiveTax).toHaveBeenCalled();
-      
+
       expect(result.taxType).toBe('SERVICES_70');
-      expect(result.taxableIncome).toBe(7000); // from mock
+      // taxableBase (7000 from mock) + expenseShortfall (1500) - expenses (0) = 8500
+      expect(result.taxableIncome).toBe(8500);
       expect(result.expenseShortfall).toBe(1500); // 15% of 10000
     });
 
@@ -192,9 +193,9 @@ describe('PortugalResidency', () => {
 
     it('should calculate standard 28% flat rate', () => {
       const result = residency.calculateDividendTax(10000, { active: false }, 'US', false, 2025);
-      
+
       expect(result.taxType).toBe('DIVIDEND_28');
-      expect(result.taxAmount).toBe(2800);
+      expect(result.taxAmount).toBeCloseTo(2800, 10);
     });
 
     it('should calculate NHR exemption', () => {
@@ -316,7 +317,7 @@ describe('PortugalResidency', () => {
       // Mock returns for calculate functions to have solidarity tax
       calculateProgressiveTax.mockReturnValue(1000);
       calculateSolidarityTax.mockReturnValue(50); // 50 per calculation
-      
+
       const records = [
         { grossIncome: 10000, incomeType: 'employment', sourceCurrency: 'EUR', exchangeRate: 1 },
         { grossIncome: 10000, incomeType: 'freelance', sourceCurrency: 'EUR', exchangeRate: 1 },
@@ -324,10 +325,11 @@ describe('PortugalResidency', () => {
       ];
 
       const result = residency.getAnnualAdditionalTaxes(records, { active: false }, 2025);
-      
-      // 3 calculations * 50 = 150
-      expect(result.SolidarityTax).toBe(150);
-      expect(result.amount).toBe(150);
+
+      // Employment (50) + Freelance (50) + Dividend (0) = 100
+      // Note: Dividends don't have solidarity tax in Portugal
+      expect(result.SolidarityTax).toBe(100);
+      expect(result.amount).toBe(100);
     });
 
     it('getAnnualAdditionalTaxes should return zero if no tax', () => {

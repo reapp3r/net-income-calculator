@@ -1,0 +1,4 @@
+Year,IncomeType,SpecialRegimeStatus,GrossIncome,TaxableAmount,TaxAmount,SocialSecurity,NetIncome
+2025.00,employment,Standard,10000.00,0.00,0.00,1100.00,8900.00
+2025.00,freelance,Standard,2000.00,0.00,0.00,299.60,1700.40
+2025.00,dividend,Standard,10000.00,10000.00,2800.00,0.00,7200.00
