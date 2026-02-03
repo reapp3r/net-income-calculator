@@ -3,9 +3,6 @@
  * Target: lib/residency/pt/residency.js
  */
 
-const PortugalResidency = require('../../../lib/residency/pt/residency');
-const { TaxResidency } = require('../../../lib/residency/base');
-
 // Mock dependencies
 jest.mock('../../../lib/residency/base');
 jest.mock('../../../lib/residency/pt/progressive');
@@ -15,12 +12,27 @@ jest.mock('../../../lib/residency/pt/nhr');
 jest.mock('../../../lib/residency/pt/deductions');
 jest.mock('../../../lib/residency/pt/foreignTaxCredit');
 
-const { calculateProgressiveTax } = require('../../../lib/residency/pt/progressive');
-const { calculateSolidarityTax } = require('../../../lib/residency/pt/solidarity');
-const { calculateSocialSecurity, getFreelanceTaxableBase } = require('../../../lib/residency/pt/socialSecurity');
-const { getNHRStatus, getNHRRegimeData } = require('../../../lib/residency/pt/nhr');
-const { calculateSpecificDeduction } = require('../../../lib/residency/pt/deductions');
-const { getWithholdingRate } = require('../../../lib/residency/pt/foreignTaxCredit');
+const {
+  calculateSpecificDeduction,
+} = require('../../../lib/residency/pt/deductions');
+const {
+  getWithholdingRate,
+} = require('../../../lib/residency/pt/foreignTaxCredit');
+const {
+  getNHRStatus,
+  getNHRRegimeData,
+} = require('../../../lib/residency/pt/nhr');
+const {
+  calculateProgressiveTax,
+} = require('../../../lib/residency/pt/progressive');
+const PortugalResidency = require('../../../lib/residency/pt/residency');
+const {
+  calculateSocialSecurity,
+  getFreelanceTaxableBase,
+} = require('../../../lib/residency/pt/socialSecurity');
+const {
+  calculateSolidarityTax,
+} = require('../../../lib/residency/pt/solidarity');
 
 describe('PortugalResidency', () => {
   let residency;
@@ -28,7 +40,7 @@ describe('PortugalResidency', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
+
     // Setup mock reference data
     mockReferenceData = {
       taxBrackets: [{ min: 0, rate: 0.145 }],
@@ -36,9 +48,9 @@ describe('PortugalResidency', () => {
       deductions: { specific: 4104 },
       specialRegimes: { nhr: { active: true } },
       solidarity: { thresholds: [] },
-      foreignTaxCredit: { rates: {} }
+      foreignTaxCredit: { rates: {} },
     };
-    
+
     // Setup mock implementations
     calculateProgressiveTax.mockReturnValue(1000);
     calculateSolidarityTax.mockReturnValue(100);
@@ -47,8 +59,8 @@ describe('PortugalResidency', () => {
     getWithholdingRate.mockReturnValue(0.25);
     getNHRStatus.mockReturnValue({ active: false });
     getNHRRegimeData.mockReturnValue({
-      DomesticEmploymentRate: 0.20,
-      ForeignIncomeExempt: true
+      DomesticEmploymentRate: 0.2,
+      ForeignIncomeExempt: true,
     });
     getFreelanceTaxableBase.mockReturnValue(7000); // 70% of 10000
 
@@ -108,17 +120,24 @@ describe('PortugalResidency', () => {
   describe('calculateEmploymentTax', () => {
     it('should throw error if reference data is missing', () => {
       residency.referenceData = null;
-      expect(() => residency.calculateEmploymentTax(10000, null, true, 2025)).toThrow();
+      expect(() =>
+        residency.calculateEmploymentTax(10000, null, true, 2025)
+      ).toThrow();
     });
 
     it('should calculate standard progressive tax', () => {
-      const result = residency.calculateEmploymentTax(10000, { active: false }, true, 2025);
-      
+      const result = residency.calculateEmploymentTax(
+        10000,
+        { active: false },
+        true,
+        2025
+      );
+
       expect(calculateSocialSecurity).toHaveBeenCalled();
       expect(calculateSpecificDeduction).toHaveBeenCalled();
       expect(calculateProgressiveTax).toHaveBeenCalled();
       expect(calculateSolidarityTax).toHaveBeenCalled();
-      
+
       expect(result.taxType).toBe('PROGRESSIVE');
       expect(result.socialSecurity).toBe(500);
       expect(result.taxAmount).toBe(1000);
@@ -126,24 +145,39 @@ describe('PortugalResidency', () => {
     });
 
     it('should calculate NHR flat rate for domestic employment', () => {
-      const result = residency.calculateEmploymentTax(10000, { active: true }, true, 2025);
-      
+      const result = residency.calculateEmploymentTax(
+        10000,
+        { active: true },
+        true,
+        2025
+      );
+
       expect(result.taxType).toBe('NHR_FLAT_20');
-      expect(result.taxAmount).toBe(10000 * 0.20);
+      expect(result.taxAmount).toBe(10000 * 0.2);
       expect(result.socialSecurity).toBe(500);
     });
 
     it('should calculate NHR exemption for foreign employment', () => {
-      const result = residency.calculateEmploymentTax(10000, { active: true }, false, 2025);
-      
+      const result = residency.calculateEmploymentTax(
+        10000,
+        { active: true },
+        false,
+        2025
+      );
+
       expect(result.taxType).toBe('NHR_EXEMPT');
       expect(result.isExempt).toBe(true);
       expect(result.taxAmount).toBe(0);
     });
 
     it('should fall back to progressive for foreign employment if NHR inactive', () => {
-      const result = residency.calculateEmploymentTax(10000, { active: false }, false, 2025);
-      
+      const result = residency.calculateEmploymentTax(
+        10000,
+        { active: false },
+        false,
+        2025
+      );
+
       expect(result.taxType).toBe('PROGRESSIVE');
       expect(calculateProgressiveTax).toHaveBeenCalled();
     });
@@ -152,11 +186,20 @@ describe('PortugalResidency', () => {
   describe('calculateFreelanceTax', () => {
     it('should throw error if reference data is missing', () => {
       residency.referenceData = null;
-      expect(() => residency.calculateFreelanceTax(10000, null, true, 'services', 0, 2025)).toThrow();
+      expect(() =>
+        residency.calculateFreelanceTax(10000, null, true, 'services', 0, 2025)
+      ).toThrow();
     });
 
     it('should calculate standard freelance tax (services)', () => {
-      const result = residency.calculateFreelanceTax(10000, { active: false }, true, 'services', 0, 2025);
+      const result = residency.calculateFreelanceTax(
+        10000,
+        { active: false },
+        true,
+        'services',
+        0,
+        2025
+      );
 
       expect(getFreelanceTaxableBase).toHaveBeenCalled();
       expect(calculateSocialSecurity).toHaveBeenCalled();
@@ -169,17 +212,31 @@ describe('PortugalResidency', () => {
     });
 
     it('should calculate freelance tax with goods type', () => {
-       // Mock internal logic check for freelance type
-       getFreelanceTaxableBase.mockReturnValue(2000); // 20%
-       
-       const result = residency.calculateFreelanceTax(10000, { active: false }, true, 'goods', 0, 2025);
-       
-       expect(result.taxType).toBe('GOODS_20');
+      // Mock internal logic check for freelance type
+      getFreelanceTaxableBase.mockReturnValue(2000); // 20%
+
+      const result = residency.calculateFreelanceTax(
+        10000,
+        { active: false },
+        true,
+        'goods',
+        0,
+        2025
+      );
+
+      expect(result.taxType).toBe('GOODS_20');
     });
 
     it('should calculate NHR exemption for foreign freelance', () => {
-      const result = residency.calculateFreelanceTax(10000, { active: true }, false, 'services', 0, 2025);
-      
+      const result = residency.calculateFreelanceTax(
+        10000,
+        { active: true },
+        false,
+        'services',
+        0,
+        2025
+      );
+
       expect(result.taxType).toBe('NHR_EXEMPT');
       expect(result.isExempt).toBe(true);
     });
@@ -188,59 +245,111 @@ describe('PortugalResidency', () => {
   describe('calculateDividendTax', () => {
     it('should throw error if reference data is missing', () => {
       residency.referenceData = null;
-      expect(() => residency.calculateDividendTax(10000, null, 'PT', false, 2025)).toThrow();
+      expect(() =>
+        residency.calculateDividendTax(10000, null, 'PT', false, 2025)
+      ).toThrow();
     });
 
     it('should calculate standard 28% flat rate', () => {
-      const result = residency.calculateDividendTax(10000, { active: false }, 'US', false, 2025);
+      const result = residency.calculateDividendTax(
+        10000,
+        { active: false },
+        'US',
+        false,
+        2025
+      );
 
       expect(result.taxType).toBe('DIVIDEND_28');
       expect(result.taxAmount).toBeCloseTo(2800, 10);
     });
 
     it('should calculate NHR exemption', () => {
-      const result = residency.calculateDividendTax(10000, { active: true }, 'US', false, 2025);
-      
+      const result = residency.calculateDividendTax(
+        10000,
+        { active: true },
+        'US',
+        false,
+        2025
+      );
+
       expect(result.taxType).toBe('NHR_EXEMPT');
       expect(result.isExempt).toBe(true);
     });
 
     it('should calculate aggregated 50% exemption for PT/EU dividends', () => {
-      const result = residency.calculateDividendTax(10000, { active: false }, 'PT', true, 2025);
-      
+      const result = residency.calculateDividendTax(
+        10000,
+        { active: false },
+        'PT',
+        true,
+        2025
+      );
+
       expect(result.taxType).toBe('AGGREGATED_50');
       expect(result.taxableIncome).toBe(5000);
-      expect(calculateProgressiveTax).toHaveBeenCalledWith(5000, 2025, expect.anything());
+      expect(calculateProgressiveTax).toHaveBeenCalledWith(
+        5000,
+        2025,
+        expect.anything()
+      );
     });
 
     it('should calculate aggregated progressive for non-EU dividends', () => {
-      const result = residency.calculateDividendTax(10000, { active: false }, 'US', true, 2025);
-      
+      const result = residency.calculateDividendTax(
+        10000,
+        { active: false },
+        'US',
+        true,
+        2025
+      );
+
       expect(result.taxType).toBe('AGGREGATED_PROGRESSIVE');
       expect(result.taxableIncome).toBe(10000);
-      expect(calculateProgressiveTax).toHaveBeenCalledWith(10000, 2025, expect.anything());
+      expect(calculateProgressiveTax).toHaveBeenCalledWith(
+        10000,
+        2025,
+        expect.anything()
+      );
     });
 
     it('should apply UK special check (progressive cheaper than flat)', () => {
       calculateProgressiveTax.mockReturnValue(2000); // 20% < 28%
-      
-      const result = residency.calculateDividendTax(10000, { active: false }, 'UK', false, 2025);
-      
+
+      const result = residency.calculateDividendTax(
+        10000,
+        { active: false },
+        'UK',
+        false,
+        2025
+      );
+
       expect(result.taxType).toBe('AGGREGATED_PROGRESSIVE');
       expect(result.note).toContain('UK dividend');
     });
 
     it('should use 28% for UK if progressive is more expensive', () => {
       calculateProgressiveTax.mockReturnValue(4000); // 40% > 28%
-      
-      const result = residency.calculateDividendTax(10000, { active: false }, 'UK', false, 2025);
-      
+
+      const result = residency.calculateDividendTax(
+        10000,
+        { active: false },
+        'UK',
+        false,
+        2025
+      );
+
       expect(result.taxType).toBe('DIVIDEND_28');
     });
 
     it('should apply 35% rate for tax havens', () => {
-      const result = residency.calculateDividendTax(10000, { active: false }, 'KY', false, 2025);
-      
+      const result = residency.calculateDividendTax(
+        10000,
+        { active: false },
+        'KY',
+        false,
+        2025
+      );
+
       expect(result.taxType).toBe('DIVIDEND_35');
       expect(result.taxAmount).toBe(3500);
     });
@@ -263,25 +372,39 @@ describe('PortugalResidency', () => {
     });
 
     it('calculateWithholdingForIncome should use helper', () => {
-      const result = residency.calculateWithholdingForIncome(10000, 'dividend', 'US', 2025);
+      const result = residency.calculateWithholdingForIncome(
+        10000,
+        'dividend',
+        'US',
+        2025
+      );
       expect(getWithholdingRate).toHaveBeenCalled();
       expect(result).toBe(2500); // 25% mock
     });
 
     it('calculateWithholdingForIncome should throw if no reference data', () => {
       residency.referenceData = null;
-      expect(() => residency.calculateWithholdingForIncome(1000, 'div', 'US', 2025)).toThrow();
+      expect(() =>
+        residency.calculateWithholdingForIncome(1000, 'div', 'US', 2025)
+      ).toThrow();
     });
 
     it('getSocialSecurityAmount should use helper', () => {
-      const result = residency.getSocialSecurityAmount(10000, 'employment', 'services', 2025);
+      const result = residency.getSocialSecurityAmount(
+        10000,
+        'employment',
+        'services',
+        2025
+      );
       expect(calculateSocialSecurity).toHaveBeenCalled();
       expect(result).toBe(500); // mock
     });
 
     it('getSocialSecurityAmount should throw if no reference data', () => {
       residency.referenceData = null;
-      expect(() => residency.getSocialSecurityAmount(1000, 'emp', 'serv', 2025)).toThrow();
+      expect(() =>
+        residency.getSocialSecurityAmount(1000, 'emp', 'serv', 2025)
+      ).toThrow();
     });
 
     it('getSpecialRegimeStatus should use helper', () => {
@@ -298,16 +421,24 @@ describe('PortugalResidency', () => {
 
   describe('Additional Taxes', () => {
     it('getAdditionalTaxes should return solidarity tax if present', () => {
-      const result = residency.getAdditionalTaxes({ solidarityTax: 500 }, {}, 2025);
+      const result = residency.getAdditionalTaxes(
+        { solidarityTax: 500 },
+        {},
+        2025
+      );
       expect(result.SolidarityTax).toBe(500);
       expect(result.amount).toBe(500);
     });
 
     it('getAdditionalTaxes should return zero if no solidarity tax', () => {
-      const result = residency.getAdditionalTaxes({ solidarityTax: 0 }, {}, 2025);
+      const result = residency.getAdditionalTaxes(
+        { solidarityTax: 0 },
+        {},
+        2025
+      );
       expect(result.amount).toBe(0);
     });
-    
+
     it('getAdditionalTaxes should throw if no reference data', () => {
       residency.referenceData = null;
       expect(() => residency.getAdditionalTaxes({}, {}, 2025)).toThrow();
@@ -319,12 +450,31 @@ describe('PortugalResidency', () => {
       calculateSolidarityTax.mockReturnValue(50); // 50 per calculation
 
       const records = [
-        { grossIncome: 10000, incomeType: 'employment', sourceCurrency: 'EUR', exchangeRate: 1 },
-        { grossIncome: 10000, incomeType: 'freelance', sourceCurrency: 'EUR', exchangeRate: 1 },
-        { grossIncome: 10000, incomeType: 'dividend', sourceCurrency: 'EUR', exchangeRate: 1 }
+        {
+          grossIncome: 10000,
+          incomeType: 'employment',
+          sourceCurrency: 'EUR',
+          exchangeRate: 1,
+        },
+        {
+          grossIncome: 10000,
+          incomeType: 'freelance',
+          sourceCurrency: 'EUR',
+          exchangeRate: 1,
+        },
+        {
+          grossIncome: 10000,
+          incomeType: 'dividend',
+          sourceCurrency: 'EUR',
+          exchangeRate: 1,
+        },
       ];
 
-      const result = residency.getAnnualAdditionalTaxes(records, { active: false }, 2025);
+      const result = residency.getAnnualAdditionalTaxes(
+        records,
+        { active: false },
+        2025
+      );
 
       // Employment (50) + Freelance (50) + Dividend (0) = 100
       // Note: Dividends don't have solidarity tax in Portugal
@@ -334,9 +484,20 @@ describe('PortugalResidency', () => {
 
     it('getAnnualAdditionalTaxes should return zero if no tax', () => {
       calculateSolidarityTax.mockReturnValue(0);
-      const records = [{ grossIncome: 1000, incomeType: 'employment', sourceCurrency: 'EUR', exchangeRate: 1 }];
-      
-      const result = residency.getAnnualAdditionalTaxes(records, { active: false }, 2025);
+      const records = [
+        {
+          grossIncome: 1000,
+          incomeType: 'employment',
+          sourceCurrency: 'EUR',
+          exchangeRate: 1,
+        },
+      ];
+
+      const result = residency.getAnnualAdditionalTaxes(
+        records,
+        { active: false },
+        2025
+      );
       expect(result.amount).toBe(0);
     });
 
@@ -352,24 +513,34 @@ describe('PortugalResidency', () => {
       expect(output.amount).toBeUndefined();
     });
   });
-  
+
   describe('calculateStandardTaxOnIncome', () => {
     it('should return 0 if special regime active', () => {
-      const result = residency.calculateStandardTaxOnIncome(10000, { active: true }, 2025);
+      const result = residency.calculateStandardTaxOnIncome(
+        10000,
+        { active: true },
+        2025
+      );
       expect(result).toBe(0);
     });
-    
+
     it('should return combined tax if normal regime', () => {
       calculateProgressiveTax.mockReturnValue(1000);
       calculateSolidarityTax.mockReturnValue(100);
-      
-      const result = residency.calculateStandardTaxOnIncome(10000, { active: false }, 2025);
+
+      const result = residency.calculateStandardTaxOnIncome(
+        10000,
+        { active: false },
+        2025
+      );
       expect(result).toBe(1100);
     });
 
     it('should throw if no reference data', () => {
       residency.referenceData = null;
-      expect(() => residency.calculateStandardTaxOnIncome(1000, { active: false }, 2025)).toThrow();
+      expect(() =>
+        residency.calculateStandardTaxOnIncome(1000, { active: false }, 2025)
+      ).toThrow();
     });
   });
 });

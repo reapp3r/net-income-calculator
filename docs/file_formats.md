@@ -7,6 +7,7 @@ Tracks daily location changes with timestamps for residency determination.
 **Purpose**: Determine tax residency through physical presence and movement patterns.
 
 **Format**:
+
 ```csv
 Date,FromCountry,ToCountry,DepartureTime,ArrivalTime,LocationType
 2025-01-01,GB,PT,09:00,12:30,Travel
@@ -27,6 +28,7 @@ Date,FromCountry,ToCountry,DepartureTime,ArrivalTime,LocationType
 | LocationType | Text | No | Residence, Business, Travel, Holiday, Other |
 
 **LocationType Values**:
+
 - `Residence`: Person stays overnight at dwelling
 - `Business`: Work location (client site, office)
 - `Travel`: Day of international travel
@@ -34,6 +36,7 @@ Date,FromCountry,ToCountry,DepartureTime,ArrivalTime,LocationType
 - `Other`: Other location activity
 
 **Validation**:
+
 - Dates must be in ISO 8601 format
 - Country codes must be ISO 3166-1 alpha-2
 - Times in HH:MM format (24-hour)
@@ -48,6 +51,7 @@ Tracks work hours and employment locations per day.
 **Purpose**: Provides work location data for UK Statutory Residence Test and general work tracking.
 
 **Format**:
+
 ```csv
 Date,Country,WorkHours,WorkType,EmployerCountry
 2025-01-02,PT,8.0,Employment,PT
@@ -66,11 +70,13 @@ Date,Country,WorkHours,WorkType,EmployerCountry
 | EmployerCountry | Text | No | ISO 3166-1 alpha-2 code of employer/client |
 
 **WorkType Values**:
+
 - `Employment`: Regular employment relationship
 - `Freelance`: Self-employed/independent contractor work
 - `NonWork`: No work performed (weekend, holiday, etc.)
 
 **Validation**:
+
 - Dates in ISO 8601 format
 - Country codes in ISO 3166-1 alpha-2
 - WorkHours >= 0 and <= 24
@@ -85,6 +91,7 @@ Tracks dwelling availability for residency determination (especially for Germany
 **Purpose**: Provides data for permanent home test and dwelling availability tests.
 
 **Format**:
+
 ```csv
 Year,Country,AccommodationType,AvailableFrom,AvailableTo,IsPermanentHome
 2025,PT,Owned,2025-01-01,2025-12-31,true
@@ -103,6 +110,7 @@ Year,Country,AccommodationType,AvailableFrom,AvailableTo,IsPermanentHome
 | IsPermanentHome | Boolean | No | Indicates intent to maintain as habitual residence |
 
 **AccommodationType Values**:
+
 - `Owned`: Property owned by taxpayer
 - `Rented`: Property rented by taxpayer
 - `Family`: Family-owned property available for use
@@ -110,6 +118,7 @@ Year,Country,AccommodationType,AvailableFrom,AvailableTo,IsPermanentHome
 - `Other`: Other accommodation type
 
 **Validation**:
+
 - Year between 2020-2050
 - Country codes in ISO 3166-1 alpha-2
 - AccommodationType valid enum value
@@ -125,12 +134,14 @@ Manual residency overrides for complex scenarios.
 **Purpose**: Override automatic residency determination when needed.
 
 **Use Cases**:
+
 - Manual specification of residency for split-year
 - Treaty-based residency election
 - Special diplomatic or student status
 - Complex multi-country situations
 
 **Format**:
+
 ```csv
 Year,Country,ResidencyStatus,ResidencyStartDate,ResidencyEndDate,CalculationMethod,Notes
 2025,PT,Resident,2025-01-01,2025-06-30,SplitYear,Moved to UK July 1
@@ -150,16 +161,19 @@ Year,Country,ResidencyStatus,ResidencyStartDate,ResidencyEndDate,CalculationMeth
 | Notes | Text | No | Free text explanation |
 
 **ResidencyStatus Values**:
+
 - `Resident`: Tax resident in this country for the year
 - `NonResident`: Not tax resident for the year
 - `SplitYear`: Partial year residency (start or end dates provided)
 
 **CalculationMethod Values**:
+
 - `Manual`: User-specified residency
 - `TreatyElection`: Tax treaty election override
 - `Automatic`: Automatically determined (default)
 
 **Validation**:
+
 - Year between 2020-2050
 - Country codes in ISO 3166-1 alpha-2
 - Valid enum values for status and method
@@ -175,6 +189,7 @@ Monthly currency conversion rates with historical precision.
 **Purpose**: Provide accurate exchange rates for income currency conversions.
 
 **Format**:
+
 ```csv
 Year,Month,FromCurrency,ToCurrency,Rate
 2025,1,EUR,GBP,0.8500
@@ -195,15 +210,18 @@ Year,Month,FromCurrency,ToCurrency,Rate
 | Rate | Decimal | Yes | Conversion rate (1 FromCurrency = Rate ToCurrency) |
 
 **Currency Direction**:
+
 - Include both directions for common pairs
 - Example: EUR→GBP and GBP→EUR
 
 **Monthly vs Annual**:
+
 - Monthly rates preferred for precision
 - Annual average (Month = null/0) when monthly data unavailable
 - Priority: Use monthly rate when available, fall back to annual average
 
 **Validation**:
+
 - Year between 2020-2050
 - Month between 1-12 (if provided)
 - Currency codes in ISO 4217 format (3 letters)
@@ -221,6 +239,7 @@ Income records by source country.
 **Location**: `data/PT/Income.csv`, `data/GB/Income.csv`, etc.
 
 **Format**:
+
 ```csv
 Year,Month,Day,Amount,IncomeType,Currency,Employer,Description
 2025,1,15,3000.00,employment,EUR,Company A,Monthly salary
@@ -241,6 +260,7 @@ Year,Month,Day,Amount,IncomeType,Currency,Employer,Description
 | Description | Text | No | Free text note |
 
 **IncomeType Values**:
+
 - `employment`: Regular employment income
 - `freelance`: Self-employment/independent contractor
 - `dividend`: Dividend income
@@ -251,11 +271,13 @@ Year,Month,Day,Amount,IncomeType,Currency,Employer,Description
 - `other`: Other income types
 
 **Currency Codes**:
+
 - Must be ISO 4217 (EUR, GBP, USD, etc.)
 - Typically matches source country's local currency
 - Can be different (e.g., GBP income earned while living in PT)
 
 **Validation**:
+
 - Year between 2020-2050
 - Month between 1-12
 - Day between 1-31
@@ -273,6 +295,7 @@ Configuration parameters for tax calculations and residency tests.
 **Location**: `data/PT/SimulationParameters.csv`, `data/GB/SimulationParameters.csv`, etc.
 
 **Format**:
+
 ```csv
 Parameter,Value,Description
 # Tax Residency Tests
@@ -295,6 +318,7 @@ FreelanceGoodsCoefficient,0.20,Goods coefficient for taxable income
 ```
 
 **Format Rules**:
+
 - Simple key-value format (Parameter, Value, Description)
 - Lines starting with # are comments
 - Values inferred from type (true/false, numeric, string)
@@ -302,19 +326,23 @@ FreelanceGoodsCoefficient,0.20,Goods coefficient for taxable income
 **Parameter Categories**:
 
 ### Portugal-Specific (beyond common parameters):
+
 - NHR configuration
 - Dividend aggregation eligibility
 - Freelance coefficients
 
 ### UK-Specific (beyond common parameters):
+
 - Statutory Residence Test (SRT) configuration
 - SRT thresholds and tie requirements
 
 ### Germany-Specific (if needed):
+
 - Dwelling test configuration
 - Habitual abode parameters
 
 ### Fixed Country Properties (not configurable):
+
 - **Fiscal year**: Intrinsic to each country's tax system, cannot be changed
   - Portugal: Calendar year (January 1 - December 31)
   - UK: Tax year (April 6 - April 5)
@@ -322,11 +350,13 @@ FreelanceGoodsCoefficient,0.20,Goods coefficient for taxable income
   - These are hardcoded in each country's residency implementation
 
 **Common Parameters** (all countries):
+
 - Residency test configuration
 - Currency codes
 - Exchange rate fallbacks
 
 **Validation**:
+
 - No duplicate parameter names
 - Valid parameter types (boolean, numeric, string, date)
 - No empty parameter names

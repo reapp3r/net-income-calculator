@@ -14,10 +14,28 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:coverage:unit": "jest __tests__/unit --coverage",
-    "link": "npm link"
+    "link": "npm link",
+    "prepare": "husky",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --check .",
+    "format:fix": "prettier --write .",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
-    "jest": "^29.7.0"
+    "@commitlint/cli": "^20.4.1",
+    "@commitlint/config-conventional": "^20.4.1",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^17.3.0",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jest-extended": "^7.0.0",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
   },
   "keywords": [
     "net-income",

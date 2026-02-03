@@ -13,11 +13,11 @@ net-income-calculator ./my-income.csv
 
 **Detailed tax rules:**
 
-| Country | Documentation |
-|---------|---------------|
-| Portugal | [docs/pt/README.md](docs/pt/README.md) |
-| United Kingdom | [docs/uk/README.md](docs/uk/README.md) |
-| Germany | [docs/de/README.md](docs/de/README.md) |
+| Country         | Documentation                                  |
+| --------------- | ---------------------------------------------- |
+| Portugal        | [docs/pt/README.md](docs/pt/README.md)         |
+| United Kingdom  | [docs/uk/README.md](docs/uk/README.md)         |
+| Germany         | [docs/de/README.md](docs/de/README.md)         |
 | Common Concepts | [docs/common/README.md](docs/common/README.md) |
 
 ## Features
@@ -43,12 +43,12 @@ See [Input Format](docs/common/README.md#input-format) for full column definitio
 
 ## Output
 
-| File | Description |
-|------|-------------|
-| `MonthlyResults.csv` | Monthly breakdown by income type |
-| `AnnualSummary.csv` | Annual totals by residency |
-| `AnnualByType.csv` | Breakdown by income type |
-| `NHRSummary.csv` | NHR savings summary (if applicable) |
+| File                 | Description                         |
+| -------------------- | ----------------------------------- |
+| `MonthlyResults.csv` | Monthly breakdown by income type    |
+| `AnnualSummary.csv`  | Annual totals by residency          |
+| `AnnualByType.csv`   | Breakdown by income type            |
+| `NHRSummary.csv`     | NHR savings summary (if applicable) |
 
 ## Architecture
 
@@ -76,13 +76,13 @@ See [docs/common/README.md](docs/common/README.md#adding-a-new-residency-country
 
 This calculator makes specific assumptions. See [docs/pt/README.md](docs/pt/README.md#assumptions) for full details:
 
-| Assumption | Description |
-|------------|-------------|
+| Assumption                       | Description                                  |
+| -------------------------------- | -------------------------------------------- |
 | No professional association fees | Uses standard specific deduction (€4,462.15) |
-| NHR activity is high-value-added | Assumes 20% flat rate qualification |
-| Continental Portugal only | Not Madeira/Azores |
-| No IRS Jovem | Assumes taxpayer no longer eligible |
-| No NHR 2.0 (IFICU) | Not implemented |
+| NHR activity is high-value-added | Assumes 20% flat rate qualification          |
+| Continental Portugal only        | Not Madeira/Azores                           |
+| No IRS Jovem                     | Assumes taxpayer no longer eligible          |
+| No NHR 2.0 (IFICU)               | Not implemented                              |
 
 ## References
 

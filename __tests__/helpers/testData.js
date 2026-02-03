@@ -2,7 +2,7 @@ const path = require('path');
 const { loadData } = require('../../lib/loader');
 
 function getTestReferenceData() {
-  const dataDir = path.join(__dirname, '../../data');
+  const dataDir = path.join(__dirname, '../test-data-cli');
   const data = loadData(dataDir);
 
   // Return just the reference data portion (without incomeRecords)
@@ -23,5 +23,5 @@ function getTestReferenceData() {
 }
 
 module.exports = {
-  getTestReferenceData
+  getTestReferenceData,
 };
