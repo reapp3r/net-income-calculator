@@ -14,17 +14,17 @@ Detailed tax documentation for Portuguese tax residency.
 
 ### Residency Countries
 
-| Country | Implemented | Status |
-|---------|-------------|--------|
-| Portugal | ✓ | Active |
+| Country  | Implemented | Status |
+| -------- | ----------- | ------ |
+| Portugal | ✓           | Active |
 
 ### Source Countries
 
-| Country | WHT Implemented |
-|---------|-----------------|
-| Portugal | ✓ |
-| UK | ✓ |
-| Germany | ✓ |
+| Country  | WHT Implemented |
+| -------- | --------------- |
+| Portugal | ✓               |
+| UK       | ✓               |
+| Germany  | ✓               |
 
 ## Reading Order
 

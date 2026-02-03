@@ -18,30 +18,34 @@ function loadDataFromCSVFile(csvPath) {
   if (!fs.existsSync(csvPath)) {
     throw new Error(`Missing CSV: ${csvPath}`);
   }
-  
+
   const content = fs.readFileSync(csvPath, 'utf8');
   return loadCSV(content);
 }
 
 function objectArrayToCSV(data) {
-  if (!Array.isArray(data) || data.length === 0) return "";
-  
+  if (!Array.isArray(data) || data.length === 0) return '';
+
   // Collect all possible headers from all rows
   const allHeaders = new Set();
-  data.forEach(row => {
-    Object.keys(row).forEach(key => allHeaders.add(key));
+  data.forEach((row) => {
+    Object.keys(row).forEach((key) => allHeaders.add(key));
   });
-  
+
   const headers = Array.from(allHeaders);
-  const csvContent = [headers.join(",")];
-  data.forEach(row => {
-    csvContent.push(headers.map(h => {
-      const val = row[h];
-      if (typeof val === 'number') return val.toFixed(2);
-      return val || '';
-    }).join(","));
+  const csvContent = [headers.join(',')];
+  data.forEach((row) => {
+    csvContent.push(
+      headers
+        .map((h) => {
+          const val = row[h];
+          if (typeof val === 'number') return val.toFixed(2);
+          return val || '';
+        })
+        .join(',')
+    );
   });
-  return csvContent.join("\n");
+  return csvContent.join('\n');
 }
 
 function slugify(text) {
@@ -104,7 +108,7 @@ function main() {
     console.log('Results summary:', {
       monthly: results.monthly?.length || 0,
       annual: results.annual?.length || 0,
-      annualByType: results.annualByType?.length || 0
+      annualByType: results.annualByType?.length || 0,
     });
 
     const monthlyPath = path.join(resolvedDir, 'MonthlyResults.csv');

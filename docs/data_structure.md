@@ -1,9 +1,11 @@
 # Data Directory Structure
 
 ## Overview
+
 This directory contains all data for net income calculation across multiple countries with automatic tax residency determination.
 
 ## Directory Structure
+
 ```
 data/
 ├── Location.csv              # Daily location tracking (global)
@@ -44,7 +46,7 @@ data/
 
 1. **Income by Source**: Income.csv files are located in country directories (data/PT/, data/GB/) and track income EARNED IN that country.
 
-2. **ISO Standards Only**: 
+2. **ISO Standards Only**:
    - Country codes: ISO 3166-1 alpha-2 (PT, GB, DE)
    - Currency codes: ISO 4217 (EUR, GBP, USD)
    - No country names (Portugal, UK) allowed in directory names or codes
@@ -70,18 +72,21 @@ data/
 ## Scenarios
 
 ### Simple Case: Single Country Resident
+
 - Person lives and works entirely in Portugal
 - Income only in data/PT/Income.csv
 - Tax residency: Automatic 183-day test → PT resident
 - No location tracking needed (or all entries in Location.csv show PT)
 
 ### Multi-Country Income
+
 - Person lives in Portugal, works for UK employer (remote freelance)
 - Income in both data/PT/Income.csv and data/GB/Income.csv
 - Tax residency: PT resident
 - Foreign tax credits applied to UK income
 
 ### Split-Year Case
+
 - Person moves from Portugal to UK on July 1
 - Income in data/PT/Income.csv (Jan-Jun) and data/GB/Income.csv (Jul-Dec)
 - Location.csv shows permanent move from PT to GB
@@ -89,6 +94,7 @@ data/
 - Income aggregated per residency period
 
 ### Dual Residency
+
 - Person spends significant time in both Portugal and UK
 - Location.csv shows time in both countries
 - OECD tie-breaker applied to determine single residency

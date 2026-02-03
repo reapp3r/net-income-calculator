@@ -34,38 +34,42 @@ Code extension points marked with `// FUTURE:` comments. No breaking changes to 
 
 The following assumptions are **by design** - the calculator intentionally does NOT handle these scenarios:
 
-| Assumption | Description |
-|------------|-------------|
-| No professional association fees | Uses standard specific deduction (€4,462.15). Does not apply increased rate (€4,702.50) for professionals paying mandatory fees. |
+| Assumption                       | Description                                                                                                                                                     |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No professional association fees | Uses standard specific deduction (€4,462.15). Does not apply increased rate (€4,702.50) for professionals paying mandatory fees.                                |
 | NHR activity is high-value-added | Assumes all Portuguese employment income for NHR residents qualifies for 20% flat rate. Standard administrative roles do NOT qualify per Portaria No. 230/2019. |
-| Continental Portugal only | Uses mainland Portugal tax brackets. Does not implement reduced rates for Madeira or Azores. |
-| No IRS Jovem eligibility | Assumes taxpayer no longer qualifies for the 10-year regressive exemption regime. |
-| No NHR 2.0 (IFICU) | Does not implement the 2024 Tax Incentive for Scientific Research and Innovation. |
-| No first-year SS exemption | Does not apply 12-month social security exemption for first-time self-registrers. |
-| No Minimum Subsistence (2026) | Does not apply the €12,880 safety net that ensures net income doesn't fall below minimum wage. |
+| Continental Portugal only        | Uses mainland Portugal tax brackets. Does not implement reduced rates for Madeira or Azores.                                                                    |
+| No IRS Jovem eligibility         | Assumes taxpayer no longer qualifies for the 10-year regressive exemption regime.                                                                               |
+| No NHR 2.0 (IFICU)               | Does not implement the 2024 Tax Incentive for Scientific Research and Innovation.                                                                               |
+| No first-year SS exemption       | Does not apply 12-month social security exemption for first-time self-registrers.                                                                               |
+| No Minimum Subsistence (2026)    | Does not apply the €12,880 safety net that ensures net income doesn't fall below minimum wage.                                                                  |
 
 > When editing code or answering questions, always respect these assumptions. Do NOT add features for these scenarios unless explicitly requested.
 
 ## Running the Calculator
 
 **Node.js CLI:**
+
 ```bash
 net-income-calculator <data-directory>
 ```
 
 Example:
+
 ```bash
 net-income-calculator data/portugal
 net-income-calculator ./my-portugal-data
 ```
 
 Output files generated in the same directory as input:
+
 - `MonthlyResults.csv` - Monthly breakdown
 - `AnnualSummary.csv` - Annual totals
 - `AnnualByType.csv` - Breakdown by income type
 - `nhrSummary.csv` - NHR savings summary (if NHR data present)
 
 **Node.js Programmatic:**
+
 ```javascript
 const { calculateNetIncome } = require('./lib/calculator');
 const results = calculateNetIncome(incomeData);
@@ -75,46 +79,52 @@ const results = calculateNetIncome(incomeData);
 
 CSV file with columns:
 
-| Column | Required | Default | Description |
-|--------|----------|---------|-------------|
-| `Year` | Yes | - | Tax year (2025, 2026, etc.) |
-| `Month` | Yes | - | Month 1-12 |
-| `GrossIncome` | Yes | - | Gross amount |
-| `IncomeType` | No | employment | employment/freelance/dividend |
-| `SourceCountry` | No | PT | PT/UK/DE/etc. |
-| `SourceCurrency` | No | EUR | Currency code |
-| `ExchangeRate` | No | 1.0 | EUR conversion rate |
-| `NHRStatusAcquiredDate` | No | null | YYYY-MM-DD (if NHR active) |
-| `DividendAggregation` | No | false | Use 50% aggregation (PT/EU/EEA) |
-| `FreelanceExpenses` | No | 0 | Documented expenses |
-| `PersonalDeductions` | No | 0 | Total personal deductions |
+| Column                  | Required | Default    | Description                     |
+| ----------------------- | -------- | ---------- | ------------------------------- |
+| `Year`                  | Yes      | -          | Tax year (2025, 2026, etc.)     |
+| `Month`                 | Yes      | -          | Month 1-12                      |
+| `GrossIncome`           | Yes      | -          | Gross amount                    |
+| `IncomeType`            | No       | employment | employment/freelance/dividend   |
+| `SourceCountry`         | No       | PT         | PT/UK/DE/etc.                   |
+| `SourceCurrency`        | No       | EUR        | Currency code                   |
+| `ExchangeRate`          | No       | 1.0        | EUR conversion rate             |
+| `NHRStatusAcquiredDate` | No       | null       | YYYY-MM-DD (if NHR active)      |
+| `DividendAggregation`   | No       | false      | Use 50% aggregation (PT/EU/EEA) |
+| `FreelanceExpenses`     | No       | 0          | Documented expenses             |
+| `PersonalDeductions`    | No       | 0          | Total personal deductions       |
 
 **NHR Detection:**
+
 - If `NHRStatusAcquiredDate` is provided → NHR is active
 - If `NHRStatusAcquiredDate` is empty → Standard resident rules apply
 
 **Dividend Aggregation:**
+
 - `DividendAggregation: true` applies 50% exemption (PT/EU/EEA dividends only)
 - UK dividends (post-Brexit) do not qualify for 50% exemption
 
 ## Output Format
 
 ### MonthlyResults.csv
+
 ```
 Year,Month,GrossIncome,IncomeType,SourceCountry,SpecialRegimeStatus,TaxType,ForeignWithholding,TaxAmount,SocialSecurity,PersonalDeductions,NetIncome
 ```
 
 ### AnnualSummary.csv
+
 ```
 Year,SpecialRegimeStatus,GrossIncome,ForeignWithholding,TaxAmount,SocialSecurity,PersonalDeductions,SolidarityTax,NetIncome
 ```
 
 ### AnnualByType.csv
+
 ```
 Year,IncomeType,SpecialRegimeStatus,GrossIncome,TaxableAmount,TaxAmount,SocialSecurity,NetIncome
 ```
 
 ### nhrSummary.csv (if NHR data present)
+
 ```
 Year,SpecialRegimeStatus,RegimeName,RegimeYearsRemaining,GrossIncome,ExemptIncome,TaxableIncome,RegimeTax,StandardTax,Savings
 ```
@@ -122,16 +132,19 @@ Year,SpecialRegimeStatus,RegimeName,RegimeYearsRemaining,GrossIncome,ExemptIncom
 ## Testing
 
 **Run all tests:**
+
 ```bash
 npm test
 ```
 
 **Run with coverage:**
+
 ```bash
 npm run test:coverage
 ```
 
 **Run in watch mode:**
+
 ```bash
 npm run test:watch
 ```
@@ -163,16 +176,16 @@ function calculateNetIncome(incomeRecords, options) {
 
 ```javascript
 module.exports = {
-  calculateNetIncome,           // Core in-memory calculation
-  calculateEmploymentTax,       // Employment tax with specific deduction
-  calculateFreelanceTax,        // Freelance with 70% coefficient
-  calculateDividendTax,         // Dividend with aggregation option
-  calculateSocialSecurity,      // Social security with caps
-  calculateSolidarityTax,       // Solidarity tax (2.5%/5%)
-  calculateProgressiveTax,      // Progressive tax computation
-  isNHRActive,                  // Check NHR status
-  calculateForeignTaxCredit,    // FTC calculation
-  calculateSpecificDeduction    // €4,462.15 employment deduction
+  calculateNetIncome, // Core in-memory calculation
+  calculateEmploymentTax, // Employment tax with specific deduction
+  calculateFreelanceTax, // Freelance with 70% coefficient
+  calculateDividendTax, // Dividend with aggregation option
+  calculateSocialSecurity, // Social security with caps
+  calculateSolidarityTax, // Solidarity tax (2.5%/5%)
+  calculateProgressiveTax, // Progressive tax computation
+  isNHRActive, // Check NHR status
+  calculateForeignTaxCredit, // FTC calculation
+  calculateSpecificDeduction, // €4,462.15 employment deduction
 };
 ```
 
@@ -203,6 +216,7 @@ module.exports = {
 | Over €250,000 | +5% on excess |
 
 **Specific Deduction (Employment):**
+
 - €4,462.15 deducted from employment income before progressive tax
 
 **Social Security:**
@@ -216,6 +230,7 @@ module.exports = {
 **Freelance SS Cap:** 12 × €509.26 = €6,111.12/month
 
 **NHR Benefits (Pre-2024):**
+
 - Portuguese employment: Flat 20% (not progressive)
 - Foreign income: Exempt from Portuguese tax
 - Duration: 10 years from NHRStatusAcquiredDate
@@ -331,13 +346,13 @@ For each year:
 const IAS_2025 = 509.26;
 const IAS_2026 = 537.13;
 const SPECIFIC_DEDUCTION_2025 = 4462.15;
-const SPECIFIC_DEDUCTION_2026 = 4641.50;
-const FREELANCE_SS_CAP_MONTHLY_2025 = 12 * IAS_2025;   // €6,111.12
+const SPECIFIC_DEDUCTION_2026 = 4641.5;
+const FREELANCE_SS_CAP_MONTHLY_2025 = 12 * IAS_2025; // €6,111.12
 const FREELANCE_SS_CAP_ANNUAL_2025 = FREELANCE_SS_CAP_MONTHLY_2025 * 12;
-const FREELANCE_SS_CAP_MONTHLY_2026 = 12 * IAS_2026;   // €6,445.56
+const FREELANCE_SS_CAP_MONTHLY_2026 = 12 * IAS_2026; // €6,445.56
 const FREELANCE_SS_CAP_ANNUAL_2026 = FREELANCE_SS_CAP_MONTHLY_2026 * 12;
-const FREELANCE_COEFFICIENT_SERVICES = 0.70;
-const FREELANCE_COEFFICIENT_GOODS = 0.20;
+const FREELANCE_COEFFICIENT_SERVICES = 0.7;
+const FREELANCE_COEFFICIENT_GOODS = 0.2;
 const SOLIDARITY_THRESHOLD_1_2025 = 80000;
 const SOLIDARITY_THRESHOLD_1_2026 = 86634;
 const SOLIDARITY_THRESHOLD_2 = 250000;
