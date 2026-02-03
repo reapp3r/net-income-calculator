@@ -2,7 +2,9 @@ const path = require('path');
 const { loadData } = require('../../lib/loader');
 
 function getTestReferenceData() {
-  const dataDir = path.join(__dirname, '../test-data-cli/PT');
+  // Load from test-data-cli root (not PT subdirectory)
+  // The loader expects the root data directory with country subdirectories inside
+  const dataDir = path.join(__dirname, '../test-data-cli');
   const data = loadData(dataDir);
 
   // Return just the reference data portion (without incomeRecords)

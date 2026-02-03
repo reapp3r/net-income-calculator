@@ -19,44 +19,18 @@ const SAMPLE_MONTHLY_PERSONAL_DEDUCTIONS = `Year,Month,Health,Education,Housing,
 
 describe('CLI Integration', () => {
   const testDataDir = path.join(__dirname, 'test-data-cli');
-  const refDataDir = path.join(__dirname, '../data/PT');
 
   const monthlyPath = path.join(testDataDir, 'MonthlyResults.csv');
   const annualPath = path.join(testDataDir, 'AnnualSummary.csv');
   const byTypePath = path.join(testDataDir, 'AnnualByType.csv');
 
   beforeAll(() => {
-    if (!fs.existsSync(testDataDir)) {
-      fs.mkdirSync(testDataDir, { recursive: true });
-    }
-
-    // Create PT subdirectory
     const ptDir = path.join(testDataDir, 'PT');
     if (!fs.existsSync(ptDir)) {
       fs.mkdirSync(ptDir, { recursive: true });
     }
 
-    // Copy tax reference files to PT subdirectory
-    fs.copyFileSync(path.join(refDataDir, 'TaxBrackets.csv'), path.join(ptDir, 'TaxBrackets.csv'));
-    fs.copyFileSync(
-      path.join(refDataDir, 'SocialSecurity.csv'),
-      path.join(ptDir, 'SocialSecurity.csv')
-    );
-    fs.copyFileSync(
-      path.join(refDataDir, 'SolidarityTax.csv'),
-      path.join(ptDir, 'SolidarityTax.csv')
-    );
-    fs.copyFileSync(path.join(refDataDir, 'Deductions.csv'), path.join(ptDir, 'Deductions.csv'));
-    fs.copyFileSync(
-      path.join(refDataDir, 'SpecialRegimes.csv'),
-      path.join(ptDir, 'SpecialRegimes.csv')
-    );
-    fs.copyFileSync(
-      path.join(refDataDir, 'ForeignTaxCredit.csv'),
-      path.join(ptDir, 'ForeignTaxCredit.csv')
-    );
-
-    // Create income and simulation files in PT subdirectory
+    // Write test income and simulation files to PT directory
     fs.writeFileSync(path.join(ptDir, 'Income.csv'), SAMPLE_INCOME_CSV);
     fs.writeFileSync(path.join(ptDir, 'SimulationParameters.csv'), SAMPLE_SIMULATION_PARAMS);
     fs.writeFileSync(
@@ -64,11 +38,14 @@ describe('CLI Integration', () => {
       SAMPLE_MONTHLY_PERSONAL_DEDUCTIONS
     );
 
-    // Create dummy ExchangeRates.csv at root level (required by new loader)
-    fs.writeFileSync(
-      path.join(testDataDir, 'ExchangeRates.csv'),
-      'Year,Month,FromCurrency,ToCurrency,Rate\n2025,1,EUR,EUR,1.0\n2025,1,GBP,EUR,1.17'
-    );
+    // Create ExchangeRates.csv at root level if it doesn't exist
+    const exchangeRatesPath = path.join(testDataDir, 'ExchangeRates.csv');
+    if (!fs.existsSync(exchangeRatesPath)) {
+      fs.writeFileSync(
+        exchangeRatesPath,
+        'Year,Month,FromCurrency,ToCurrency,Rate\n2025,1,EUR,EUR,1.0\n2025,1,GBP,EUR,1.17'
+      );
+    }
 
     [monthlyPath, annualPath, byTypePath].forEach((p) => {
       if (fs.existsSync(p)) fs.unlinkSync(p);
