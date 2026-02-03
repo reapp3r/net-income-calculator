@@ -25,6 +25,7 @@ const {
 const {
   calculateProgressiveTax,
 } = require('../../../lib/residency/pt/progressive');
+const PortugalResidency = require('../../../lib/residency/pt/residency');
 const {
   calculateSocialSecurity,
   getFreelanceTaxableBase,
