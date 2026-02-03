@@ -30,12 +30,13 @@ describe('CLI Integration', () => {
       fs.mkdirSync(testDataDir, { recursive: true });
     }
 
-    // Create PT subdirectory for legacy structure
+    // Create PT subdirectory
     const ptDir = path.join(testDataDir, 'PT');
     if (!fs.existsSync(ptDir)) {
       fs.mkdirSync(ptDir, { recursive: true });
     }
 
+    // Copy tax reference files to PT subdirectory
     fs.copyFileSync(path.join(refDataDir, 'TaxBrackets.csv'), path.join(ptDir, 'TaxBrackets.csv'));
     fs.copyFileSync(
       path.join(refDataDir, 'SocialSecurity.csv'),
@@ -55,12 +56,18 @@ describe('CLI Integration', () => {
       path.join(ptDir, 'ForeignTaxCredit.csv')
     );
 
-    // Create income file in PT subdirectory
+    // Create income and simulation files in PT subdirectory
     fs.writeFileSync(path.join(ptDir, 'Income.csv'), SAMPLE_INCOME_CSV);
     fs.writeFileSync(path.join(ptDir, 'SimulationParameters.csv'), SAMPLE_SIMULATION_PARAMS);
     fs.writeFileSync(
       path.join(ptDir, 'MonthlyPersonalDeductions.csv'),
       SAMPLE_MONTHLY_PERSONAL_DEDUCTIONS
+    );
+
+    // Create dummy ExchangeRates.csv at root level (required by new loader)
+    fs.writeFileSync(
+      path.join(testDataDir, 'ExchangeRates.csv'),
+      'Year,Month,FromCurrency,ToCurrency,Rate\n2025,1,EUR,EUR,1.0\n2025,1,GBP,EUR,1.17'
     );
 
     [monthlyPath, annualPath, byTypePath].forEach((p) => {
