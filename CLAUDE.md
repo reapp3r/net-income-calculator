@@ -362,6 +362,231 @@ npm run test:coverage
 npm run test:watch
 ```
 
+## Architecture
+
+```
+lib/
+├── calculator.js           # Core calculation engine
+├── residency/
+│   ├── base.js             # TaxResidency abstract class
+│   ├── pt.js               # Portugal (tax residency - active)
+│   └── index.js            # Residency registry
+├── utils/
+│   ├── currency.js         # Currency conversion
+│   └── index.js            # Utility exports
+```
+
+### Core Function: calculateNetIncome()
+
+```javascript
+function calculateNetIncome(incomeRecords, options) {
+  // incomeRecords: Array of income objects
+  // Returns: { monthly: [...], annual: [...], byType: [...], specialRegime: {...} }
+}
+```
+
+### Module Exports
+
+```javascript
+module.exports = {
+  calculateNetIncome, // Core in-memory calculation
+  calculateEmploymentTax, // Employment tax with specific deduction
+  calculateFreelanceTax, // Freelance with 70% coefficient
+  calculateDividendTax, // Dividend with aggregation option
+  calculateSocialSecurity, // Social security with caps
+  calculateSolidarityTax, // Solidarity tax (2.5%/5%)
+  calculateProgressiveTax, // Progressive tax computation
+  isNHRActive, // Check NHR status
+  calculateForeignTaxCredit, // FTC calculation
+  calculateSpecificDeduction, // €4,462.15 employment deduction
+};
+```
+
+## Tax Rules
+
+### Portugal - Tax Residency
+
+**Tax Brackets (2025):**
+| Income | Rate | Parcela a Abater |
+|--------|------|-------------------|
+| Up to €8,059 | 12.5% | – |
+| €8,059 - €12,160 | 16% | €282.07 |
+| €12,160 - €17,233 | 21.5% | €950.91 |
+| €17,233 - €22,306 | 24.4% | €1,450.67 |
+| €22,306 - €28,400 | 31.4% | €3,011.98 |
+| €28,400 - €41,629 | 34.9% | €4,006.10 |
+| €41,629 - €44,987 | 43.1% | €7,419.54 |
+| €44,987 - €83,696 | 44.6% | €8,094.51 |
+| Over €83,696 | 48% | €10,939.90 |
+
+**Solidarity Tax (High Earners):**
+| Income Threshold | Additional Rate |
+|------------------|-----------------|
+| Over €80,000 | +2.5% on excess |
+| Over €250,000 | +5% on excess |
+
+Applied to **taxable income** (after specific deduction and other applicable deductions).
+
+**Specific Deduction (Employment):**
+
+- €4,462.15 deducted from employment income before progressive tax
+
+**Social Security:**
+| Income Type | Rate | Basis | Cap |
+|-------------|------|-------|-----|
+| Employment | 11% | 100% of gross | None |
+| Freelance | 21.4% | 70% of gross | 12× IAS/month |
+| Dividend | 0% | N/A | N/A |
+
+**IAS (2025):** €522.50
+**Freelance SS Cap:** 12 × €522.50 = €6,270.00/month
+
+**NHR Benefits (Pre-2024):**
+
+- Portuguese employment: Flat 20% (not progressive)
+- Foreign income: Exempt from Portuguese tax
+- Duration: 10 years from NHRStatusAcquiredDate
+
+### UK - Source Country
+
+**Withholding Tax:**
+| Income Type | WHT Rate |
+|-------------|----------|
+| Employment | PAYE (0-45%) |
+| Freelance | 0% |
+| Dividend | 10% standard |
+
+**Dividend Aggregation:** UK is NOT in EU/EEA, so NO 50% exemption
+
+### Germany - Source Country
+
+**Withholding Tax:**
+| Income Type | WHT Rate |
+|-------------|----------|
+| Employment | Lohnsteuer (0-45%) |
+| Freelance | 0% |
+| Dividend | 25% Abgeltungsteuer + 5.5% Soli |
+
+**Dividend Aggregation:** Germany is in EU/EEA, so 50% exemption applies
+
+## Key Calculation Flows
+
+### Standard Resident - Employment
+
+```
+1. Gross Employment Income
+2. Subtract Social Security (11% of gross)
+3. Subtract Specific Deduction (€4,462.15)
+4. Apply Progressive Tax Brackets
+5. Add Solidarity Tax (if >€80,000)
+6. Subtract Personal Deductions
+7. Apply Foreign Tax Credit (see FTC calculation below)
+8. Derive Net Income
+```
+
+**Foreign Tax Credit (for foreign-source employment):**
+
+- Calculate Portuguese tax liability on the foreign income (using progressive brackets)
+- Credit = min(foreign tax paid, Portuguese tax on that foreign income)
+- Cannot create refund - credit limited to Portuguese tax liability
+
+### Standard Resident - Freelance
+
+```
+1. Gross Freelance Income
+2. Apply 70% coefficient (services) or 20% (goods)
+3. Subtract Documented Expenses
+4. Calculate Social Security (21.4% × taxable, capped at 12× IAS)
+5. Apply Progressive Tax Brackets
+6. Add Solidarity Tax (if >€80,000)
+7. Subtract Personal Deductions
+8. Apply Foreign Tax Credit
+9. Derive Net Income
+```
+
+### Standard Resident - Dividend
+
+```
+Option A (Flat Rate):
+1. Gross Dividend Income
+2. Apply 28% Flat Rate
+3. Apply Foreign Tax Credit
+4. Derive Net Income
+
+Option B (Aggregation):
+1. Check if source is PT/EU/EEA
+2. If yes and aggregated: Taxable = 50% of gross
+3. If no or not aggregated: Taxable = 100% of gross
+4. Apply Progressive Tax Brackets
+5. Subtract Personal Deductions
+6. Apply Foreign Tax Credit
+7. Derive Net Income
+```
+
+### NHR Resident
+
+```
+For each year:
+1. Check if NHR is active (year < acquiredYear + 10)
+2. For Portuguese employment:
+   - Subtract Social Security (11% of gross)
+   - Apply 20% flat tax on (gross - social security)
+   - Specific deduction does NOT apply
+3. For foreign income: Exempt from Portuguese tax (may have foreign withholding)
+4. Derive net income
+```
+
+## Implementation Principles
+
+### Design Rules
+
+1. **No redundant input**: If `NHRStatusAcquiredDate` is provided, NHR is enabled
+2. **Minimal asks**: Derive data by calculation where possible
+3. **Sensible defaults**: employment, PT source, EUR currency, standard resident
+4. **Clear assumptions**: Document all assumptions in code comments
+
+### Code Style
+
+- No comments unless explicitly requested
+- Pure functions where possible
+- Testable, composable modules
+- Follow existing patterns
+
+## Adding Features
+
+### Add New Tax Year
+
+1. Update tax brackets in `lib/residency/pt.js` getTaxBrackets()
+2. Update social security caps and IAS value
+3. Add test cases for new year
+
+## Constants
+
+```javascript
+const IAS_2024 = 509.26;
+const IAS_2025 = 522.5;
+const IAS_2026 = 537.13;
+const SPECIFIC_DEDUCTION_2025 = 4462.15; // 8.54 × IAS 2025
+const SPECIFIC_DEDUCTION_2026 = 4587.09; // 8.54 × IAS 2026
+const FREELANCE_SS_CAP_MONTHLY_2024 = 12 * IAS_2024; // €6,111.12
+const FREELANCE_SS_CAP_ANNUAL_2024 = FREELANCE_SS_CAP_MONTHLY_2024 * 12;
+const FREELANCE_SS_CAP_MONTHLY_2025 = 12 * IAS_2025; // €6,270.00
+const FREELANCE_SS_CAP_ANNUAL_2025 = FREELANCE_SS_CAP_MONTHLY_2025 * 12;
+const FREELANCE_SS_CAP_MONTHLY_2026 = 12 * IAS_2026; // €6,445.56
+const FREELANCE_SS_CAP_ANNUAL_2026 = FREELANCE_SS_CAP_MONTHLY_2026 * 12;
+const FREELANCE_COEFFICIENT_SERVICES = 0.7;
+const FREELANCE_COEFFICIENT_GOODS = 0.2;
+const SOLIDARITY_THRESHOLD_1_2025 = 80000;
+const SOLIDARITY_THRESHOLD_1_2026 = 86634;
+const SOLIDARITY_THRESHOLD_2 = 250000;
+const SOLIDARITY_RATE_1 = 0.025;
+const SOLIDARITY_RATE_2 = 0.05;
+const MINIMUM_SUBSISTENCE_2026 = 12880;
+const HOUSING_DEDUCTION_MAX_2025 = 502.11;
+const HOUSING_DEDUCTION_MAX_2026 = 750.0;
+const IVA_BOOKS_CULTURE_RATE = 0.15;
+```
+
 ## References
 
 - Portuguese Tax Authority: www.portaldasfinancas.gov.pt

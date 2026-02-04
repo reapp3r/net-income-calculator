@@ -1,2 +1,2 @@
-RegimeName,DurationYears,ForeignIncomeExempt
-NHR,10,true
+RegimeName,DurationYears,ForeignIncomeExempt,DomesticEmploymentRate
+NHR,10,true,0.20

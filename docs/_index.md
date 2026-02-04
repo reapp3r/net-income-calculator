@@ -1,14 +1,25 @@
 # Documentation
 
-Detailed tax documentation for Portuguese tax residency.
+Detailed tax documentation for the Net Income Calculator.
 
-## Portugal
+## Getting Started
 
-- [Portugal Tax Rules](pt.md) - Complete implementation
+**For Users:**
 
-## Common Concepts
+- Start with [README.md](../README.md) for installation and usage
+- See [Portugal Tax Rules](pt.md) for detailed tax information
+- Refer to [Common Tax Concepts](common.md) for cross-country topics
 
-- [Common Tax Concepts](common.md) - Cross-country concepts (FTC, EU/EEA, currency)
+**For Developers:**
+
+- See [CLAUDE.md](../CLAUDE.md) for implementation details and coding guidelines
+
+## Tax Rules
+
+| Topic              | Documentation                                           |
+| ------------------ | ------------------------------------------------------- |
+| Portugal Tax Rules | [pt.md](pt.md) - Complete IRS implementation            |
+| Common Concepts    | [common.md](common.md) - FTC, EU/EEA, currency handling |
 
 ## Quick Reference
 
@@ -18,7 +29,7 @@ Detailed tax documentation for Portuguese tax residency.
 | -------- | ----------- | ------ |
 | Portugal | ✓           | Active |
 
-### Source Countries
+### Source Countries (Withholding Tax)
 
 | Country  | WHT Implemented |
 | -------- | --------------- |
@@ -26,8 +37,26 @@ Detailed tax documentation for Portuguese tax residency.
 | UK       | ✓               |
 | Germany  | ✓               |
 
+## Future Architecture (Multi-Country)
+
+> These documents describe the planned multi-country architecture. Not yet implemented.
+
+| Document                            | Description                                           |
+| ----------------------------------- | ----------------------------------------------------- |
+| [Data Structure](data_structure.md) | Multi-country data organization                       |
+| [File Formats](file_formats.md)     | Input file formats for future architecture            |
+| [ISO Standards](standards.md)       | Validation standards (country codes, currency, dates) |
+
 ## Reading Order
 
-1. **Start here**: README.md in project root
-2. **Portugal residents**: [Portugal](pt.md)
-3. **Common concepts**: [Common](common.md)
+**New Users:**
+
+1. [README.md](../README.md) - Installation and quick start
+2. [Portugal Tax Rules](pt.md) - Tax brackets, deductions, NHR
+3. [Common Concepts](common.md) - Foreign tax credits, dividend rules
+
+**Developers:**
+
+1. [CLAUDE.md](../CLAUDE.md) - Architecture and implementation guide
+2. [Common Concepts](common.md) - Cross-country calculation patterns
+3. [Future Architecture](data_structure.md) - Planned multi-country design

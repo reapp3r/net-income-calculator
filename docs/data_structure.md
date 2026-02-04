@@ -1,5 +1,7 @@
 # Data Directory Structure
 
+> **Note:** This document describes the **future multi-country architecture**. For the current MVP implementation (Portugal tax residency only), see [README.md](../README.md).
+
 ## Directory Structure
 
 This is the required and only supported data structure:

@@ -43,19 +43,24 @@ Prevents double taxation when income is taxed in both source and residency count
 
 ### Calculation
 
+Portugal uses the **proportional method** for FTC calculation (Artigo 81.º do Código do IRS):
+
 ```javascript
 function calculateForeignTaxCredit(
-  foreignIncome,
   totalIncome,
+  foreignIncome,
   totalTax,
   foreignTaxPaid
 ) {
-  // Tax attributable to foreign income
-  const attributableTax = totalTax * (foreignIncome / totalIncome);
+  // Calculate proportion of foreign income to total income
+  const foreignRatio = foreignIncome / totalIncome;
+
+  // Tax attributable to foreign income (proportional method)
+  const attributableTax = totalTax * foreignRatio;
 
   // Credit limited to lesser of:
   // 1. Foreign tax actually paid
-  // 2. Portuguese tax on that income
+  // 2. Portuguese tax attributable to that income
   return Math.min(foreignTaxPaid, attributableTax);
 }
 ```

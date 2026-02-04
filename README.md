@@ -1,94 +1,133 @@
-# Net Income Calculator - Multi-Country Edition
+# Net Income Calculator
 
-A precise, multi-year net income calculator with **multi-country tax residency support**. Currently implements Portuguese residency rules for income from Portugal, the UK, and Germany.
+A precise, multi-year net income calculator for **Portuguese tax residents** with income from Portugal, the UK, and Germany.
 
 ## Quick Start
 
 ```bash
 npm install
-net-income-calculator ./my-income.csv
+net-income-calculator <data-directory>
+```
+
+Example:
+
+```bash
+net-income-calculator data/portugal
 ```
 
 ## Documentation
 
-**Detailed tax rules:**
-
-| Country         | Documentation                                  |
-| --------------- | ---------------------------------------------- |
-| Portugal        | [docs/pt/README.md](docs/pt/README.md)         |
-| United Kingdom  | [docs/uk/README.md](docs/uk/README.md)         |
-| Germany         | [docs/de/README.md](docs/de/README.md)         |
-| Common Concepts | [docs/common/README.md](docs/common/README.md) |
+| Topic               | Documentation                                    |
+| ------------------- | ------------------------------------------------ |
+| **Getting Started** | [docs/](docs/)                                   |
+| Portugal Tax Rules  | [docs/pt.md](docs/pt.md)                         |
+| Common Tax Concepts | [docs/common.md](docs/common.md)                 |
+| Data Structure      | [docs/data_structure.md](docs/data_structure.md) |
 
 ## Features
 
-- **Multi-country residency**: Portugal (active), UK stub, Germany planned
-- **Foreign tax handling**: Withholding and credits for international income
+- **Portugal tax residency**: Complete implementation of Portuguese IRS rules
 - **Multiple income types**: Employment, Freelance, Dividends
-- **NHR regime**: Pre-2024 Portuguese special tax regime
-- **Full deductions**: Specific deduction, solidarity tax, personal deductions
-- **Dividend aggregation**: 50% exemption for PT/EU/EEA sources
-- **Multi-year**: Loss carry-forward, NHR expiration tracking
+- **Foreign income handling**: UK and German source income with foreign tax credits
+- **NHR regime**: Pre-2024 Non-Habitual Resident benefits
+- **Full deductions**: Specific deduction (€4,462.15), solidarity tax, personal deductions
+- **Dividend aggregation**: 50% exemption for PT/EU/EEA dividend sources
+- **Multi-year**: Support for 2024-2026 tax years with annual inflation adjustments
 
 ## Input Format
 
+Create a directory with your income data CSV file:
+
 ```csv
-Year,Month,GrossIncome,IncomeType,SourceCountry,ResidencyCountry,NHRStatusAcquiredDate
-2025,1,5000,employment,PT,PT,2023-06-15
-2025,1,2000,freelance,UK,PT,
-2025,3,10000,dividend,PT,PT,
+Year,Month,GrossIncome,IncomeType,SourceCountry,SourceCurrency,ExchangeRate,NHRStatusAcquiredDate,DividendAggregation,FreelanceExpenses,PersonalDeductions
+2025,1,3000,employment,PT,EUR,1.0,,,0,0
+2025,2,1800,freelance,UK,GBP,1.18,,,150,0
+2025,3,10000,dividend,PT,EUR,1.0,true,0,0
 ```
 
-See [Input Format](docs/common/README.md#input-format) for full column definitions.
+### Required Columns
+
+| Column        | Type    | Description                    |
+| ------------- | ------- | ------------------------------ |
+| `Year`        | Integer | Tax year (2024, 2025, 2026)    |
+| `Month`       | Integer | Month 1-12                     |
+| `GrossIncome` | Decimal | Gross amount before deductions |
+
+### Optional Columns (with defaults)
+
+| Column                  | Default    | Description                        |
+| ----------------------- | ---------- | ---------------------------------- |
+| `IncomeType`            | employment | employment, freelance, or dividend |
+| `SourceCountry`         | PT         | PT, UK, DE, or other ISO code      |
+| `SourceCurrency`        | EUR        | ISO 4217 currency code             |
+| `ExchangeRate`          | 1.0        | Rate to convert to EUR             |
+| `NHRStatusAcquiredDate` | null       | YYYY-MM-DD if NHR applies          |
+| `DividendAggregation`   | false      | Use 50% exemption (PT/EU/EEA only) |
+| `FreelanceExpenses`     | 0          | Documented freelance expenses      |
+| `PersonalDeductions`    | 0          | Total personal deductions          |
+
+See [CLAUDE.md](CLAUDE.md) for developers and [docs/pt.md](docs/pt.md) for detailed tax rules.
 
 ## Output
 
-| File                 | Description                         |
-| -------------------- | ----------------------------------- |
-| `MonthlyResults.csv` | Monthly breakdown by income type    |
-| `AnnualSummary.csv`  | Annual totals by residency          |
-| `AnnualByType.csv`   | Breakdown by income type            |
-| `NHRSummary.csv`     | NHR savings summary (if applicable) |
+The calculator generates these files in your data directory:
+
+| File                 | Description                        |
+| -------------------- | ---------------------------------- |
+| `MonthlyResults.csv` | Monthly breakdown by income source |
+| `AnnualSummary.csv`  | Annual totals with NHR status      |
+| `AnnualByType.csv`   | Breakdown by income type           |
+| `nhrSummary.csv`     | NHR savings (if NHR applies)       |
 
 ## Architecture
 
 ```
 lib/
-├── calculator.js         # Core calculation engine
-└── residency/            # Tax residency implementations
-    ├── base.js           # TaxResidency abstract class
-    ├── pt.js             # Portugal residency (active)
-    ├── uk.js             # UK residency (stub)
-    └── index.js          # Registry
+├── calculator.js           # Core calculation engine
+├── loader.js               # CSV data loader
+├── residency/
+│   ├── base.js             # TaxResidency abstract class
+│   ├── pt.js               # Portugal residency implementation
+│   └── index.js            # Residency registry
+└── utils/
+    ├── currency.js         # Currency conversion
+    └── index.js            # Utility exports
 ```
 
-See [docs/common/README.md](docs/common/README.md#residency-abstraction) for architecture details.
+## Tax Years Supported
 
-## Adding a New Residency
-
-1. Create `lib/residency/{countryCode}.js` extending `TaxResidency`
-2. Implement required methods: `getTaxBrackets()`, `calculateEmploymentTax()`, etc.
-3. Register in `lib/residency/index.js`
-
-See [docs/common/README.md](docs/common/README.md#adding-a-new-residency-country) for detailed instructions.
+| Year | IAS Value | Specific Deduction | Housing Max |
+| ---- | --------- | ------------------ | ----------- |
+| 2024 | €509.26   | €4,104.00          | €439.00     |
+| 2025 | €522.50   | €4,462.15          | €502.11     |
+| 2026 | €537.13   | €4,587.09          | €750.00     |
 
 ## Assumptions
 
-This calculator makes specific assumptions. See [docs/pt/README.md](docs/pt/README.md#assumptions) for full details:
+This calculator makes specific assumptions documented in [CLAUDE.md](CLAUDE.md):
 
-| Assumption                       | Description                                  |
-| -------------------------------- | -------------------------------------------- |
-| No professional association fees | Uses standard specific deduction (€4,462.15) |
-| NHR activity is high-value-added | Assumes 20% flat rate qualification          |
-| Continental Portugal only        | Not Madeira/Azores                           |
-| No IRS Jovem                     | Assumes taxpayer no longer eligible          |
-| No NHR 2.0 (IFICU)               | Not implemented                              |
+| Assumption                       | Description                                                   |
+| -------------------------------- | ------------------------------------------------------------- |
+| No professional association fees | Uses standard specific deduction (€4,462.15 for 2025)         |
+| NHR activity is high-value-added | Assumes 20% flat rate qualification per Portaria No. 230/2019 |
+| Continental Portugal only        | Mainland tax brackets (not Madeira/Azores)                    |
+| No IRS Jovem                     | Assumes taxpayer no longer eligible for 10-year exemption     |
+| No NHR 2.0 (IFICI)               | 2024+ scientific research regime not implemented              |
+| No Minimum Subsistence (2026)    | €12,880 safety net not implemented                            |
+
+## Testing
+
+```bash
+npm test                 # Run all tests
+npm run test:coverage   # Run with coverage
+npm run test:watch      # Watch mode
+```
 
 ## References
 
-- **Portugal Tax Authority**: <www.portaldasfinancas.gov.pt>
-- **UK HMRC**: <www.gov.uk/government/organisations/hm-revenue-customs>
-- **German Finance Ministry**: <www.bundesfinanzministerium.de>
+- **Portugal Tax Authority**: [www.portaldasfinancas.gov.pt](https://www.portaldasfinancas.gov.pt)
+- **IRS Code**: [Código do IRS](https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2014-70048167)
+- **NHR Legislation**: [Decree-Law no. 249/2009](https://www.portaldascomunidades.mne.gov.pt/images/EMI/IRS_RNH_PT.pdf)
 
 ## Disclaimer
 

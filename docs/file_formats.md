@@ -1,5 +1,7 @@
 # File Formats for Net Income Calculator
 
+> **Note:** This document describes the **future multi-country architecture**. For the current MVP implementation (Portugal tax residency only), see [README.md](../README.md) for the input format.
+
 ## Location.csv (Root Level)
 
 Tracks daily location changes with timestamps for residency determination.
