@@ -12,38 +12,38 @@ This document details the Portuguese tax rules implemented for tax residents of 
 
 ### 2025
 
-| Taxable Income    | Rate  | Cumulative Tax |
-| ----------------- | ----- | -------------- |
-| €0 - €8,059       | 12.5% | €1,007         |
-| €8,059 - €12,160  | 16.0% | €1,666         |
-| €12,160 - €17,233 | 21.5% | €2,755         |
-| €17,233 - €22,306 | 24.4% | €3,989         |
-| €22,306 - €28,400 | 31.4% | €5,902         |
-| €28,400 - €41,629 | 34.9% | €10,518        |
-| €41,629 - €44,987 | 43.1% | €11,964        |
-| €44,987 - €83,696 | 44.6% | €27,024        |
-| Over €83,696      | 48.0% | N/A            |
+| Taxable Income    | Rate  | Parcela a Abater |
+| ----------------- | ----- | ---------------- |
+| Up to €8,059      | 12.5% | –                |
+| €8,059 - €12,160  | 16%   | €282.07          |
+| €12,160 - €17,233 | 21.5% | €950.91          |
+| €17,233 - €22,306 | 24.4% | €1,450.67        |
+| €22,306 - €28,400 | 31.4% | €3,011.98        |
+| €28,400 - €41,629 | 34.9% | €4,006.10        |
+| €41,629 - €44,987 | 43.1% | €7,419.54        |
+| €44,987 - €83,696 | 44.6% | €8,094.51        |
+| Over €83,696      | 48%   | €10,939.90       |
 
 ### 2026
 
-| Taxable Income    | Rate  |
-| ----------------- | ----- |
-| €0 - €8,342       | 12.5% |
-| €8,342 - €12,587  | 15.7% |
-| €12,587 - €17,838 | 21.2% |
-| €17,838 - €23,089 | 24.1% |
-| €23,089 - €29,397 | 31.1% |
-| €29,397 - €43,090 | 34.9% |
-| €43,090 - €46,566 | 43.1% |
-| €46,566 - €86,634 | 44.6% |
-| Over €86,634      | 48.0% |
+| Taxable Income    | Rate  | Parcela a Abater |
+| ----------------- | ----- | ---------------- |
+| Up to €8,342      | 12.5% | –                |
+| €8,342 - €12,587  | 15.7% | €266.94          |
+| €12,587 - €17,838 | 21.2% | €959.26          |
+| €17,838 - €23,089 | 24.1% | €1,476.45        |
+| €23,089 - €29,397 | 31.1% | €3,092.77        |
+| €29,397 - €43,090 | 34.9% | €4,209.94        |
+| €43,090 - €46,566 | 43.1% | €7,743.27        |
+| €46,566 - €86,634 | 44.6% | €8,441.48        |
+| Over €86,634      | 48%   | €11,387.17       |
 
 ## Specific Deduction (Employment)
 
 | Year | Amount    |
 | ---- | --------- |
 | 2025 | €4,462.15 |
-| 2026 | €4,641.50 |
+| 2026 | €4,587.09 |
 
 > **Note**: Increases to €4,702.50 if mandatory professional association fees are paid (not implemented).
 
@@ -59,17 +59,23 @@ This document details the Portuguese tax rules implemented for tax residents of 
 
 | Year | IAS     | Monthly Cap | Annual SS Cap |
 | ---- | ------- | ----------- | ------------- |
+| 2024 | €509.26 | €6,111.12   | €73,333.44    |
 | 2025 | €522.50 | €6,270.00   | €75,240.00    |
 | 2026 | €537.13 | €6,445.56   | €77,346.72    |
 
 ## Solidarity Tax (Additional Surcharge)
 
-Applies to income **after** specific deduction.
+Applies to **taxable income** (income after specific deduction and other applicable deductions).
 
 | Year | Threshold 1 | Rate 1 | Threshold 2 | Rate 2 |
 | ---- | ----------- | ------ | ----------- | ------ |
 | 2025 | €80,000     | +2.5%  | €250,000    | +5%    |
 | 2026 | €86,634     | +2.5%  | €250,000    | +5%    |
+
+**Calculation:**
+
+- On taxable income over €80,000 (2025) or €86,634 (2026): Add 2.5% on excess
+- On taxable income over €250,000: Add additional 5% on excess above €250,000
 
 ## NHR Regime (Pre-2024)
 
@@ -91,6 +97,28 @@ Valid for 10 years from acquisition date.
 
 - Years 1-10: Active (full benefits)
 - Year 11+: Expired (standard rules)
+
+### NHR Calculation Flow
+
+**Portuguese Employment Income (20% flat rate):**
+
+```
+1. Gross Employment Income
+2. Subtract Social Security (11% of gross)
+3. Apply 20% flat tax on (gross - social security)
+4. Derive Net Income
+```
+
+**Foreign Employment/Freelance/Dividend Income:**
+
+```
+1. Gross Foreign Income
+2. Portuguese tax: €0 (exempt)
+3. Foreign withholding: Applied by source country
+4. Derive Net Income
+```
+
+**Note:** The specific deduction (€4,462.15) does NOT apply to NHR employment income. The 20% flat rate applies directly to (gross income - social security).
 
 ### Eligibility for 20% Flat Rate
 
