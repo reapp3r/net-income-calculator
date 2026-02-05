@@ -287,6 +287,16 @@ Each country has an intrinsic fiscal year (cannot be changed):
 
 > See [docs/gb.md](docs/gb.md) for complete UK tax rules including Scotland-specific bands.
 
+**Tax Stack Order:**
+
+The UK allocates Personal Allowance across income types in a mandatory sequence (the "Tax Stack"):
+
+1. **Employment/Pension** (non-savings income) - uses Personal Allowance first
+2. **Interest/Savings** - uses remaining Personal Allowance second
+3. **Dividends** - always at the "top" of the stack, uses any remaining Personal Allowance
+
+This ensures the Personal Allowance is applied to tax the most favorable income types first, minimizing overall tax liability. The `GBResidency.allocatePersonalAllowanceByTaxStack()` method implements this allocation.
+
 ## Key Calculation Flows
 
 ### Standard Resident - Employment
