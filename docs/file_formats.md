@@ -352,9 +352,9 @@ The UK supports region-specific tax brackets through the optional `Region` colum
 
 **Portugal-Specific Columns**:
 
-| Column | Type | Required | Description |
-|--------|------|----------|-------------|
-| ParcelaAbater | Decimal | No | Amount to subtract from tax (Portugal-specific) |
+| Column        | Type    | Required | Description                                     |
+| ------------- | ------- | -------- | ----------------------------------------------- |
+| ParcelaAbater | Decimal | No       | Amount to subtract from tax (Portugal-specific) |
 
 **Validation**:
 

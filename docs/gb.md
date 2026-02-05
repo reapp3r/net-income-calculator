@@ -21,46 +21,46 @@ The UK has different tax brackets depending on which nation you live in. The cal
 
 The Scottish Higher Rate threshold (£43,662 estimated for 25/26) is **~£6,600 lower** than the UK-wide threshold (£50,270), creating a significant "Scottish Tax Gap" for middle earners.
 
-| Threshold                     | Scottish (25/26 est) | UK-wide        | Gap    |
-| ----------------------------- | -------------------- | -------------- | ------ |
-| Higher Rate                   | £43,662              | £50,270        | ~£6,600 |
-| Additional Rate (top rate)    | £75,000              | £125,140       | ~£50,000 |
+| Threshold                  | Scottish (25/26 est) | UK-wide  | Gap      |
+| -------------------------- | -------------------- | -------- | -------- |
+| Higher Rate                | £43,662              | £50,270  | ~£6,600  |
+| Additional Rate (top rate) | £75,000              | £125,140 | ~£50,000 |
 
 **Impact**: Scottish taxpayers reach the Higher Rate (40%) at £43,662, while UK-wide taxpayers don't reach it until £50,270.
 
 ### UK-wide (England & Northern Ireland) - 2025/26
 
-| Taxable Income            | Rate  |
-| ------------------------- | ----- |
-| Up to £12,570 (PA)        | 0%    |
-| £12,570 - £50,270         | 20%   |
-| £50,270 - £125,140        | 40%   |
-| Over £125,140             | 45%   |
+| Taxable Income     | Rate |
+| ------------------ | ---- |
+| Up to £12,570 (PA) | 0%   |
+| £12,570 - £50,270  | 20%  |
+| £50,270 - £125,140 | 40%  |
+| Over £125,140      | 45%  |
 
 ### Scottish Rates - 2025/26 (Estimated)
 
-| Taxable Income            | Rate  | Band Name       |
-| ------------------------- | ----- | --------------- |
-| Up to £12,570 (PA)        | 0%    | Personal Allowance |
-| £12,570 - £43,662         | 20%   | Scottish Basic  |
-| £43,662 - £75,000         | 40%   | Scottish Higher |
-| Over £75,000              | 45%   | Scottish Top    |
+| Taxable Income     | Rate | Band Name          |
+| ------------------ | ---- | ------------------ |
+| Up to £12,570 (PA) | 0%   | Personal Allowance |
+| £12,570 - £43,662  | 20%  | Scottish Basic     |
+| £43,662 - £75,000  | 40%  | Scottish Higher    |
+| Over £75,000       | 45%  | Scottish Top       |
 
 > **Note**: The £43,662 threshold for 2025/26 is estimated based on Scottish Government budget forecasts.
 
 ### Historical Scottish Rates
 
-| Tax Year  | Higher Rate Threshold | UK-wide Threshold | Gap    |
-| --------- | --------------------- | ----------------- | ------ |
-| 2024/25   | £43,662               | £50,270           | ~£6,600 |
-| 2025/26   | £43,662 (est)         | £50,270           | ~£6,600 |
+| Tax Year | Higher Rate Threshold | UK-wide Threshold | Gap     |
+| -------- | --------------------- | ----------------- | ------- |
+| 2024/25  | £43,662               | £50,270           | ~£6,600 |
+| 2025/26  | £43,662 (est)         | £50,270           | ~£6,600 |
 
 ## Personal Allowance
 
-| Year  | Amount      | Reduction Threshold | Reduction Rate |
-| ----- | ----------- | ------------------ | -------------- |
-| 2025/26 | £12,570     | £100,000           | £1 for £2      |
-| 2026/27 | £12,570     | £100,000           | £1 for £2      |
+| Year    | Amount  | Reduction Threshold | Reduction Rate |
+| ------- | ------- | ------------------- | -------------- |
+| 2025/26 | £12,570 | £100,000            | £1 for £2      |
+| 2026/27 | £12,570 | £100,000            | £1 for £2      |
 
 **Allowance Reduction**: For income over £100,000, the Personal Allowance is reduced by £1 for every £2 of excess income. It reaches £0 at £125,140.
 
@@ -68,13 +68,13 @@ The Scottish Higher Rate threshold (£43,662 estimated for 25/26) is **~£6,600 
 
 Dividends have their own tax rates (different from income tax rates).
 
-| Taxable Income           | UK-wide | Scottish |
-| ------------------------ | ------- | -------- |
-| Up to £500 (allowance)   | 0%      | 0%       |
-| £500 - £12,570           | 8.75%   | 8.75%    |
-| £12,570 - £50,270        | 8.75%   | 8.75%    |
-| £50,270 - £125,140       | 33.75%  | 33.75%   |
-| Over £125,140            | 39.35%  | 39.35%   |
+| Taxable Income         | UK-wide | Scottish |
+| ---------------------- | ------- | -------- |
+| Up to £500 (allowance) | 0%      | 0%       |
+| £500 - £12,570         | 8.75%   | 8.75%    |
+| £12,570 - £50,270      | 8.75%   | 8.75%    |
+| £50,270 - £125,140     | 33.75%  | 33.75%   |
+| Over £125,140          | 39.35%  | 39.35%   |
 
 **Dividend Allowance**: £500 (2024/25 onwards)
 
@@ -82,25 +82,25 @@ Dividends have their own tax rates (different from income tax rates).
 
 ### Employment (Class 1)
 
-| Income (per month)       | Employee Rate | Employer Rate |
-| ------------------------ | ------------- | ------------- |
-| Up to £1,048 (PT)        | 0%            | 0%            |
-| £1,048 - £4,189          | 8%            | 13.8%         |
-| Over £4,189              | 2%            | 13.8%         |
+| Income (per month) | Employee Rate | Employer Rate |
+| ------------------ | ------------- | ------------- |
+| Up to £1,048 (PT)  | 0%            | 0%            |
+| £1,048 - £4,189    | 8%            | 13.8%         |
+| Over £4,189        | 2%            | 13.8%         |
 
 ### Freelance (Self-Employed)
 
-| Class   | Income Range              | Rate   |
-| ------- | ------------------------ | ------ |
-| Class 2 | Over £6,725/year         | £3.45/week (flat) |
-| Class 4 | £12,570 - £50,270        | 6%     |
-| Class 4 | Over £50,270             | 2%     |
+| Class   | Income Range      | Rate              |
+| ------- | ----------------- | ----------------- |
+| Class 2 | Over £6,725/year  | £3.45/week (flat) |
+| Class 4 | £12,570 - £50,270 | 6%                |
+| Class 4 | Over £50,270      | 2%                |
 
 ### Trading Allowance
 
-| Year  | Amount  |
-| ----- | ------- |
-| 2025/26 | £1,000  |
+| Year    | Amount |
+| ------- | ------ |
+| 2025/26 | £1,000 |
 
 **Usage**: Can be deducted from freelance income instead of actual expenses (whichever is higher).
 
@@ -108,11 +108,11 @@ Dividends have their own tax rates (different from income tax rates).
 
 ### Personal Savings Allowance
 
-| Tax Band            | Allowance |
-| ------------------- | --------- |
-| Basic (20%)         | £1,000    |
-| Higher (40%)        | £500      |
-| Additional (45%)    | £0        |
+| Tax Band         | Allowance |
+| ---------------- | --------- |
+| Basic (20%)      | £1,000    |
+| Higher (40%)     | £500      |
+| Additional (45%) | £0        |
 
 ### Starting Rate for Savings
 
@@ -121,10 +121,10 @@ Dividends have their own tax rates (different from income tax rates).
 
 ## Capital Gains Tax
 
-| Asset Type              | Basic Rate | Higher Rate |
-| ----------------------- | ---------- | ----------- |
-| Residential property    | 18%        | 24%         |
-| Other assets            | 10%        | 20%         |
+| Asset Type           | Basic Rate | Higher Rate |
+| -------------------- | ---------- | ----------- |
+| Residential property | 18%        | 24%         |
+| Other assets         | 10%        | 20%         |
 
 **Annual Exempt Amount**: £3,000 (2024/25 onwards)
 
@@ -177,12 +177,14 @@ The UK uses the Statutory Residence Test to determine tax residency:
 ### Automatic Overseas Tests
 
 You are **non-resident** if you:
+
 - Were UK resident in previous year and spend <16 days in UK
 - Were NOT UK resident in previous year and spend <46 days in UK
 
 ### Automatic UK Tests
 
 You are **resident** if you:
+
 - Spend ≥183 days in the tax year in UK
 - Have only home in UK and spend ≥30 days there
 - Work full-time in UK for ≥365 days with ≥75% of work days in UK
@@ -191,12 +193,12 @@ You are **resident** if you:
 
 If neither automatic test applies, residence depends on ties and days:
 
-| UK Days   | Ties Needed to be Resident |
-| --------- | -------------------------- |
-| 16-45     | 4 ties (all)              |
-| 46-90     | 3 ties                    |
-| 91-120    | 2 ties                    |
-| 121-182   | 1 tie                     |
+| UK Days | Ties Needed to be Resident |
+| ------- | -------------------------- |
+| 16-45   | 4 ties (all)               |
+| 46-90   | 3 ties                     |
+| 91-120  | 2 ties                     |
+| 121-182 | 1 tie                      |
 
 **Ties**: Family, accommodation, work, 90-day visits, country ties
 
@@ -220,6 +222,7 @@ If neither automatic test applies, residence depends on ties and days:
 ### Self Assessment
 
 Required if you:
+
 - Are self-employed with income >£1,000
 - Have dividend income >£10,000
 - Have savings income >£10,000
@@ -228,11 +231,11 @@ Required if you:
 
 ### Deadlines
 
-| Event                     | Deadline                    |
-| ------------------------- | --------------------------- |
-| Paper return              | October 31 following year   |
-| Online return             | January 31 following year   |
-| Tax payment               | January 31 following year   |
+| Event         | Deadline                  |
+| ------------- | ------------------------- |
+| Paper return  | October 31 following year |
+| Online return | January 31 following year |
+| Tax payment   | January 31 following year |
 
 ## References
 
