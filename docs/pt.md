@@ -182,7 +182,7 @@ function calculateTaxableBase(gross, expenses, type) {
 | ------------------- | ------------- | ------------- |
 | Health Expenses     | No limit      | No limit      |
 | Education Expenses  | No limit      | No limit      |
-| Housing (Rent)      | €502.11       | €900          |
+| Housing (Rent)      | €700          | €900          |
 | IVA (VAT)           | % of expenses | % of expenses |
 | IVA Books & Culture | N/A           | 15% of VAT    |
 
