@@ -19,6 +19,51 @@ This document details the UK tax rules implemented for tax residents of the Unit
 
 The personal allowance is reduced by £1 for every £2 of income above £100,000, until it reaches £0 at £125,140.
 
+## Tax Brackets by Region
+
+The UK has different tax brackets depending on which nation you live in. The calculator supports:
+
+- **UK (England & Northern Ireland)**: Standard UK-wide rates
+- **Scottish**: Scottish rates for Scottish taxpayers
+
+### Scottish Higher Rate Gap (UK.5)
+
+The Scottish Higher Rate threshold (£43,662 estimated for 25/26) is **~£6,600 lower** than the UK-wide threshold (£50,270), creating a significant "Scottish Tax Gap" for middle earners.
+
+| Threshold                  | Scottish (25/26 est) | UK-wide  | Gap      |
+| -------------------------- | -------------------- | -------- | -------- |
+| Higher Rate                | £43,662              | £50,270  | ~£6,600  |
+| Additional Rate (top rate) | £75,000              | £125,140 | ~£50,000 |
+
+**Impact**: Scottish taxpayers reach the Higher Rate (40%) at £43,662, while UK-wide taxpayers don't reach it until £50,270.
+
+### UK-wide (England & Northern Ireland) - 2025/26
+
+| Taxable Income     | Rate |
+| ------------------ | ---- |
+| Up to £12,570 (PA) | 0%   |
+| £12,570 - £50,270  | 20%  |
+| £50,270 - £125,140 | 40%  |
+| Over £125,140      | 45%  |
+
+### Scottish Rates - 2025/26 (Estimated)
+
+| Taxable Income     | Rate | Band Name          |
+| ------------------ | ---- | ------------------ |
+| Up to £12,570 (PA) | 0%   | Personal Allowance |
+| £12,570 - £43,662  | 20%  | Scottish Basic     |
+| £43,662 - £75,000  | 40%  | Scottish Higher    |
+| Over £75,000       | 45%  | Scottish Top       |
+
+> **Note**: The £43,662 threshold for 2025/26 is estimated based on Scottish Government budget forecasts.
+
+### Historical Scottish Rates
+
+| Tax Year | Higher Rate Threshold | UK-wide Threshold | Gap     |
+| -------- | --------------------- | ----------------- | ------- |
+| 2024/25  | £43,662               | £50,270           | ~£6,600 |
+| 2025/26  | £43,662 (est)         | £50,270           | ~£6,600 |
+
 ## The 60% Marginal Tax Trap (£100,000 - £125,140)
 
 ### How It Works

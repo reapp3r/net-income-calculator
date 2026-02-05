@@ -31,6 +31,7 @@ Detailed documentation is available in the `docs/` directory:
 | `docs/standards.md`      | ISO standards (country codes, currencies, dates)      |
 | `docs/common.md`         | Cross-country tax concepts (FTC, dividends, treaties) |
 | `docs/pt.md`             | Portugal-specific tax rules                           |
+| `docs/gb.md`             | UK-specific tax rules (Scottish rates, PAYE, NI)      |
 | `docs/_index.md`         | Documentation index                                   |
 
 **Always reference `docs/` for detailed specifications.**
