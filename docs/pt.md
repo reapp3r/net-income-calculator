@@ -188,6 +188,23 @@ function calculateTaxableBase(gross, expenses, type) {
 | IVA (VAT)           | % of expenses | % of expenses |
 | IVA Books & Culture | N/A           | 15% of VAT    |
 
+### Global Deduction Cap (Limite Global)
+
+The total sum of all personal deductions (health, education, housing, IVA, and other deductions) is subject to a **global ceiling** per Artigo 78.º-A of the Código do IRS.
+
+| Year | Global Cap |
+| ---- | ---------- |
+| 2025 | €1,000     |
+| 2026 | €1,000     |
+
+**Rules:**
+
+- The specific deduction (employment) is NOT subject to the global cap
+- When total personal deductions exceed the cap, all categories are scaled down proportionally
+- The cap ensures high-income taxpayers cannot claim unlimited personal deductions
+
+> **Source**: _Código do IRS, Artigo 78.º-A_
+
 ### IVA Books & Culture (2026)
 
 Deduct **15% of VAT** on:
