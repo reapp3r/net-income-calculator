@@ -10,6 +10,56 @@ This document details the UK tax rules implemented for tax residents of the Unit
 
 > **Source**: HMRC (www.gov.uk/hmrc)
 
+## Personal Allowance
+
+| Year    | Amount  | Reduction Threshold | Reduction Rate |
+| ------- | ------- | ------------------- | -------------- |
+| 2024/25 | £12,570 | £100,000            | £1 for £2      |
+| 2025/26 | £12,570 | £100,000            | £1 for £2      |
+
+The personal allowance is reduced by £1 for every £2 of income above £100,000, until it reaches £0 at £125,140.
+
+## The 60% Marginal Tax Trap (£100,000 - £125,140)
+
+### How It Works
+
+Between £100,000 and £125,140 of income, the Personal Allowance is gradually reduced:
+
+- **Reduction rate**: £1 of allowance lost for every £2 earned above £100,000 (50% reduction)
+- **Allowance fully withdrawn** at: £125,140 (for 2025: £100,000 + (£12,570 × 2))
+
+### Effective Marginal Rate Calculation
+
+In this income band, you face:
+
+1. **40% income tax** on the £100,000-£125,140 portion
+2. **Plus** 50% reduction in Personal Allowance × 40% tax rate = **20% effective additional tax**
+3. **Total effective marginal rate: 60%**
+
+### Impact on Take-Home Pay
+
+For every £100 earned in the £100,000-£125,140 band:
+
+- £40 goes to income tax (40%)
+- £20 goes to "hidden" tax from allowance withdrawal (50% of £12,570 allowance lost, taxed at 40%)
+- **Net: Only £40 per £100 earned** (before National Insurance)
+
+> **Example**: At £110,000 income:
+>
+> - First £100,000: taxed at normal rates (keeps Personal Allowance)
+> - Next £10,000: 40% tax (£4,000) + £5,000 allowance lost × 40% (£2,000) = £6,000 total
+> - Effective rate: £6,000 ÷ £10,000 = **60%**
+
+### Implementation Note
+
+The calculator implements this correctly through the Personal Allowance reduction mechanism in `calculateUKPersonalAllowance()`. The 60% effective rate emerges automatically from:
+
+- The 40% tax bracket applied to income above £100,000
+- The 50% taper rate on Personal Allowance
+- The allowance is applied at the 40% marginal rate
+
+> **Source**: [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)
+
 ## Tax Brackets (2024/25)
 
 ### Income Tax (After Personal Allowance)
@@ -27,15 +77,6 @@ This document details the UK tax rules implemented for tax residents of the Unit
 | £0 - £37,700       | Basic      | 8.75%  |
 | £37,701 - £125,140 | Higher     | 33.75% |
 | Over £125,140      | Additional | 39.35% |
-
-## Personal Allowance
-
-| Year    | Amount  | Reduction Threshold | Reduction Rate |
-| ------- | ------- | ------------------- | -------------- |
-| 2024/25 | £12,570 | £100,000            | £1 for £2      |
-| 2025/26 | £12,570 | £100,000            | £1 for £2      |
-
-The personal allowance is reduced by £1 for every £2 of income above £100,000, until it reaches £0 at £125,140.
 
 ## Personal Savings Allowance (PSA)
 
@@ -113,18 +154,23 @@ For freelance/self-employment income, the first £1,000 is tax-free. You can ded
 
 ### Employment (Class 1)
 
-| Income (per month) | Rate |
-| ------------------ | ---- |
-| £1,048 - £4,189    | 8%   |
-| Over £4,189        | 2%   |
+| Income (per month) | Rate  |
+| ------------------ | ----- |
+| £0 - £1,048        | 0%    |
+| £1,048 - £4,189    | 5.25% |
+| Over £4,189        | 2%    |
 
 ### Freelance (Class 2 + Class 4)
 
-| Type    | Threshold              | Rate              |
-| ------- | ---------------------- | ----------------- |
-| Class 2 | Over £12,570/year      | £3.45/week (flat) |
-| Class 4 | £12,570 - £50,270/year | 6%                |
-| Class 4 | Over £50,270/year      | 2%                |
+| Class 2:                 |            |
+| ------------------------ | ---------- |
+| £6,725+ (annual profits) | £3.45/week |
+
+| Class 4:          | Rate |
+| ----------------- | ---- |
+| £0 - £12,570      | 0%   |
+| £12,570 - £50,270 | 6%   |
+| Over £50,270      | 2%   |
 
 ## Residency Determination
 
@@ -165,3 +211,4 @@ Available when you move countries permanently during a tax year:
 - **HMRC**: www.gov.uk/hmrc
 - **Tax Guidance**: www.gov.uk/government/organisations/hm-revenue-customs
 - **Statutory Residence Test**: Finance Act 2013
+- **60% Tax Trap**: [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)
