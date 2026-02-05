@@ -6,9 +6,18 @@ This document details the UK tax rules implemented for tax residents of the Unit
 
 - **Tax year**: April 6 - April 5
 - **Filing deadline**: January 31 following tax year end
-- **Payment**: Pay-as-you-earn (PAYE) for employment, self-assessment for others
+- **Payment**: Pay-as-you-earn (PAYE) for employment, self-assessment for other income
 
-> **Source**: _Income Tax Act 2007, Tax Calculation Act 2024_
+> **Source**: HMRC (www.gov.uk/hmrc)
+
+## Personal Allowance
+
+| Year    | Amount  | Reduction Threshold | Reduction Rate |
+| ------- | ------- | ------------------- | -------------- |
+| 2024/25 | £12,570 | £100,000            | £1 for £2      |
+| 2025/26 | £12,570 | £100,000            | £1 for £2      |
+
+The personal allowance is reduced by £1 for every £2 of income above £100,000, until it reaches £0 at £125,140.
 
 ## Tax Brackets by Region
 
@@ -55,191 +64,196 @@ The Scottish Higher Rate threshold (£43,662 estimated for 25/26) is **~£6,600 
 | 2024/25  | £43,662               | £50,270           | ~£6,600 |
 | 2025/26  | £43,662 (est)         | £50,270           | ~£6,600 |
 
-## Personal Allowance
+## The 60% Marginal Tax Trap (£100,000 - £125,140)
 
-| Year    | Amount  | Reduction Threshold | Reduction Rate |
-| ------- | ------- | ------------------- | -------------- |
-| 2025/26 | £12,570 | £100,000            | £1 for £2      |
-| 2026/27 | £12,570 | £100,000            | £1 for £2      |
+### How It Works
 
-**Allowance Reduction**: For income over £100,000, the Personal Allowance is reduced by £1 for every £2 of excess income. It reaches £0 at £125,140.
+Between £100,000 and £125,140 of income, the Personal Allowance is gradually reduced:
 
-## Dividend Tax Rates
+- **Reduction rate**: £1 of allowance lost for every £2 earned above £100,000 (50% reduction)
+- **Allowance fully withdrawn** at: £125,140 (for 2025: £100,000 + (£12,570 × 2))
 
-Dividends have their own tax rates (different from income tax rates).
+### Effective Marginal Rate Calculation
 
-| Taxable Income         | UK-wide | Scottish |
-| ---------------------- | ------- | -------- |
-| Up to £500 (allowance) | 0%      | 0%       |
-| £500 - £12,570         | 8.75%   | 8.75%    |
-| £12,570 - £50,270      | 8.75%   | 8.75%    |
-| £50,270 - £125,140     | 33.75%  | 33.75%   |
-| Over £125,140          | 39.35%  | 39.35%   |
+In this income band, you face:
 
-**Dividend Allowance**: £500 (2024/25 onwards)
+1. **40% income tax** on the £100,000-£125,140 portion
+2. **Plus** 50% reduction in Personal Allowance × 40% tax rate = **20% effective additional tax**
+3. **Total effective marginal rate: 60%**
+
+### Impact on Take-Home Pay
+
+For every £100 earned in the £100,000-£125,140 band:
+
+- £40 goes to income tax (40%)
+- £20 goes to "hidden" tax from allowance withdrawal (50% of £12,570 allowance lost, taxed at 40%)
+- **Net: Only £40 per £100 earned** (before National Insurance)
+
+> **Example**: At £110,000 income:
+>
+> - First £100,000: taxed at normal rates (keeps Personal Allowance)
+> - Next £10,000: 40% tax (£4,000) + £5,000 allowance lost × 40% (£2,000) = £6,000 total
+> - Effective rate: £6,000 ÷ £10,000 = **60%**
+
+### Implementation Note
+
+The calculator implements this correctly through the Personal Allowance reduction mechanism in `calculateUKPersonalAllowance()`. The 60% effective rate emerges automatically from:
+
+- The 40% tax bracket applied to income above £100,000
+- The 50% taper rate on Personal Allowance
+- The allowance is applied at the 40% marginal rate
+
+> **Source**: [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)
+
+## Tax Brackets (2024/25)
+
+### Income Tax (After Personal Allowance)
+
+| Taxable Income     | Band       | Rate |
+| ------------------ | ---------- | ---- |
+| £0 - £37,700       | Basic      | 20%  |
+| £37,701 - £125,140 | Higher     | 40%  |
+| Over £125,140      | Additional | 45%  |
+
+### Dividend Tax (After Dividend Allowance)
+
+| Taxable Income     | Band       | Rate   |
+| ------------------ | ---------- | ------ |
+| £0 - £37,700       | Basic      | 8.75%  |
+| £37,701 - £125,140 | Higher     | 33.75% |
+| Over £125,140      | Additional | 39.35% |
+
+## Personal Savings Allowance (PSA)
+
+A tax-free allowance for interest income, tiered based on the taxpayer's income tax band:
+
+| Tax Band        | Tax Rate | PSA Amount |
+| --------------- | -------- | ---------- |
+| Basic rate      | 20%      | £1,000     |
+| Higher rate     | 40%      | £500       |
+| Additional rate | 45%      | £0         |
+
+PSA amounts are loaded from reference data files (`Deductions.csv`) with `Type='PersonalSavingsAllowance'` and `TaxBand` field indicating the applicable band.
+
+### Reference Data Format
+
+The PSA reference data uses the following structure:
+
+```csv
+Year,Type,TaxBand,Amount
+2025,PersonalSavingsAllowance,basic,1000
+2025,PersonalSavingsAllowance,higher,500
+2025,PersonalSavingsAllowance,additional,0
+```
+
+### PSA Calculation
+
+The PSA is determined by:
+
+1. Finding which tax bracket the taxpayer's **adjusted net income** falls into (using tax bracket reference data)
+2. Reading the `TaxBand` field from that bracket (basic/higher/additional)
+3. Looking up the PSA amount from reference data for that tax band and year
+
+### Reference Data Structure
+
+Tax brackets include a `TaxBand` field:
+
+```csv
+Year,IncomeType,MinIncome,MaxIncome,Rate,TaxBand
+2025,income,0,37700,0.2,basic
+2025,income,37700,125140,0.4,higher
+2025,income,125140,,0.45,additional
+```
+
+### Example
+
+A taxpayer with £50,000 adjusted net income:
+
+1. Tax band: Higher rate (over £37,700)
+2. PSA allowance: £500
+3. Interest income: £800
+4. Taxable interest: £800 - £500 = £300
+5. Tax due: £300 × 20% (basic rate on interest) = £60
+
+> **Note**: Interest income is taxed at the taxpayer's marginal rate, but the PSA provides a tax-free allowance up to the band threshold.
+
+## Dividend Allowance
+
+| Year    | Amount |
+| ------- | ------ |
+| 2024/25 | £500   |
+| 2025/26 | £500   |
+
+The first £500 of dividend income is tax-free. Dividends above this amount are taxed at the dividend tax rates.
+
+## Trading Allowance
+
+| Year    | Amount | Max Income |
+| ------- | ------ | ---------- |
+| 2024/25 | £1,000 | £1,000     |
+| 2025/26 | £1,000 | £1,000     |
+
+For freelance/self-employment income, the first £1,000 is tax-free. You can deduct either this allowance or actual expenses, whichever is higher.
 
 ## National Insurance
 
 ### Employment (Class 1)
 
-| Income (per month) | Employee Rate | Employer Rate |
-| ------------------ | ------------- | ------------- |
-| Up to £1,048 (PT)  | 0%            | 0%            |
-| £1,048 - £4,189    | 8%            | 13.8%         |
-| Over £4,189        | 2%            | 13.8%         |
+| Income (per month) | Rate  |
+| ------------------ | ----- |
+| £0 - £1,048        | 0%    |
+| £1,048 - £4,189    | 5.25% |
+| Over £4,189        | 2%    |
 
-### Freelance (Self-Employed)
+### Freelance (Class 2 + Class 4)
 
-| Class   | Income Range      | Rate              |
-| ------- | ----------------- | ----------------- |
-| Class 2 | Over £6,725/year  | £3.45/week (flat) |
-| Class 4 | £12,570 - £50,270 | 6%                |
-| Class 4 | Over £50,270      | 2%                |
+| Class 2:                 |            |
+| ------------------------ | ---------- |
+| £6,725+ (annual profits) | £3.45/week |
 
-### Trading Allowance
+| Class 4:          | Rate |
+| ----------------- | ---- |
+| £0 - £12,570      | 0%   |
+| £12,570 - £50,270 | 6%   |
+| Over £50,270      | 2%   |
 
-| Year    | Amount |
-| ------- | ------ |
-| 2025/26 | £1,000 |
+## Residency Determination
 
-**Usage**: Can be deducted from freelance income instead of actual expenses (whichever is higher).
+### Statutory Residence Test (SRT)
 
-## Savings and Investment Income
+The UK uses the Statutory Residence Test with multiple components:
 
-### Personal Savings Allowance
+**Automatic UK Tests** (you're resident if ANY apply):
 
-| Tax Band         | Allowance |
-| ---------------- | --------- |
-| Basic (20%)      | £1,000    |
-| Higher (40%)     | £500      |
-| Additional (45%) | £0        |
+- Spend 183+ days in the UK
+- Have only home in the UK for 91+ days (and live in it)
+- Work full-time in the UK (35+ hours/week for any period)
 
-### Starting Rate for Savings
+**Automatic Overseas Tests** (you're NOT resident if ANY apply):
 
-- **Rate**: 0% on first £5,000 of savings income
-- **Condition**: Only available if total non-savings income < £5,000
+- Spend 16+ days in UK and were resident for 1+ of previous 3 tax years
+- Spend 46+ days in UK and were NOT resident in previous 3 tax years
+- Work full-time overseas (35+ hours/week) with fewer than 91 UK work days
 
-## Capital Gains Tax
+**Sufficient Ties Test** (if no automatic test applies):
 
-| Asset Type           | Basic Rate | Higher Rate |
-| -------------------- | ---------- | ----------- |
-| Residential property | 18%        | 24%         |
-| Other assets         | 10%        | 20%         |
+- Number of days in UK combined with "connecting factors" (family, accommodation, work, UK presence)
 
-**Annual Exempt Amount**: £3,000 (2024/25 onwards)
+## Split Year Treatment
 
-## Tax Region Determination
+Available when you move countries permanently during a tax year:
 
-### Scottish Taxpayer Status
-
-You are a Scottish taxpayer if you:
-
-- Have a sole or main residence in Scotland
-- Spend more time in Scotland than elsewhere in the UK
-- Are a Scottish Parliament member
-
-### Welsh Taxpayer Status
-
-Wales uses UK-wide rates with a Welsh Rate of Income Tax (WRIT) set by the Welsh Government. For 2024/25, WRIT is effectively 0%.
-
-## Income Types
-
-### Employment (PAYE)
-
-- **Withholding**: Pay-as-you-earn (PAYE) through employer
-- **NI Class**: Class 1 (employee + employer)
-- **Tax**: Progressive based on region
-
-### Freelance (Self-Assessment)
-
-- **Withholding**: None (self-assessment)
-- **NI Class**: Class 2 (flat) + Class 4 (percentage)
-- **Allowance**: Trading allowance (£1,000)
-
-### Dividends
-
-- **Withholding**: 10% (UK credit)
-- **Allowance**: £500 dividend allowance
-- **Tax**: Special dividend rates (see above)
-
-## Foreign Tax Credit
-
-The UK allows foreign tax credit on a **per-income-source** basis:
-
-- Credit limited to UK tax on that foreign income
-- Cannot create refund
-- Unused credits generally lost (no carry-forward)
-
-## Statutory Residence Test (SRT)
-
-The UK uses the Statutory Residence Test to determine tax residency:
-
-### Automatic Overseas Tests
-
-You are **non-resident** if you:
-
-- Were UK resident in previous year and spend <16 days in UK
-- Were NOT UK resident in previous year and spend <46 days in UK
-
-### Automatic UK Tests
-
-You are **resident** if you:
-
-- Spend ≥183 days in the tax year in UK
-- Have only home in UK and spend ≥30 days there
-- Work full-time in UK for ≥365 days with ≥75% of work days in UK
-
-### Sufficient Ties Test
-
-If neither automatic test applies, residence depends on ties and days:
-
-| UK Days | Ties Needed to be Resident |
-| ------- | -------------------------- |
-| 16-45   | 4 ties (all)               |
-| 46-90   | 3 ties                     |
-| 91-120  | 2 ties                     |
-| 121-182 | 1 tie                      |
-
-**Ties**: Family, accommodation, work, 90-day visits, country ties
-
-## Special Tax Regimes
-
-### Remittance Basis
-
-- **Eligibility**: Non-domiciled individuals
-- **Benefit**: Foreign income not taxed unless remitted to UK
-- **Cost**: £30,000/year after 7 years of residence
-- **Status**: Being phased out (2025 onwards)
-
-### Non-Domiciled (Non-Dom)
-
-- **Definition**: Domiciled outside UK
-- **Benefit**: Remittance basis available
-- **Changes**: 15-year rule replacing remittance basis from April 2025
-
-## Filing Requirements
-
-### Self Assessment
-
-Required if you:
-
-- Are self-employed with income >£1,000
-- Have dividend income >£10,000
-- Have savings income >£10,000
-- Have foreign income >£300
-- Are a company director
-
-### Deadlines
-
-| Event         | Deadline                  |
-| ------------- | ------------------------- |
-| Paper return  | October 31 following year |
-| Online return | January 31 following year |
-| Tax payment   | January 31 following year |
+| Case   | Description                     |
+| ------ | ------------------------------- |
+| Case 1 | Arrive in UK with overseas home |
+| Case 2 | Leave UK with overseas home     |
+| Case 3 | Full-time work overseas         |
+| Case 4 | Spouse/civil partner overseas   |
+| Case 5 | Other special circumstances     |
 
 ## References
 
-- **Tax Authority**: www.gov.uk/hmrc
-- **Legislation**: Income Tax Act 2007, Tax Calculation Act 2024
-- **Scottish Rates**: www.gov.scot/policies/taxation
-- **SRT Guidance**: HMRC Statutory Residence Test (RDR3)
+- **HMRC**: www.gov.uk/hmrc
+- **Tax Guidance**: www.gov.uk/government/organisations/hm-revenue-customs
+- **Statutory Residence Test**: Finance Act 2013
+- **60% Tax Trap**: [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)
