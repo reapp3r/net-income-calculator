@@ -221,7 +221,7 @@ Can offset future income with past losses.
 
 | Country  | Deadline   | Extension   |
 | -------- | ---------- | ----------- |
-| Portugal | May 31     | August 31   |
+| Portugal | June 30    | August 31   |
 | UK       | January 31 | February 28 |
 | Germany  | July 31    | October 31  |
 
