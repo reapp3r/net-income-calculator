@@ -98,6 +98,24 @@ The personal allowance is reduced by £1 for every £2 of income above £100,000
 | £120,000  | £2,570             |
 | £125,140+ | £0                 |
 
+### Scottish Higher Rate Gap (UK.5)
+
+The Scottish Higher Rate threshold (£43,662 for 25/26) is **~£6,600 lower** than the UK-wide threshold (£50,270), creating a significant "Scottish Tax Gap" for middle earners.
+
+| Threshold                  | Scottish (25/26) | UK-wide  | Gap      |
+| -------------------------- | ---------------- | -------- | -------- |
+| Higher Rate                | £43,662          | £50,270  | ~£6,600  |
+| Additional Rate (top rate) | £75,000          | £125,140 | ~£50,000 |
+
+**Impact**: Scottish taxpayers reach the Higher Rate (42%) at £43,662, while UK-wide taxpayers don't reach it until £50,270.
+
+### Historical Scottish Rates
+
+| Tax Year | Higher Rate Threshold | UK-wide Threshold | Gap     |
+| -------- | --------------------- | ----------------- | ------- |
+| 2024/25  | £43,662               | £50,270           | ~£6,600 |
+| 2025/26  | £43,662               | £50,270           | ~£6,600 |
+
 ## The 60% Marginal Tax Trap (£100,000 - £125,140)
 
 ### How It Works
