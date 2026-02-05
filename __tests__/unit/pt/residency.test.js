@@ -107,7 +107,7 @@ describe('PortugalResidency', () => {
 
     it('getWithholdingRates should return standard rates', () => {
       const rates = residency.getWithholdingRates();
-      expect(rates.employment).toBe(0);
+      expect(rates.employment).toBe('MARGINAL_2025');
       expect(rates.freelance).toBe(0.25);
       expect(rates.dividend).toBe(0.25);
     });
