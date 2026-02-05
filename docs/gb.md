@@ -5,17 +5,19 @@ This document details the UK tax rules implemented for tax residents of the Unit
 ## Tax Year
 
 - **Tax year**: April 6 - April 5
-- **Filing window**: October 31 (paper) or January 31 (online) of following year
-- **Payment**: Pay As You Earn (PAYE) for employment, Self Assessment for freelancers
+- **Filing deadline**: January 31 following tax year end
+- **Payment**: Pay-as-you-earn (PAYE) for employment, self-assessment for other income
 
-> **Source**: [HMRC Tax Returns](https://www.gov.uk/government/collections/hmrc-online-tax-return-forms)
+> **Source**: HMRC (www.gov.uk/hmrc)
 
 ## Personal Allowance
 
-| Year | Amount  |
-| ---- | ------- |
-| 2025 | £12,570 |
-| 2026 | £12,770 |
+| Year    | Amount  | Reduction Threshold | Reduction Rate |
+| ------- | ------- | ------------------- | -------------- |
+| 2024/25 | £12,570 | £100,000            | £1 for £2      |
+| 2025/26 | £12,570 | £100,000            | £1 for £2      |
+
+The personal allowance is reduced by £1 for every £2 of income above £100,000, until it reaches £0 at £125,140.
 
 ## The 60% Marginal Tax Trap (£100,000 - £125,140)
 
@@ -58,34 +60,95 @@ The calculator implements this correctly through the Personal Allowance reductio
 
 > **Source**: [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)
 
-## Tax Brackets
+## Tax Brackets (2024/25)
 
-### 2025-2026 (Tax Year)
+### Income Tax (After Personal Allowance)
 
-| Taxable Income     | Rate |
-| ------------------ | ---- |
-| £0 - £37,700       | 20%  |
-| £37,700 - £125,140 | 40%  |
-| Over £125,140      | 45%  |
+| Taxable Income     | Band       | Rate |
+| ------------------ | ---------- | ---- |
+| £0 - £37,700       | Basic      | 20%  |
+| £37,701 - £125,140 | Higher     | 40%  |
+| Over £125,140      | Additional | 45%  |
 
-**Note**: Taxable income is after Personal Allowance deduction. The bands shown are for the "adjusted" income (i.e., income minus Personal Allowance).
+### Dividend Tax (After Dividend Allowance)
 
-### 2026-2027 (Tax Year)
+| Taxable Income     | Band       | Rate   |
+| ------------------ | ---------- | ------ |
+| £0 - £37,700       | Basic      | 8.75%  |
+| £37,701 - £125,140 | Higher     | 33.75% |
+| Over £125,140      | Additional | 39.35% |
 
-| Taxable Income     | Rate |
-| ------------------ | ---- |
-| £0 - £37,700       | 20%  |
-| £37,700 - £125,140 | 40%  |
-| Over £125,140      | 45%  |
+## Personal Savings Allowance (PSA)
 
-## Dividend Tax Rates
+A tax-free allowance for interest income, tiered based on the taxpayer's income tax band:
 
-| Taxable Income                 | Rate   |
-| ------------------------------ | ------ |
-| £0 - £500 (Dividend Allowance) | 0%     |
-| £500 - £37,700                 | 8.75%  |
-| £37,700 - £125,140             | 33.75% |
-| Over £125,140                  | 39.35% |
+| Tax Band        | Tax Rate | PSA Amount |
+| --------------- | -------- | ---------- |
+| Basic rate      | 20%      | £1,000     |
+| Higher rate     | 40%      | £500       |
+| Additional rate | 45%      | £0         |
+
+PSA amounts are loaded from reference data files (`Deductions.csv`) with `Type='PersonalSavingsAllowance'` and `TaxBand` field indicating the applicable band.
+
+### Reference Data Format
+
+The PSA reference data uses the following structure:
+
+```csv
+Year,Type,TaxBand,Amount
+2025,PersonalSavingsAllowance,basic,1000
+2025,PersonalSavingsAllowance,higher,500
+2025,PersonalSavingsAllowance,additional,0
+```
+
+### PSA Calculation
+
+The PSA is determined by:
+
+1. Finding which tax bracket the taxpayer's **adjusted net income** falls into (using tax bracket reference data)
+2. Reading the `TaxBand` field from that bracket (basic/higher/additional)
+3. Looking up the PSA amount from reference data for that tax band and year
+
+### Reference Data Structure
+
+Tax brackets include a `TaxBand` field:
+
+```csv
+Year,IncomeType,MinIncome,MaxIncome,Rate,TaxBand
+2025,income,0,37700,0.2,basic
+2025,income,37700,125140,0.4,higher
+2025,income,125140,,0.45,additional
+```
+
+### Example
+
+A taxpayer with £50,000 adjusted net income:
+
+1. Tax band: Higher rate (over £37,700)
+2. PSA allowance: £500
+3. Interest income: £800
+4. Taxable interest: £800 - £500 = £300
+5. Tax due: £300 × 20% (basic rate on interest) = £60
+
+> **Note**: Interest income is taxed at the taxpayer's marginal rate, but the PSA provides a tax-free allowance up to the band threshold.
+
+## Dividend Allowance
+
+| Year    | Amount |
+| ------- | ------ |
+| 2024/25 | £500   |
+| 2025/26 | £500   |
+
+The first £500 of dividend income is tax-free. Dividends above this amount are taxed at the dividend tax rates.
+
+## Trading Allowance
+
+| Year    | Amount | Max Income |
+| ------- | ------ | ---------- |
+| 2024/25 | £1,000 | £1,000     |
+| 2025/26 | £1,000 | £1,000     |
+
+For freelance/self-employment income, the first £1,000 is tax-free. You can deduct either this allowance or actual expenses, whichever is higher.
 
 ## National Insurance
 
@@ -109,32 +172,43 @@ The calculator implements this correctly through the Personal Allowance reductio
 | £12,570 - £50,270 | 6%   |
 | Over £50,270      | 2%   |
 
-## Allowances
+## Residency Determination
 
-### Trading Allowance (Freelance)
+### Statutory Residence Test (SRT)
 
-| Year | Amount |
-| ---- | ------ |
-| 2025 | £1,000 |
-| 2026 | £1,000 |
+The UK uses the Statutory Residence Test with multiple components:
 
-Deduct £1,000 from freelance income before tax, or use actual expenses if higher.
+**Automatic UK Tests** (you're resident if ANY apply):
 
-### Dividend Allowance
+- Spend 183+ days in the UK
+- Have only home in the UK for 91+ days (and live in it)
+- Work full-time in the UK (35+ hours/week for any period)
 
-| Year | Amount |
-| ---- | ------ |
-| 2025 | £500   |
-| 2026 | £500   |
+**Automatic Overseas Tests** (you're NOT resident if ANY apply):
 
-First £500 of dividend income is tax-free.
+- Spend 16+ days in UK and were resident for 1+ of previous 3 tax years
+- Spend 46+ days in UK and were NOT resident in previous 3 tax years
+- Work full-time overseas (35+ hours/week) with fewer than 91 UK work days
 
-## Special Regimes
+**Sufficient Ties Test** (if no automatic test applies):
 
-The UK does not currently have any special tax regimes comparable to Portugal's NHR.
+- Number of days in UK combined with "connecting factors" (family, accommodation, work, UK presence)
 
-## Additional Resources
+## Split Year Treatment
 
-- [HMRC Income Tax Rates](https://www.gov.uk/government/publications/rates-and-allowances-income-tax/income-tax-rates-and-allowances-current-and-past-years)
-- [HMRC National Insurance](https://www.gov.uk/national-insurance)
-- [HMRC Personal Allowance](https://www.gov.uk/income-tax/Personal-Allowance)
+Available when you move countries permanently during a tax year:
+
+| Case   | Description                     |
+| ------ | ------------------------------- |
+| Case 1 | Arrive in UK with overseas home |
+| Case 2 | Leave UK with overseas home     |
+| Case 3 | Full-time work overseas         |
+| Case 4 | Spouse/civil partner overseas   |
+| Case 5 | Other special circumstances     |
+
+## References
+
+- **HMRC**: www.gov.uk/hmrc
+- **Tax Guidance**: www.gov.uk/government/organisations/hm-revenue-customs
+- **Statutory Residence Test**: Finance Act 2013
+- **60% Tax Trap**: [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)
