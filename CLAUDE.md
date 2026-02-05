@@ -48,7 +48,6 @@ The following assumptions are **by design** - the calculator intentionally does 
 | No IRS Jovem eligibility         | Assumes taxpayer no longer qualifies for the 10-year regressive exemption regime.                                                                               |
 | No NHR 2.0 (IFICU)               | Does not implement the 2024 Tax Incentive for Scientific Research and Innovation.                                                                               |
 | No first-year SS exemption       | Does not apply 12-month social security exemption for first-time self-registrers.                                                                               |
-| No Minimum Subsistence (2026)    | Does not apply the €12,880 safety net that ensures net income doesn't fall below minimum wage.                                                                  |
 
 > When editing code or answering questions, always respect these assumptions. Do NOT add features for these scenarios unless explicitly requested.
 

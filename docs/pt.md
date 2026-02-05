@@ -217,12 +217,16 @@ Part of €250 general IVA deduction cap.
 
 ## Minimum Subsistence (Existência Mínima) - 2026
 
-Safety net ensuring net income ≥ minimum wage threshold.
+Safety net ensuring net income ≥ minimum wage threshold. Applied at the annual level after all other calculations.
 
-| Year | Amount          |
-| ---- | --------------- |
-| 2025 | Not implemented |
-| 2026 | €12,880         |
+| Year | Amount  |
+| ---- | ------- |
+| 2025 | €0      |
+| 2026 | €12,880 |
+
+> **Note**: If calculated annual net income falls below the minimum subsistence threshold, an adjustment is applied to bring net income up to this threshold. The adjustment appears as `MinimumSubsistenceAdjustment` in the annual summary.
+>
+> Values are loaded from `MinimumSubsistence.csv` reference data.
 
 ## Withholding Tax (as Source Country)
 

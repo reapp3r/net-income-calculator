@@ -18,6 +18,7 @@ data/
 │   ├── SolidarityTax.csv
 │   ├── SpecialRegimes.csv
 │   ├── ForeignTaxCredit.csv
+│   ├── MinimumSubsistence.csv
 │   ├── MonthlyPersonalDeductions.csv
 │   └── SimulationParameters.csv
 │
