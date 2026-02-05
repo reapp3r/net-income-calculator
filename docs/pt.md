@@ -5,8 +5,10 @@ This document details the Portuguese tax rules implemented for tax residents of 
 ## Tax Year
 
 - **Calendar year**: January 1 - December 31
-- **Filing deadline**: Typically May of following year
+- **Filing window**: April 1 - June 30 of following year (extension available until August 31)
 - **Payment**: Quarterly advances + final settlement
+
+> **Source**: _Código do IRS, Artigo 60.º_
 
 ## Tax Brackets
 
