@@ -409,10 +409,10 @@ module.exports = {
 | Over €83,696 | 48% | €10,939.90 |
 
 **Solidarity Tax (High Earners):**
-| Income Threshold | Additional Rate |
-|------------------|-----------------|
-| Over €80,000 | +2.5% on excess |
-| Over €250,000 | +5% on excess |
+| Year | Threshold 1 | Additional Rate | Threshold 2 | Additional Rate |
+|------|-------------|-----------------|-------------|-----------------|
+| 2025 | €80,000 | +2.5% on excess | €250,000 | +5% on excess |
+| 2026 | €86,634 | +2.5% on excess | €250,000 | +5% on excess |
 
 Applied to **taxable income** (after specific deduction and other applicable deductions).
 
