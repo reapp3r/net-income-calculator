@@ -266,7 +266,7 @@ Each country has an intrinsic fiscal year (cannot be changed):
 | Freelance | 21.4% | 70% of gross | 12× IAS/month |
 | Dividend | 0% | N/A | N/A |
 
-**IAS (2025):** €509.26
+**IAS (2025):** €522.50
 
 **NHR Benefits (Pre-2024):**
 
@@ -329,18 +329,7 @@ For each year:
 
 ## Constants
 
-```javascript
-const IAS_2025 = 509.26;
-const IAS_2026 = 537.13;
-const SPECIFIC_DEDUCTION_2025 = 4462.15;
-const SPECIFIC_DEDUCTION_2026 = 4641.5;
-const FREELANCE_SS_CAP_MONTHLY_2025 = 12 * IAS_2025; // €6,111.12
-const FREELANCE_COEFFICIENT_SERVICES = 0.7;
-const FREELANCE_COEFFICIENT_GOODS = 0.2;
-const SOLIDARITY_THRESHOLD_1_2025 = 80000;
-const SOLIDARITY_RATE_1 = 0.025;
-const SOLIDARITY_RATE_2 = 0.05;
-```
+See the comprehensive Constants section below.
 
 ## Testing
 

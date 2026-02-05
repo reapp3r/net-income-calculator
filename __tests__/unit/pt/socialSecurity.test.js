@@ -8,11 +8,11 @@ const {
 const MOCK_SS_DATA = [
   {
     Year: 2025,
-    IAS: 509.26,
+    IAS: 522.5,
     EmploymentRate: 0.11,
     FreelanceRate: 0.214,
     FreelanceCoefficient: 0.7,
-    FreelanceCapMonthly: 6111.12,
+    FreelanceCapMonthly: 6270.0,
     DividendRate: 0,
   },
   {
@@ -34,7 +34,7 @@ describe('Portugal - Social Security Calculation', () => {
       expect(ssData.EmploymentRate).toBe(0.11);
       expect(ssData.FreelanceRate).toBe(0.214);
       expect(ssData.FreelanceCoefficient).toBe(0.7);
-      expect(ssData.FreelanceCapMonthly).toBe(6111.12);
+      expect(ssData.FreelanceCapMonthly).toBe(6270.0);
     });
 
     test('should throw error for invalid year', () => {
@@ -155,7 +155,7 @@ describe('Portugal - Social Security Calculation', () => {
         2025,
         MOCK_SS_DATA
       );
-      // 400000 * 0.70 * 0.214 = 59920 < Cap (73333.44)
+      // 400000 * 0.70 * 0.214 = 59920 < Cap (75240.00)
       expect(ss).toBeCloseTo(59920, 0);
     });
 
@@ -167,9 +167,9 @@ describe('Portugal - Social Security Calculation', () => {
         2025,
         MOCK_SS_DATA
       );
-      // Cap = 6111.12 * 12 = 73333.44
+      // Cap = 6270.00 * 12 = 75240.00
       // 800000 * 0.70 * 0.214 = 119840 > Cap
-      expect(ss).toBe(73333.44);
+      expect(ss).toBe(75240.0);
     });
 
     test('capped at annual cap for 2026', () => {
@@ -207,7 +207,7 @@ describe('Portugal - Social Security Calculation', () => {
         2025,
         MOCK_SS_DATA
       );
-      expect(ss).toBe(73333.44);
+      expect(ss).toBe(75240.0);
     });
 
     test('uses 2026 cap for 2026', () => {
