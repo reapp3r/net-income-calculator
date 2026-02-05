@@ -1,14 +1,86 @@
-# United Kingdom Tax Residency
+# United Kingdom (GB) Tax Rules
 
-This document details the UK tax rules implemented for tax residents of the United Kingdom.
+## Tax Residency
 
-## Tax Year
+### Fiscal Year
 
-- **Tax year**: April 6 - April 5
+UK tax year runs from **April 6 to April 5** of the following calendar year.
+
+Example: Tax year 2025-26 covers April 6, 2025 to April 5, 2026.
+
 - **Filing deadline**: January 31 following tax year end
 - **Payment**: Pay-as-you-earn (PAYE) for employment, self-assessment for other income
 
-> **Source**: HMRC (www.gov.uk/hmrc)
+### Statutory Residence Test (SRT)
+
+The UK uses the Statutory Residence Test to determine tax residency:
+
+| Test               | Description                    | Threshold  |
+| ------------------ | ------------------------------ | ---------- |
+| Automatic Overseas | Non-resident if <16 days in UK | <16 days   |
+| Automatic UK       | Resident if >=183 days in UK   | >=183 days |
+| Sufficient Ties    | Combined test for 16-182 days  | Varies     |
+
+**Tie Categories:**
+
+- Family tie
+- Accommodation tie
+- Work tie (>40 days)
+- 90-day tie
+- Country tie
+
+**Automatic UK Tests** (you're resident if ANY apply):
+
+- Spend 183+ days in the UK
+- Have only home in the UK for 91+ days (and live in it)
+- Work full-time in the UK (35+ hours/week for any period)
+
+**Automatic Overseas Tests** (you're NOT resident if ANY apply):
+
+- Spend 16+ days in UK and were resident for 1+ of previous 3 tax years
+- Spend 46+ days in UK and were NOT resident in previous 3 tax years
+- Work full-time overseas (35+ hours/week) with fewer than 91 UK work days
+
+**Sufficient Ties Test** (if no automatic test applies):
+
+- Number of days in UK combined with "connecting factors" (family, accommodation, work, UK presence)
+
+## Regional Tax Bands (Scotland vs Rest of UK)
+
+### Scotland-Specific Income Tax Bands (2025-26)
+
+Scotland has different income tax bands compared to the rest of the UK.
+
+| Band               | Income Range       | Tax Rate |
+| ------------------ | ------------------ | -------- |
+| Personal Allowance | Up to £12,570      | 0%       |
+| Starter Rate       | £12,571 - £15,397  | 19%      |
+| Basic Rate         | £15,398 - £27,491  | 20%      |
+| Intermediate Rate  | £27,492 - £43,662  | 21%      |
+| Higher Rate        | £43,663 - £75,000  | 42%      |
+| Advanced Rate      | £75,001 - £125,140 | 45%      |
+| Top Rate           | Over £125,140      | 48%      |
+
+### Rest of UK Income Tax Bands (2025-26)
+
+England, Wales, and Northern Ireland tax bands:
+
+| Band               | Income Range       | Tax Rate |
+| ------------------ | ------------------ | -------- |
+| Personal Allowance | Up to £12,570      | 0%       |
+| Basic Rate         | £12,571 - £50,270  | 20%      |
+| Higher Rate        | £50,271 - £125,140 | 40%      |
+| Additional Rate    | Over £125,140      | 45%      |
+
+### Key Differences
+
+| Aspect      | Scotland                                                      | Rest of UK                          |
+| ----------- | ------------------------------------------------------------- | ----------------------------------- |
+| Bands       | 6 bands (Starter, Basic, Intermediate, Higher, Advanced, Top) | 3 bands (Basic, Higher, Additional) |
+| Top Rate    | 48% on income over £125,140                                   | 45% on income over £125,140         |
+| Higher Rate | 42% on £43,663 - £75,000                                      | 40% on £50,271 - £125,140           |
+
+**Regional Selection:** Taxpayers are assigned to Scottish rates if their main place of residence is in Scotland.
 
 ## Personal Allowance
 
@@ -19,50 +91,30 @@ This document details the UK tax rules implemented for tax residents of the Unit
 
 The personal allowance is reduced by £1 for every £2 of income above £100,000, until it reaches £0 at £125,140.
 
-## Tax Brackets by Region
-
-The UK has different tax brackets depending on which nation you live in. The calculator supports:
-
-- **UK (England & Northern Ireland)**: Standard UK-wide rates
-- **Scottish**: Scottish rates for Scottish taxpayers
+| Income    | Personal Allowance |
+| --------- | ------------------ |
+| £100,000  | £12,570            |
+| £110,000  | £7,570             |
+| £120,000  | £2,570             |
+| £125,140+ | £0                 |
 
 ### Scottish Higher Rate Gap (UK.5)
 
-The Scottish Higher Rate threshold (£43,662 estimated for 25/26) is **~£6,600 lower** than the UK-wide threshold (£50,270), creating a significant "Scottish Tax Gap" for middle earners.
+The Scottish Higher Rate threshold (£43,662 for 25/26) is **~£6,600 lower** than the UK-wide threshold (£50,270), creating a significant "Scottish Tax Gap" for middle earners.
 
-| Threshold                  | Scottish (25/26 est) | UK-wide  | Gap      |
-| -------------------------- | -------------------- | -------- | -------- |
-| Higher Rate                | £43,662              | £50,270  | ~£6,600  |
-| Additional Rate (top rate) | £75,000              | £125,140 | ~£50,000 |
+| Threshold                  | Scottish (25/26) | UK-wide  | Gap      |
+| -------------------------- | ---------------- | -------- | -------- |
+| Higher Rate                | £43,662          | £50,270  | ~£6,600  |
+| Additional Rate (top rate) | £75,000          | £125,140 | ~£50,000 |
 
-**Impact**: Scottish taxpayers reach the Higher Rate (40%) at £43,662, while UK-wide taxpayers don't reach it until £50,270.
-
-### UK-wide (England & Northern Ireland) - 2025/26
-
-| Taxable Income     | Rate |
-| ------------------ | ---- |
-| Up to £12,570 (PA) | 0%   |
-| £12,570 - £50,270  | 20%  |
-| £50,270 - £125,140 | 40%  |
-| Over £125,140      | 45%  |
-
-### Scottish Rates - 2025/26 (Estimated)
-
-| Taxable Income     | Rate | Band Name          |
-| ------------------ | ---- | ------------------ |
-| Up to £12,570 (PA) | 0%   | Personal Allowance |
-| £12,570 - £43,662  | 20%  | Scottish Basic     |
-| £43,662 - £75,000  | 40%  | Scottish Higher    |
-| Over £75,000       | 45%  | Scottish Top       |
-
-> **Note**: The £43,662 threshold for 2025/26 is estimated based on Scottish Government budget forecasts.
+**Impact**: Scottish taxpayers reach the Higher Rate (42%) at £43,662, while UK-wide taxpayers don't reach it until £50,270.
 
 ### Historical Scottish Rates
 
 | Tax Year | Higher Rate Threshold | UK-wide Threshold | Gap     |
 | -------- | --------------------- | ----------------- | ------- |
 | 2024/25  | £43,662               | £50,270           | ~£6,600 |
-| 2025/26  | £43,662 (est)         | £50,270           | ~£6,600 |
+| 2025/26  | £43,662               | £50,270           | ~£6,600 |
 
 ## The 60% Marginal Tax Trap (£100,000 - £125,140)
 
@@ -97,7 +149,7 @@ For every £100 earned in the £100,000-£125,140 band:
 
 ### Implementation Note
 
-The calculator implements this correctly through the Personal Allowance reduction mechanism in `calculateUKPersonalAllowance()`. The 60% effective rate emerges automatically from:
+The calculator implements this correctly through the Personal Allowance reduction mechanism. The 60% effective rate emerges automatically from:
 
 - The 40% tax bracket applied to income above £100,000
 - The 50% taper rate on Personal Allowance
@@ -105,37 +157,52 @@ The calculator implements this correctly through the Personal Allowance reductio
 
 > **Source**: [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)
 
-## Tax Brackets (2024/25)
+## National Insurance
 
-### Income Tax (After Personal Allowance)
+### Class 1 (Employment)
 
-| Taxable Income     | Band       | Rate |
-| ------------------ | ---------- | ---- |
-| £0 - £37,700       | Basic      | 20%  |
-| £37,701 - £125,140 | Higher     | 40%  |
-| Over £125,140      | Additional | 45%  |
+| Income Range      | Rate |
+| ----------------- | ---- |
+| £0 - £12,570      | 0%   |
+| £12,570 - £50,270 | 8%   |
+| Over £50,270      | 2%   |
 
-### Dividend Tax (After Dividend Allowance)
+### Class 2 (Self-Employment)
 
-| Taxable Income     | Band       | Rate   |
-| ------------------ | ---------- | ------ |
-| £0 - £37,700       | Basic      | 8.75%  |
-| £37,701 - £125,140 | Higher     | 33.75% |
-| Over £125,140      | Additional | 39.35% |
+| Threshold         | Rate                   |
+| ----------------- | ---------------------- |
+| Profits > £12,570 | £3.45/week (flat rate) |
 
-## Personal Savings Allowance (PSA)
+### Class 4 (Self-Employment)
+
+| Income Range      | Rate |
+| ----------------- | ---- |
+| £12,570 - £50,270 | 6%   |
+| Over £50,270      | 2%   |
+
+## Allowances
+
+### Dividend Allowance
+
+**£500** (2025-26) - tax-free dividend amount.
+
+### Trading Allowance
+
+**£1,000** (2025-26) - tax-free income from self-employment.
+
+### Personal Savings Allowance (PSA)
 
 A tax-free allowance for interest income, tiered based on the taxpayer's income tax band:
 
-| Tax Band        | Tax Rate | PSA Amount |
-| --------------- | -------- | ---------- |
-| Basic rate      | 20%      | £1,000     |
-| Higher rate     | 40%      | £500       |
-| Additional rate | 45%      | £0         |
+| Tax Band              | Tax Rate | PSA Amount |
+| --------------------- | -------- | ---------- |
+| Basic rate (20%)      | 20%      | £1,000     |
+| Higher rate (40%)     | 40%      | £500       |
+| Additional rate (45%) | 45%      | £0         |
 
 PSA amounts are loaded from reference data files (`Deductions.csv`) with `Type='PersonalSavingsAllowance'` and `TaxBand` field indicating the applicable band.
 
-### Reference Data Format
+#### Reference Data Format
 
 The PSA reference data uses the following structure:
 
@@ -146,15 +213,13 @@ Year,Type,TaxBand,Amount
 2025,PersonalSavingsAllowance,additional,0
 ```
 
-### PSA Calculation
+#### PSA Calculation
 
 The PSA is determined by:
 
 1. Finding which tax bracket the taxpayer's **adjusted net income** falls into (using tax bracket reference data)
 2. Reading the `TaxBand` field from that bracket (basic/higher/additional)
 3. Looking up the PSA amount from reference data for that tax band and year
-
-### Reference Data Structure
 
 Tax brackets include a `TaxBand` field:
 
@@ -165,7 +230,7 @@ Year,IncomeType,MinIncome,MaxIncome,Rate,TaxBand
 2025,income,125140,,0.45,additional
 ```
 
-### Example
+#### Example
 
 A taxpayer with £50,000 adjusted net income:
 
@@ -173,71 +238,32 @@ A taxpayer with £50,000 adjusted net income:
 2. PSA allowance: £500
 3. Interest income: £800
 4. Taxable interest: £800 - £500 = £300
-5. Tax due: £300 × 20% (basic rate on interest) = £60
+5. Tax due: £300 × 20% (basic rate on savings) = £60
 
-> **Note**: Interest income is taxed at the taxpayer's marginal rate, but the PSA provides a tax-free allowance up to the band threshold.
+> **Note**: Interest income is taxed at savings income rates (basic rate typically 20%), not dividend rates.
 
-## Dividend Allowance
+## Dividend Tax
 
-| Year    | Amount |
-| ------- | ------ |
-| 2024/25 | £500   |
-| 2025/26 | £500   |
+Dividend tax rates differ from income tax rates:
 
-The first £500 of dividend income is tax-free. Dividends above this amount are taxed at the dividend tax rates.
+### Scotland & Rest of UK
 
-## Trading Allowance
+| Band               | Income Range       | Tax Rate |
+| ------------------ | ------------------ | -------- |
+| Dividend Allowance | £0 - £500          | 0%       |
+| Basic Rate         | £500 - £50,270     | 8.75%    |
+| Higher Rate        | £50,271 - £125,140 | 33.75%   |
+| Additional Rate    | Over £125,140      | 39.35%   |
 
-| Year    | Amount | Max Income |
-| ------- | ------ | ---------- |
-| 2024/25 | £1,000 | £1,000     |
-| 2025/26 | £1,000 | £1,000     |
+**Note:** Dividend tax rates are the same across all UK regions.
 
-For freelance/self-employment income, the first £1,000 is tax-free. You can deduct either this allowance or actual expenses, whichever is higher.
+## Withholding Tax
 
-## National Insurance
-
-### Employment (Class 1)
-
-| Income (per month) | Rate  |
-| ------------------ | ----- |
-| £0 - £1,048        | 0%    |
-| £1,048 - £4,189    | 5.25% |
-| Over £4,189        | 2%    |
-
-### Freelance (Class 2 + Class 4)
-
-| Class 2:                 |            |
-| ------------------------ | ---------- |
-| £6,725+ (annual profits) | £3.45/week |
-
-| Class 4:          | Rate |
-| ----------------- | ---- |
-| £0 - £12,570      | 0%   |
-| £12,570 - £50,270 | 6%   |
-| Over £50,270      | 2%   |
-
-## Residency Determination
-
-### Statutory Residence Test (SRT)
-
-The UK uses the Statutory Residence Test with multiple components:
-
-**Automatic UK Tests** (you're resident if ANY apply):
-
-- Spend 183+ days in the UK
-- Have only home in the UK for 91+ days (and live in it)
-- Work full-time in the UK (35+ hours/week for any period)
-
-**Automatic Overseas Tests** (you're NOT resident if ANY apply):
-
-- Spend 16+ days in UK and were resident for 1+ of previous 3 tax years
-- Spend 46+ days in UK and were NOT resident in previous 3 tax years
-- Work full-time overseas (35+ hours/week) with fewer than 91 UK work days
-
-**Sufficient Ties Test** (if no automatic test applies):
-
-- Number of days in UK combined with "connecting factors" (family, accommodation, work, UK presence)
+| Income Type | WHT Rate     | Notes                     |
+| ----------- | ------------ | ------------------------- |
+| Employment  | PAYE (0-45%) | Deducted at source        |
+| Freelance   | 0%           | Self-assessment           |
+| Dividend    | 0%           | Taxed via self-assessment |
 
 ## Split Year Treatment
 
@@ -251,9 +277,37 @@ Available when you move countries permanently during a tax year:
 | Case 4 | Spouse/civil partner overseas   |
 | Case 5 | Other special circumstances     |
 
+## Special Tax Regimes
+
+### Remittance Basis
+
+Non-domiciled residents can elect for the remittance basis:
+
+- Foreign income only taxed if remitted to the UK
+- Requires payment of Remittance Basis Charge (after 7 years)
+- Loss of Personal Allowance for long-term residents
+
+### Non-Dom Status
+
+- Applies if domicile is outside the UK
+- Separate from tax residency
+- Being phased out from April 2025
+
+## Filing Requirements
+
+### Annual Deadlines
+
+| Deadline   | Description                |
+| ---------- | -------------------------- |
+| January 31 | Tax return filing (paper)  |
+| January 31 | Tax return filing (online) |
+| January 31 | Tax payment balancing      |
+| July 31    | Second payment on account  |
+
 ## References
 
-- **HMRC**: www.gov.uk/hmrc
-- **Tax Guidance**: www.gov.uk/government/organisations/hm-revenue-customs
-- **Statutory Residence Test**: Finance Act 2013
-- **60% Tax Trap**: [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)
+- [GOV.UK - Income Tax rates and Personal Allowances](https://www.gov.uk/income-tax-rates)
+- [GOV.UK - Rates and thresholds for employers 2025 to 2026](https://www.gov.uk/guidance/rates-and-thresholds-for-employers-2025-to-2026)
+- [Scottish Government - Scottish Income Tax 2025 to 2026 factsheet](https://www.gov.scot/publications/scottish-income-tax-2025-2026-factsheet/pages/2/)
+- [HMRC - Statutory Residence Test](https://www.gov.uk/government/publications/statutory-residence-test-srt)
+- [Income Tax Act 2007, Section 35](https://www.legislation.gov.uk/ukpga/2007/3/part/3/chapter/2)

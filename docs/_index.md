@@ -16,11 +16,11 @@ Detailed tax documentation for the Net Income Calculator.
 
 ## Tax Rules
 
-| Topic              | Documentation                                               |
-| ------------------ | ----------------------------------------------------------- |
-| Portugal Tax Rules | [pt.md](pt.md) - Complete IRS implementation                |
-| UK Tax Rules       | [gb.md](gb.md) - Scottish rates, PSA, 60% marginal trap, NI |
-| Common Concepts    | [common.md](common.md) - FTC, EU/EEA, currency handling     |
+| Topic              | Documentation                                                           |
+| ------------------ | ----------------------------------------------------------------------- |
+| Portugal Tax Rules | [pt.md](pt.md) - Complete IRS implementation                            |
+| UK Tax Rules       | [gb.md](gb.md) - Income tax, NI, Scotland-specific bands, PSA, 60% trap |
+| Common Concepts    | [common.md](common.md) - FTC, EU/EEA, currency handling                 |
 
 ## Quick Reference
 
@@ -55,8 +55,11 @@ Detailed tax documentation for the Net Income Calculator.
 
 1. [README.md](../README.md) - Installation and quick start
 2. [Portugal Tax Rules](pt.md) - Tax brackets, deductions, NHR
-3. [UK Tax Rules](gb.md) - Scottish rates, PSA, 60% marginal trap, National Insurance
-4. [Common Concepts](common.md) - Foreign tax credits, dividend rules
+   <<<<<<< HEAD
+3. # [UK Tax Rules](gb.md) - Income tax, NI, Scotland-specific bands, PSA, 60% trap
+4. [UK Tax Rules](gb.md) - Scottish rates, PSA, 60% marginal trap, National Insurance
+   > > > > > > > origin/main
+5. [Common Concepts](common.md) - Foreign tax credits, dividend rules
 
 **Developers:**
 
