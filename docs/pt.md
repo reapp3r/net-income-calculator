@@ -209,9 +209,19 @@ Safety net ensuring net income ≥ minimum wage threshold.
 
 ## Withholding Tax (as Source Country)
 
+### 2025+: Category A (Employment) - Marginal Withholding Formula
+
+For employment income earned in Portugal, the 2025 withholding system uses the **marginal withholding formula** based on progressive tax brackets (per Portaria for 2025 withholding tables):
+
+- **Exemption threshold**: €28,737.50 (55 × IAS 2025 = €522.50)
+- **Above threshold**: Progressive rates from 12.5% to 48%
+- **Calculation**: Same brackets as final tax (see Tax Brackets section above)
+- **Three-period system**: January-July, August-September, October-December
+
+### Other Income Types
+
 | Income Type | Rate |
 | ----------- | ---- |
-| Employment  | 0%   |
 | Freelance   | 25%  |
 | Dividends   | 25%  |
 

@@ -18,11 +18,11 @@ The country whose tax laws apply to your **worldwide income**.
 
 The country where income was **paid from**.
 
-| Source   | Withholding    | Notes                        |
-| -------- | -------------- | ---------------------------- |
-| Portugal | Varies by type | 0% employment, 25% freelance |
-| UK       | PAYE           | 0-45% employment             |
-| Germany  | Lohnsteuer     | 0-45% employment             |
+| Source   | Withholding    | Notes                                                  |
+| -------- | -------------- | ------------------------------------------------------ |
+| Portugal | Varies by type | Marginal withholding (2025+) employment, 25% freelance |
+| UK       | PAYE           | 0-45% employment                                       |
+| Germany  | Lohnsteuer     | 0-45% employment                                       |
 
 ### Interaction
 
