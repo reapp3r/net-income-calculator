@@ -27,3 +27,6 @@ SRT_AccommodationTieRequired,true,Count accommodation tie
 SRT_WorkTieRequired,true,Count work tie (>40 days)
 SRT_90DayTieRequired,true,Count 90-day tie
 SRT_CountryTieRequired,true,Count country tie
+
+# UK Regional Tax Bands
+Region,default,UK tax region: default | scotland (default = rest of UK)

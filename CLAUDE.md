@@ -283,6 +283,9 @@ Each country has an intrinsic fiscal year (cannot be changed):
 - National Insurance (Class 1, 2, 4)
 - Dividend Allowance (£500)
 - Trading Allowance (£1,000 for freelancers)
+- **Scotland-specific tax bands** (Starter, Basic, Intermediate, Higher, Advanced, Top)
+
+> See [docs/gb.md](docs/gb.md) for complete UK tax rules including Scotland-specific bands.
 
 ## Key Calculation Flows
 

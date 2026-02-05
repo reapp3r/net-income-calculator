@@ -16,10 +16,11 @@ Detailed tax documentation for the Net Income Calculator.
 
 ## Tax Rules
 
-| Topic              | Documentation                                           |
-| ------------------ | ------------------------------------------------------- |
-| Portugal Tax Rules | [pt.md](pt.md) - Complete IRS implementation            |
-| Common Concepts    | [common.md](common.md) - FTC, EU/EEA, currency handling |
+| Topic              | Documentation                                            |
+| ------------------ | -------------------------------------------------------- |
+| Portugal Tax Rules | [pt.md](pt.md) - Complete IRS implementation             |
+| UK Tax Rules       | [gb.md](gb.md) - Income tax, NI, Scotland-specific bands |
+| Common Concepts    | [common.md](common.md) - FTC, EU/EEA, currency handling  |
 
 ## Quick Reference
 
@@ -28,6 +29,7 @@ Detailed tax documentation for the Net Income Calculator.
 | Country  | Implemented | Status |
 | -------- | ----------- | ------ |
 | Portugal | ✓           | Active |
+| UK       | ✓           | Active |
 
 ### Source Countries (Withholding Tax)
 

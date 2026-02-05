@@ -170,6 +170,8 @@ Can offset future income with past losses.
 | UK        | 8.75-39.35%   | £500 allowance         |
 | Germany   | 26.375%       | N/A                    |
 
+> **Note:** UK has Scotland-specific income tax bands. See [docs/gb.md](gb.md) for details.
+
 ## Personal Deductions Categories
 
 ### Common Categories
