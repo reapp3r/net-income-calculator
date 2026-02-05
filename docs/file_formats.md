@@ -290,6 +290,83 @@ Year,Month,Day,Amount,IncomeType,Currency,Employer,Description
 
 ---
 
+## TaxBrackets.csv (Per Country)
+
+Tax brackets and rates for progressive income tax calculation.
+
+**Location**: `data/PT/TaxBrackets.csv`, `data/GB/TaxBrackets.csv`, etc.
+
+**Format**:
+
+```csv
+Year,IncomeType,MinIncome,MaxIncome,Rate,Region
+2025,income,0,12570,0,
+2025,income,12570,50270,0.20,
+2025,income,50270,125140,0.40,
+2025,income,125140,,0.45,
+2025,dividend,0,500,0,
+2025,dividend,500,12570,0.0875,
+2025,dividend,12570,50270,0.3375,
+2025,dividend,50270,,0.3935,
+2025,income,12570,43662,0.20,Scottish
+2025,income,43662,75000,0.40,Scottish
+2025,income,75000,,0.45,Scottish
+```
+
+**Columns**:
+| Column | Type | Required | Description |
+|--------|------|----------|-------------|
+| Year | Integer | Yes | Tax year |
+| IncomeType | Text | Yes | income, dividend, capital_gains, etc. |
+| MinIncome | Decimal | Yes | Lower bound of tax bracket (inclusive) |
+| MaxIncome | Decimal | No | Upper bound of tax bracket (exclusive), null for top bracket |
+| Rate | Decimal | Yes | Tax rate for this bracket (e.g., 0.20 for 20%) |
+| Region | Text | No | Regional variant (e.g., Scottish for Scottish rates) |
+
+**IncomeType Values**:
+
+- `income`: Standard income tax (employment, freelance, etc.)
+- `dividend`: Dividend income (uses special dividend rates)
+- `capital_gains`: Capital gains tax
+- `savings`: Savings income
+
+**Region Values** (UK-specific):
+
+- Empty/null: Default UK-wide rates (England & Northern Ireland)
+- `Scottish`: Scottish tax rates (different thresholds)
+
+**Regional Tax Brackets (UK)**:
+
+The UK supports region-specific tax brackets through the optional `Region` column. When specified:
+
+- Tax brackets with a matching `Region` value are used for residents of that region
+- If no region-specific brackets exist, the default (empty Region) brackets are used
+- This enables modeling of the **Scottish Higher Rate Gap** (£43,662 vs £50,270)
+
+**Example: Scottish vs UK-wide Higher Rate**:
+
+| Region   | Higher Rate Threshold | Rate |
+| -------- | --------------------- | ---- |
+| Default  | £50,270               | 40%  |
+| Scottish | £43,662               | 40%  |
+
+**Portugal-Specific Columns**:
+
+| Column | Type | Required | Description |
+|--------|------|----------|-------------|
+| ParcelaAbater | Decimal | No | Amount to subtract from tax (Portugal-specific) |
+
+**Validation**:
+
+- Year between 2020-2050
+- Valid IncomeType enum
+- MinIncome >= 0
+- MaxIncome > MinIncome (if provided)
+- Rate between 0 and 1
+- Brackets must not overlap for same Year/IncomeType/Region
+
+---
+
 ## SimulationParameters.csv (Per Country)
 
 Configuration parameters for tax calculations and residency tests.

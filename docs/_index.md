@@ -7,7 +7,7 @@ Detailed tax documentation for the Net Income Calculator.
 **For Users:**
 
 - Start with [README.md](../README.md) for installation and usage
-- See [Portugal Tax Rules](pt.md) for detailed tax information
+- See [Portugal Tax Rules](pt.md) or [UK Tax Rules](gb.md) for detailed tax information
 - Refer to [Common Tax Concepts](common.md) for cross-country topics
 
 **For Developers:**
@@ -19,6 +19,7 @@ Detailed tax documentation for the Net Income Calculator.
 | Topic              | Documentation                                           |
 | ------------------ | ------------------------------------------------------- |
 | Portugal Tax Rules | [pt.md](pt.md) - Complete IRS implementation            |
+| UK Tax Rules       | [gb.md](gb.md) - Scottish rates, PAYE, National Insurance |
 | Common Concepts    | [common.md](common.md) - FTC, EU/EEA, currency handling |
 
 ## Quick Reference
