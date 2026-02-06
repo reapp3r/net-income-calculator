@@ -162,6 +162,33 @@ Year,Country,ResidencyStatus,ResidencyStartDate,ResidencyEndDate,CalculationMeth
 | CalculationMethod | Text | No | Manual, TreatyElection, Automatic |
 | Notes | Text | No | Free text explanation |
 
+---
+
+## Reference Data Schemas (Internal)
+
+These formats are used for the country-specific tables in `data/[ISO]/`.
+
+### TaxBrackets.csv
+
+| Column        | Type    | Description                            |
+| ------------- | ------- | -------------------------------------- |
+| Year          | Integer | Tax year                               |
+| ThresholdLow  | Decimal | Lower bound of bracket                 |
+| ThresholdHigh | Decimal | Upper bound (null for top bracket)     |
+| Rate          | Decimal | Percentage rate (e.g., 0.20)           |
+| FixedAmount   | Decimal | Tax accumulated from previous brackets |
+
+### SocialSecurity.csv
+
+| Column               | Type    | Description                                                       |
+| -------------------- | ------- | ----------------------------------------------------------------- |
+| Year                 | Integer | Tax year                                                          |
+| IncomeType           | Text    | employment, freelance, etc.                                       |
+| EmployeeRate         | Decimal | Rate paid by worker                                               |
+| EmployerRate         | Decimal | Rate paid by entity                                               |
+| BaseCoefficient      | Decimal | Percentage of gross that is taxable (e.g., 0.70 for PT freelance) |
+| MonthlyCapMultiplier | Decimal | Multiple of base unit (e.g., 12 for PT SS cap)                    |
+
 **ResidencyStatus Values**:
 
 - `Resident`: Tax resident in this country for the year
@@ -260,6 +287,33 @@ Year,Month,Day,Amount,IncomeType,Currency,Employer,Description
 | Currency | Text | Yes | ISO 4217 currency code |
 | Employer | Text | No | Employer or client name |
 | Description | Text | No | Free text note |
+
+---
+
+## Assets.csv (Common/Country Level)
+
+Tracks static assets for wealth taxes and international reporting.
+
+**Format**:
+
+```csv
+TaxpayerID,AssetType,Value,Currency,Country,PurchaseDate,PurchasePrice,IsPrimaryResidence
+A,RealEstate,750000,EUR,PT,2020-05-10,600000,true
+B,BankAccount,55000,USD,US,,,false
+A,Shares,120000,GBP,UK,2018-01-15,85000,false
+```
+
+**Columns**:
+| Column | Type | Required | Description |
+|--------|------|----------|-------------|
+| TaxpayerID | Text | Yes | A or B |
+| AssetType | Text | Yes | RealEstate, BankAccount, Shares, Crypto, Other |
+| Value | Decimal | Yes | Current market value or VPC |
+| Currency | Text | Yes | ISO 4217 |
+| Country | Text | Yes | ISO 3166-1 alpha-2 location of asset |
+| PurchaseDate | Date | No | YYYY-MM-DD (Critical for CGT cost basis) |
+| PurchasePrice | Decimal | No | Historic cost in Currency |
+| IsPrimaryResidence | Boolean | No | For property tax exemptions |
 
 **IncomeType Values**:
 

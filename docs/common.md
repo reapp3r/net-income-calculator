@@ -41,7 +41,9 @@ Source Country: Withholds tax at source rates
 
 Prevents double taxation when income is taxed in both source and residency countries.
 
-### Calculation
+### Per-Country Limitation
+
+Following OECD Model Art. 23B, FTC must be computed on a **per-country and per-type** basis. Excess credit from one country cannot offset tax on income from another.
 
 Portugal uses the **proportional method** for FTC calculation (Artigo 81.º do Código do IRS):
 
@@ -65,13 +67,21 @@ function calculateForeignTaxCredit(
 }
 ```
 
-### Limitation
+### New UK-Portugal Double Tax Treaty (2026)
 
-Credit cannot exceed the tax attributable to that income. Unused credits:
+Effective January 1, 2026:
 
-- **Portugal**: Cannot be carried forward (generally)
-- **UK**: Can sometimes carry backward/forward
-- **Germany**: Complex rules, case-by-case
+- **Withholding on Dividends**: Reduced to **10%**.
+- **Significant Ownership**: 0% rate for companies with 10% ownership.
+
+---
+
+## Asset Migration: No Step-up in Basis
+
+For all incoming expats, note that **Portugal, UK, and Germany** do NOT trigger a "Step-up in Basis" upon arrival.
+
+- **Rule**: The original historical acquisition cost (e.g., USD/GBP purchase price from years ago) persists for capital gains calculations.
+- **Impact**: Moving does not reset your purchase price to current market value.
 
 ## EU/EEA Dividend Exemption
 

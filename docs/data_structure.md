@@ -44,11 +44,13 @@ data/
 
 1. **Income by Source**: Income.csv files are located in country directories (data/PT/, data/GB/) and track income EARNED IN that country.
 
-2. **ISO Standards Only**:
+2. **Taxpayer Attribution**: Each income row must include a `TaxpayerID` (`A` or `B`) to support **Joint Filing** and **Marriage Allowance** simulations.
+
+3. **ISO Standards Only**:
    - Country codes: ISO 3166-1 alpha-2 (PT, GB, DE)
    - Currency codes: ISO 4217 (EUR, GBP, USD)
 
-3. **Exchange Rates**: Centralized at root level with monthly precision, supporting multiple currency pairs.
+4. **Exchange Rates**: Centralized at root level with monthly precision, supporting multiple currency pairs.
 
 ## File Standards
 

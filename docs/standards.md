@@ -26,9 +26,30 @@
 - **Validation**: /^\d{4}-\d{2}-\d{2}$/
 - **Error Message**: `Invalid date format: ${dateStr}. Must be YYYY-MM-DD`
 
-## Enforcement
+## CSV File Standards
 
-All code must validate inputs against these standards and throw descriptive errors for invalid formats.
+- **Encoding**: UTF-8.
+- **Comments**:
+  - **Full-Line**: Any line starting with **`#`** must be ignored.
+  - **Inline**: Any content on a line starting with **`#`** (after data) must be ignored (e.g., `3000,EUR # Comment`).
+- **Headers**: Required with exact column names as specified in `docs/file_formats.md`.
+- **Empty Rows**: Must be ignored.
+
+## Operational Requirements
+
+### 'Lumpy' Income Visualization
+
+Annual income must NOT be smoothed into 12 equal monthly bars.
+
+- **Portugal**: Show spikes in June/July (Holiday) and Nov/Dec (Christmas).
+- **Germany**: Show Christmas bonus/13th month in the specific month paid.
+
+### Logic Audit Trail
+
+The simulation output must include a `logic_audit` block:
+
+- **Reference**: Link every calculation to a specific Article or Source (e.g., "Artigo 78.º-A CIRS").
+- **Exchange Rates**: Log the date and source of rates used.
 
 ## Usage
 

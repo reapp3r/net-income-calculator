@@ -10,6 +10,21 @@ This document details the Portuguese tax rules implemented for tax residents of 
 
 > **Source**: _Código do IRS, Artigo 60.º_
 
+---
+
+## Holding Period Exclusion (Law 31/2024)
+
+Capital gains on the sale of securities (shares, bonds) benefit from a partial exclusion based on the holding period:
+
+| Holding Period | Exclusion % | Effective Tax Rate |
+| -------------- | ----------- | ------------------ |
+| < 2 years      | 0%          | 28.0%              |
+| 2 - 5 years    | 10%         | 25.2%              |
+| 5 - 8 years    | 20%         | 22.4%              |
+| > 8 years      | 30%         | 19.6%              |
+
+---
+
 ## Tax Brackets
 
 ### 2025
@@ -79,11 +94,20 @@ Applies to **taxable income** (income after specific deduction and other applica
 - On taxable income over €80,000 (2025) or €86,634 (2026): Add 2.5% on excess
 - On taxable income over €250,000: Add additional 5% on excess above €250,000
 
-## NHR Regime (Pre-2024)
+## Special Tax Regimes
 
-Valid for 10 years from acquisition date.
+### NHR Regime (Pre-2024)
 
-### Benefits
+Valid for 10 years from acquisition date. Individuals with proof of 2023 relocation plans (e.g., rental contract, visa) can apply for the **Original NHR** until **March 31, 2025**.
+
+### IFICI (2024+)
+
+The _Incentivo Fiscal à Investigação Científica e Inovação_ (often called "NHR 2.0").
+
+- **Benefit**: 20% flat rate on qualifying professional income.
+- **Pensions**: Foreign pensions are **not** flat-taxed or exempt (standard progressive rates apply).
+
+#### Benefits (NHR 1.0)
 
 | Income Type        | Standard    | NHR          |
 | ------------------ | ----------- | ------------ |
@@ -93,36 +117,14 @@ Valid for 10 years from acquisition date.
 | Foreign Dividends  | 28%         | **Exempt**   |
 | Foreign Interest   | 28%         | **Exempt**   |
 | Foreign Royalties  | 28%         | **Exempt**   |
-| Foreign Pensions   | Progressive | **20% flat** |
+| Foreign Pensions   | Progressive | **10% flat** |
 
 ### Duration
 
 - Years 1-10: Active (full benefits)
 - Year 11+: Expired (standard rules)
 
-### NHR Calculation Flow
-
-**Portuguese Employment Income (20% flat rate):**
-
-```
-1. Gross Employment Income
-2. Subtract Social Security (11% of gross)
-3. Apply 20% flat tax on (gross - social security)
-4. Derive Net Income
-```
-
-**Foreign Employment/Freelance/Dividend Income:**
-
-```
-1. Gross Foreign Income
-2. Portuguese tax: €0 (exempt)
-3. Foreign withholding: Applied by source country
-4. Derive Net Income
-```
-
-**Note:** The specific deduction (€4,462.15) does NOT apply to NHR employment income. The 20% flat rate applies directly to (gross income - social security).
-
-### Eligibility for 20% Flat Rate
+### Eligibility for 20% Flat Rate (NHR/IFICI)
 
 Only applies to **high-value-added activities** (Portaria No. 230/2019):
 
@@ -135,14 +137,34 @@ Only applies to **high-value-added activities** (Portaria No. 230/2019):
 
 > **Assumption**: Calculator assumes all PT employment qualifies for 20% rate.
 
+## Payroll & Benefits
+
+### Meal Allowance (Subsídio de Refeição)
+
+Tax-free limits per day:
+
+- **2025**: €6.00 (cash) / €10.20 (voucher).
+- **2026**: €6.15 (cash) / €10.46 (voucher).
+
+### Teleworking Allowance
+
+Compensation for remote work expenses is tax-free up to **€1.00/day**.
+
+### 14-Month Multiplier
+
+Employment income (Category A) is typically paid in 14 installments (Monthly salary x 14).
+
+---
+
 ## Freelance Tax Rules
 
 ### Coefficient
 
-| Type     | Coefficient | Taxable      |
-| -------- | ----------- | ------------ |
-| Services | 70%         | 70% of gross |
-| Goods    | 20%         | 20% of gross |
+| Type                             | Coefficient | Taxable      |
+| -------------------------------- | ----------- | ------------ |
+| Professional Services (Art. 151) | 75%         | 75% of gross |
+| Other Services                   | 70%         | 70% of gross |
+| Goods                            | 20%         | 20% of gross |
 
 ### 15% Expense Rule (OE2026)
 
@@ -180,13 +202,13 @@ function calculateTaxableBase(gross, expenses, type) {
 
 ## Personal Deductions (Deduções à Coleta)
 
-| Category            | 2025          | 2026          |
-| ------------------- | ------------- | ------------- |
-| Health Expenses     | No limit      | No limit      |
-| Education Expenses  | No limit      | No limit      |
-| Housing (Rent)      | €700          | €900          |
-| IVA (VAT)           | % of expenses | % of expenses |
-| IVA Books & Culture | N/A           | 15% of VAT    |
+| Category            | 2025 Limit   | 2026 Limit   |
+| ------------------- | ------------ | ------------ |
+| Health Expenses     | €1,000 (15%) | €1,000 (15%) |
+| Education Expenses  | €800 (30%)   | €800 (30%)   |
+| Housing (Rent)      | **€700**     | **€900**     |
+| IVA (VAT) Credit    | €250 (15%)   | €250 (15%)   |
+| Dependent Deduction | €600         | €600         |
 
 ### Global Deduction Cap (Limite Global)
 
@@ -245,6 +267,38 @@ For employment income earned in Portugal, the 2025 withholding system uses the *
 | ----------- | ---- |
 | Freelance   | 25%  |
 | Dividends   | 25%  |
+
+## specialized Regimes & boons
+
+### IRS Jovem (2025 Model)
+
+Workers under 35 (or 30 if masters/PhD) benefit from a **10-year exemption path**:
+
+- **Year 1**: 100% exemption.
+- **Years 2-4**: 75% exemption.
+- **Years 5-7**: 50% exemption.
+- **Years 8-10**: 25% exemption.
+- **Cap**: Total exemption capped at **55x IAS** (€28,737.50 in 2025).
+
+### Crypto-Assets (Category G/E)
+
+- **Holding Period**: Gains on crypto held **> 365 days** are exempt (0%).
+- **Short-term**: Gains on crypto held **< 365 days** are taxed at 28%.
+- **Exit Tax**: A **28% tax** applies to unrealized gains on crypto held < 365 days when losing PT residency.
+- **Staking/De-Fi**: Rewards are **Category E** (Investment) and taxed at 28% regardless of holding period.
+
+### Wealth Tax (AIMI)
+
+"Adicional ao IMI" applies to Portuguese residential real estate if the total VPC (taxable value) exceeds:
+
+- **Individual**: €600,000.
+- **Couples**: €1,200,000 (if filing jointly).
+
+### Young Buyer Boon (OE2025)
+
+First-time buyers under 35 are exempt from **IMT and Stamp Duty (IS)** on properties up to €316,270.
+
+---
 
 ## Residency Determination
 
